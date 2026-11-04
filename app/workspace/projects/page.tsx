@@ -3,15 +3,20 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
-  FolderOpen, Plus, Check, X, MoreHorizontal, Download, Sparkles, Trash2, Copy, Edit3, Eye, Layers, RefreshCw
+  FolderOpen,
+  Plus,
+  Check,
+  X,
+  MoreHorizontal,
+  Download,
+  Sparkles,
+  Trash2,
+  Copy,
+  Edit3,
+  Eye,
+  Layers,
 } from "lucide-react";
-import {
-  deleteProject,
-  duplicateProject,
-  getProjects,
-  saveProject,
-  setActiveProjectId,
-} from "@/lib/storage/store";
+import { useStore } from "@/hooks/UserStoreContext";
 import type { Project } from "@/lib/storage/types";
 import { DIAGRAM_TYPE_LABELS } from "@/lib/storage/types";
 import { deriveAdaptiveInsights } from "@/lib/adaptive";
@@ -20,6 +25,7 @@ import { synthesizeFallbackArchitecture } from "@/lib/ai/fallback-synthesizer";
 import ArchitectureCanvas from "@/components/workspace/ArchitectureCanvas";
 
 export default function ProjectsPage() {
+  const store = useStore();
   const [projects, setProjects] = useState<Project[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editTitle, setEditTitle] = useState("");
@@ -27,29 +33,52 @@ export default function ProjectsPage() {
   const [previewProject, setPreviewProject] = useState<Project | null>(null);
 
   function refresh() {
-    const list = getProjects();
+    if (!store) return;
+    const list = store.getProjects();
+
     const hydrated = list.map((p) => {
       let cleanTitle = p.title;
-      if (cleanTitle === "sequence Diagram") cleanTitle = "Sequence Flow Spec";
-      else if (cleanTitle === "Untitled Architecture") {
-        cleanTitle = p.prompt ? (p.prompt.length > 30 ? `${p.prompt.slice(0, 27)}...` : p.prompt) : "Custom System Architecture";
+
+      if (cleanTitle === "sequence Diagram") {
+        cleanTitle = "Sequence Flow Spec";
+      } else if (cleanTitle === "Untitled Architecture") {
+        cleanTitle = p.prompt
+          ? p.prompt.length > 30
+            ? `${p.prompt.slice(0, 27)}...`
+            : p.prompt
+          : "Custom System Architecture";
       }
 
       if (!p.result) {
-        const synth = synthesizeFallbackArchitecture(p.prompt || cleanTitle, p.diagramType);
-        const updated = { ...p, title: cleanTitle, result: synth };
-        saveProject(updated);
+        const synth = synthesizeFallbackArchitecture(
+          p.prompt || cleanTitle,
+          p.diagramType,
+        );
+
+        const updated = {
+          ...p,
+          title: cleanTitle,
+          result: synth,
+        };
+
+        store.saveProject(updated);
         return updated;
       }
-      return { ...p, title: cleanTitle };
+
+      return {
+        ...p,
+        title: cleanTitle,
+      };
     });
+
     setProjects(hydrated);
   }
 
   useEffect(() => {
     const id = requestAnimationFrame(() => refresh());
     return () => cancelAnimationFrame(id);
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [store]);
 
   function startRename(project: Project) {
     setEditingId(project.id);
@@ -59,230 +88,355 @@ export default function ProjectsPage() {
 
   function saveRename(id: string) {
     const project = projects.find((p) => p.id === id);
+
     if (project && editTitle.trim()) {
-      saveProject({ ...project, title: editTitle.trim(), updatedAt: new Date().toISOString() });
+      store?.saveProject({
+        ...project,
+        title: editTitle.trim(),
+        updatedAt: new Date().toISOString(),
+      });
+
       refresh();
     }
+
     setEditingId(null);
   }
 
   function handleDelete(id: string) {
     if (confirm("Delete this project and its history entries?")) {
-      deleteProject(id);
+      store?.deleteProject(id);
       refresh();
     }
+
     setMenuOpen(null);
   }
 
   function handleDuplicate(id: string) {
-    duplicateProject(id);
+    store?.duplicateProject(id);
     refresh();
     setMenuOpen(null);
   }
 
   function handleExport(project: Project) {
     if (!project.result) return;
-    downloadText(toMarkdownExport(project.result), `${project.title.replace(/\s+/g, "-").toLowerCase()}.md`, "text/markdown");
+
+    downloadText(
+      toMarkdownExport(project.result),
+      `${project.title.replace(/\s+/g, "-").toLowerCase()}.md`,
+      "text/markdown",
+    );
+
     setMenuOpen(null);
   }
 
   return (
-    <div className="mx-auto max-w-6xl p-6 lg:p-10 pt-8 sm:pt-12 pb-16 space-y-10">
-      {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 border-b border-[#dddb9d]/15 pb-8">
-        <div>
-          <div className="mb-2.5 inline-flex items-center gap-2 rounded-full border border-[#7bc963]/30 bg-[#7bc963]/10 px-3.5 py-1 backdrop-blur-md">
-            <FolderOpen className="h-3.5 w-3.5 text-[#7bc963]" />
-            <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-[#7bc963]">
-              Project Repository &amp; Specs
-            </span>
-          </div>
-          <h1 className="text-4xl font-extrabold tracking-tight text-[#f2f1da] sm:text-5xl">
-            Software Architecture Projects
-          </h1>
-          <p className="mt-2 text-base text-[#c8c69d] max-w-xl">
-            Manage your saved system diagrams, microservice maps, and exported specifications.
-          </p>
-        </div>
+    <div className="relative min-h-full overflow-hidden bg-[#101216]">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute left-[10%] top-[-180px] h-[500px] w-[500px] rounded-full bg-[#D6AD69]/[0.025] blur-[130px]" />
 
-        <Link
-          href="/workspace/generate?new=1"
-          className="group inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-[#dddb9d] via-[#7bc963] to-[#567f2b] px-6 py-3.5 text-xs font-bold text-[#0a0b04] shadow-[0_0_25px_rgba(123,201,99,0.3)] transition-all hover:scale-[1.03] shrink-0"
-        >
-          <Plus className="h-4 w-4" />
-          Create New Project
-        </Link>
+        <div className="absolute right-[5%] top-[10%] h-[350px] w-[350px] rounded-full bg-[#D6AD69]/[0.018] blur-[120px]" />
+
+        <div className="absolute left-[10%] top-[-180px] h-[500px] w-[500px] rounded-full bg-[#D6AD69]/[0.025] blur-[130px]" />
+
+        <div className="absolute right-[5%] top-[10%] h-[350px] w-[350px] rounded-full bg-[#D6AD69]/[0.018] blur-[120px]" />
+
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(48,54,64,0.5)_1px,transparent_1px),linear-gradient(90deg,rgba(48,54,64,0.5)_1px,transparent_1px)] [background-size:48px_48px]" />
       </div>
 
-      {projects.length === 0 ? (
-        <div className="flex h-full min-h-[350px] flex-col items-center justify-center rounded-3xl border border-dashed border-[#dddb9d]/20 bg-[#12140a]/60 p-10 text-center backdrop-blur-2xl">
-          <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#dddb9d]/10 border border-[#dddb9d]/30 text-[#7bc963] shadow-[0_0_30px_rgba(123,201,99,0.2)]">
-            <FolderOpen className="h-8 w-8" />
+      <div className="relative mx-auto max-w-7xl space-y-10 p-6 pb-16 pt-8 sm:p-10 sm:pt-12">
+        <div className="flex flex-col gap-7 border-b border-[#A4AAB5]/12 pb-8 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#D6AD69]/30 bg-[#D6AD69]/10 px-3.5 py-1 backdrop-blur-md">
+              <FolderOpen className="h-3.5 w-3.5 text-[#D6AD69]" />
+
+              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-[#D6AD69]">
+                Project Repository &amp; Specs
+              </span>
+            </div>
+
+            <h1 className="max-w-3xl text-4xl font-bold tracking-[-0.04em] text-[#F0F1F3] sm:text-5xl lg:text-[56px] lg:leading-[1.02]">
+              Software Architecture
+              <br />
+              <span className="text-[#D6AD69]">Projects</span>
+            </h1>
+
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-[#A4AAB5] sm:text-base">
+              Manage your saved system diagrams, microservice maps, and
+              architecture specifications.
+            </p>
           </div>
-          <h3 className="text-xl font-bold text-[#f2f1da]">No Projects Saved Yet</h3>
-          <p className="mt-2 text-sm text-[#c8c69d] max-w-sm leading-relaxed">
-            Generate your first architecture in the Studio Canvas to save and manage projects here.
-          </p>
+
           <Link
             href="/workspace/generate?new=1"
-            className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-[#7bc963] px-6 py-3 text-xs font-bold text-[#0a0b04] shadow-[0_0_20px_rgba(123,201,99,0.3)] hover:bg-[#91e577] transition-colors"
+            className="group inline-flex shrink-0 items-center justify-center gap-2.5 rounded-2xl border border-[#D6AD69]/30 bg-[#F0F1F3] px-5 py-3.5 text-xs font-bold text-[#101216] shadow-[0_0_28px_rgba(0,0,0,0.15)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E0BC7A]"
           >
-            <Plus className="h-4 w-4" /> Launch Studio Canvas
+            <Plus className="h-4 w-4 text-[#D6AD69]" />
+            Create New Project
           </Link>
         </div>
-      ) : (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project) => {
-            const health = project.result ? deriveAdaptiveInsights(project.result) : null;
-            return (
-              <div
-                key={project.id}
-                className="group relative overflow-hidden rounded-3xl border border-[#dddb9d]/15 bg-gradient-to-b from-[#12140a]/90 via-[#0d0f06]/95 to-[#0a0b04] p-6 backdrop-blur-2xl transition-all duration-300 hover:border-[#dddb9d]/35 hover:shadow-[0_20px_40px_rgba(0,0,0,0.8),0_0_25px_rgba(123,201,99,0.15)] hover:-translate-y-1 flex flex-col justify-between"
-              >
-                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(#dddb9d_1px,transparent_1px)] [background-size:20px_20px] opacity-[0.05]" />
-                <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-[#dddb9d]/30 to-transparent" />
 
-                <div className="block flex-1 relative z-10">
-                  <div className="mb-4 flex items-center justify-between">
-                    <span className="rounded-full bg-[#dddb9d]/10 border border-[#dddb9d]/20 px-3 py-1 font-mono text-[10px] font-bold text-[#dddb9d] uppercase">
-                      {DIAGRAM_TYPE_LABELS[project.diagramType]}
-                    </span>
-                    <span className="text-[10px] font-mono text-[#8e8c6c]">
-                      {new Date(project.updatedAt).toLocaleDateString()}
-                    </span>
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-[#4A5060]">
+              Repository
+            </p>
+
+            <p className="mt-1 text-sm font-semibold text-[#A4AAB5]">
+              {projects.length}{" "}
+              {projects.length === 1 ? "architecture" : "architectures"} saved
+            </p>
+          </div>
+
+          <div className="hidden items-center gap-2 rounded-full border border-[#A4AAB5]/12 bg-[#171A20] px-3 py-1.5 sm:flex">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#D6AD69]" />
+
+            <span className="font-mono text-[9px] font-bold uppercase tracking-wider text-[#D6AD69]">
+              Local Repository
+            </span>
+          </div>
+        </div>
+
+        {projects.length === 0 ? (
+          <div className="flex min-h-[420px] flex-col items-center justify-center rounded-[28px] border border-dashed border-[#4A5060] bg-[#171A20]/80 p-10 text-center">
+            <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl border border-[#D6AD69]/30 bg-[#D6AD69]/10 text-[#D6AD69]">
+              <FolderOpen className="h-7 w-7" />
+            </div>
+
+            <h3 className="text-xl font-bold text-[#F0F1F3]">
+              No Projects Saved Yet
+            </h3>
+
+            <p className="mt-2 max-w-sm text-sm leading-6 text-[#A4AAB5]">
+              Generate your first architecture in Studio Canvas to save and
+              manage it here.
+            </p>
+
+            <Link
+              href="/workspace/generate?new=1"
+              className="mt-7 inline-flex items-center gap-2 rounded-xl bg-[#F0F1F3] px-5 py-3 text-xs font-bold text-[#101216] transition-all hover:bg-[#E0BC7A]"
+            >
+              <Plus className="h-4 w-4 text-[#D6AD69]" />
+              Launch Studio Canvas
+            </Link>
+          </div>
+        ) : (
+          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+            {projects.map((project) => {
+              const health = project.result
+                ? deriveAdaptiveInsights(project.result)
+                : null;
+
+              return (
+                <div
+                  key={project.id}
+                  className="group relative flex min-h-[310px] flex-col justify-between overflow-hidden rounded-[24px] border border-[#A4AAB5]/12 bg-[#171A20] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-[#D6AD69]/40 hover:bg-[#1D222A]"
+                >
+                  <div className="pointer-events-none absolute inset-0 opacity-20">
+                    <div className="absolute inset-0 bg-[radial-gradient(rgba(48,54,64,0.6)_1px,transparent_1px)] [background-size:22px_22px]" />
                   </div>
 
-                  {editingId === project.id ? (
-                    <div className="flex items-center gap-2 mb-3" onClick={(e) => e.preventDefault()}>
-                      <input
-                        value={editTitle}
-                        onChange={(e) => setEditTitle(e.target.value)}
-                        className="flex-1 rounded-xl border border-[#dddb9d]/40 bg-[#070804] px-3 py-1.5 text-xs text-[#f2f1da] outline-none"
-                        autoFocus
-                      />
-                      <button type="button" onClick={() => saveRename(project.id)} className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#7bc963] text-[#0a0b04]">
-                        <Check className="h-4 w-4" />
-                      </button>
-                      <button type="button" onClick={() => setEditingId(null)} className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#12140a] text-[#c8c69d]">
-                        <X className="h-4 w-4" />
-                      </button>
+                  <div className="relative z-10">
+                    <div className="mb-5 flex items-center justify-between gap-3">
+                      <span className="rounded-full border border-[#D6AD69]/30 bg-[#D6AD69]/10 px-2.5 py-1 font-mono text-[9px] font-bold uppercase tracking-wide text-[#D6AD69]">
+                        {DIAGRAM_TYPE_LABELS[project.diagramType]}
+                      </span>
+
+                      <span className="font-mono text-[9px] text-[#A4AAB5]/60">
+                        {new Date(project.updatedAt).toLocaleDateString()}
+                      </span>
                     </div>
-                  ) : (
-                    <div>
+
+                    {editingId === project.id ? (
+                      <div
+                        className="mb-3 flex items-center gap-2"
+                        onClick={(e) => e.preventDefault()}
+                      >
+                        <input
+                          value={editTitle}
+                          onChange={(e) => setEditTitle(e.target.value)}
+                          className="min-w-0 flex-1 rounded-xl border border-[#D6AD69]/40 bg-[#101216] px-3 py-2 text-xs text-[#F0F1F3] outline-none focus:border-[#D6AD69]"
+                          autoFocus
+                        />
+
+                        <button
+                          type="button"
+                          onClick={() => saveRename(project.id)}
+                          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#D6AD69] text-[#101216]"
+                        >
+                          <Check className="h-4 w-4" />
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => setEditingId(null)}
+                          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-[#303640] bg-[#171A20] text-[#A4AAB5]"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      </div>
+                    ) : (
                       <Link
                         href={`/workspace/generate?project=${project.id}`}
-                        onClick={() => setActiveProjectId(project.id)}
+                        onClick={() => store?.setActiveProjectId(project.id)}
+                        className="block"
                       >
-                        <h3 className="truncate text-lg font-bold text-[#f2f1da] group-hover:text-[#7bc963] transition-colors">
+                        <h3 className="truncate font-[var(--font-space-grotesk)] text-lg font-bold tracking-tight text-[#F0F1F3] transition-colors group-hover:text-[#D6AD69]">
                           {project.title}
                         </h3>
-                        <p className="mt-1 text-xs text-[#c8c69d] line-clamp-2">
-                          {project.prompt || "Custom architecture specification."}
+
+                        <p className="mt-2 line-clamp-2 font-[var(--font-inter)] text-xs leading-5 text-[#A4AAB5]">
+                          {project.prompt ||
+                            "Custom architecture specification."}
                         </p>
                       </Link>
-                    </div>
-                  )}
-
-                  {health && (
-                    <div className="mt-4 flex items-center gap-2 rounded-xl bg-[#7bc963]/10 border border-[#7bc963]/20 px-3 py-1.5 text-xs font-semibold text-[#7bc963] w-fit">
-                      <Sparkles className="h-3.5 w-3.5" />
-                      <span>Health {health.health}/100 · {health.healthLabel}</span>
-                    </div>
-                  )}
-                </div>
-
-                <div className="relative z-10 mt-6 pt-4 border-t border-[#dddb9d]/10 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Link
-                      href={`/workspace/generate?project=${project.id}`}
-                      onClick={() => setActiveProjectId(project.id)}
-                      className="text-xs font-bold text-[#7bc963] hover:text-[#91e577] transition-colors flex items-center gap-1"
-                    >
-                      Open Canvas →
-                    </Link>
-
-                    {project.result && (
-                      <button
-                        type="button"
-                        onClick={() => setPreviewProject(project)}
-                        className="inline-flex items-center gap-1 text-xs font-semibold text-[#dddb9d] hover:text-white px-2 py-0.5 rounded-lg bg-[#dddb9d]/10 border border-[#dddb9d]/20 transition-colors"
-                      >
-                        <Eye className="h-3 w-3" /> Quick View
-                      </button>
                     )}
-                  </div>
 
-                  <div className="relative">
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setMenuOpen(menuOpen === project.id ? null : project.id);
-                      }}
-                      className="flex h-8 w-8 items-center justify-center rounded-xl border border-[#dddb9d]/20 bg-[#12140a] text-[#c8c69d] hover:text-[#f2f1da]"
-                      aria-label="Project actions"
-                    >
-                      <MoreHorizontal className="h-4 w-4" />
-                    </button>
+                    {health && (
+                      <div className="mt-5 flex w-fit items-center gap-2 rounded-xl border border-[#D6AD69]/15 bg-[#D6AD69]/[0.05] px-3 py-1.5">
+                        <Sparkles className="h-3.5 w-3.5 text-[#D6AD69]" />
 
-                    {menuOpen === project.id && (
-                      <div className="absolute right-0 bottom-full mb-2 z-20 w-44 rounded-2xl border border-[#dddb9d]/20 bg-[#12140a] p-1.5 shadow-2xl backdrop-blur-2xl text-xs">
-                        <button type="button" onClick={() => startRename(project)} className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-[#c8c69d] hover:bg-[#dddb9d]/10 hover:text-[#f2f1da]">
-                          <Edit3 className="h-3.5 w-3.5 text-[#7bc963]" /> Rename
-                        </button>
-                        <button type="button" onClick={() => handleDuplicate(project.id)} className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-[#c8c69d] hover:bg-[#dddb9d]/10 hover:text-[#f2f1da]">
-                          <Copy className="h-3.5 w-3.5 text-[#dddb9d]" /> Duplicate
-                        </button>
-                        {project.result && (
-                          <button type="button" onClick={() => handleExport(project)} className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-[#c8c69d] hover:bg-[#dddb9d]/10 hover:text-[#f2f1da]">
-                            <Download className="h-3.5 w-3.5 text-[#7bc963]" /> Export MD
-                          </button>
-                        )}
-                        <div className="my-1 border-t border-[#dddb9d]/10" />
-                        <button type="button" onClick={() => handleDelete(project.id)} className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-rose-400 hover:bg-rose-500/10">
-                          <Trash2 className="h-3.5 w-3.5" /> Delete
-                        </button>
+                        <span className="font-[var(--font-geist-mono)] text-[10px] font-bold text-[#D6AD69]">
+                          Health {health.health}/100
+                        </span>
+
+                        <span className="text-[#4A5060]">·</span>
+
+                        <span className="font-[var(--font-inter)] text-[10px] text-[#A4AAB5]">
+                          {health.healthLabel}
+                        </span>
                       </div>
                     )}
                   </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
 
-      {/* Quick View Diagram Modal */}
-      {previewProject && previewProject.result && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
-          <div className="relative flex flex-col w-full max-w-5xl h-[85vh] overflow-hidden rounded-3xl border border-[#dddb9d]/30 bg-[#0a0b04] shadow-2xl">
-            {/* Modal Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-[#dddb9d]/15 bg-[#12140a]">
-              <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#7bc963]/20 text-[#7bc963]">
-                  <Layers className="h-5 w-5" />
+                  <div className="relative z-10 mt-7 flex items-center justify-between border-t border-[#303640] pt-4">
+                    <div className="flex items-center gap-2">
+                      <Link
+                        href={`/workspace/generate?project=${project.id}`}
+                        onClick={() => store?.setActiveProjectId(project.id)}
+                        className="flex items-center gap-1 font-[var(--font-space-grotesk)] text-[11px] font-bold text-[#D6AD69] transition-colors hover:text-[#E0BC7A]"
+                      >
+                        Open Canvas
+                        <span className="transition-transform group-hover:translate-x-0.5">
+                          →
+                        </span>
+                      </Link>
+
+                      {project.result && (
+                        <button
+                          type="button"
+                          onClick={() => setPreviewProject(project)}
+                          className="inline-flex items-center gap-1 rounded-lg border border-[#303640] bg-[#171A20] px-2 py-1 font-[var(--font-inter)] text-[10px] font-semibold text-[#A4AAB5] transition-all hover:border-[#D6AD69]/30 hover:text-[#D6AD69]"
+                        >
+                          <Eye className="h-3 w-3" />
+                          Quick View
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="relative">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setMenuOpen(
+                            menuOpen === project.id ? null : project.id,
+                          );
+                        }}
+                        className="flex h-8 w-8 items-center justify-center rounded-xl border border-[#303640] bg-[#171A20] text-[#4A5060] transition-all hover:border-[#D6AD69]/25 hover:text-[#F0F1F3]"
+                        aria-label="Project actions"
+                      >
+                        <MoreHorizontal className="h-4 w-4" />
+                      </button>
+
+                      {menuOpen === project.id && (
+                        <div className="absolute bottom-full right-0 z-20 mb-2 w-44 rounded-2xl border border-[#303640] bg-[#101216]/98 p-1.5 text-xs shadow-[0_20px_50px_rgba(0,0,0,0.65)] backdrop-blur-2xl">
+                          <button
+                            type="button"
+                            onClick={() => startRename(project)}
+                            className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 font-[var(--font-inter)] text-[#A4AAB5] transition-colors hover:bg-[#1D222A] hover:text-[#F0F1F3]"
+                          >
+                            <Edit3 className="h-3.5 w-3.5 text-[#D6AD69]" />
+                            Rename
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => handleDuplicate(project.id)}
+                            className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 font-[var(--font-inter)] text-[#A4AAB5] transition-colors hover:bg-[#1D222A] hover:text-[#F0F1F3]"
+                          >
+                            <Copy className="h-3.5 w-3.5 text-[#D6AD69]" />
+                            Duplicate
+                          </button>
+
+                          {project.result && (
+                            <button
+                              type="button"
+                              onClick={() => handleExport(project)}
+                              className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 font-[var(--font-inter)] text-[#A4AAB5] transition-colors hover:bg-[#1D222A] hover:text-[#F0F1F3]"
+                            >
+                              <Download className="h-3.5 w-3.5 text-[#D6AD69]" />
+                              Export MD
+                            </button>
+                          )}
+
+                          <div className="my-1 border-t border-[#303640]" />
+
+                          <button
+                            type="button"
+                            onClick={() => handleDelete(project.id)}
+                            className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 font-[var(--font-inter)] text-rose-400 transition-colors hover:bg-rose-500/10"
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                            Delete
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <h2 className="text-lg font-bold text-[#f2f1da]">{previewProject.title}</h2>
-                  <p className="text-xs text-[#7bc963] font-mono uppercase">
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      {previewProject && previewProject.result && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 backdrop-blur-md">
+          <div className="relative flex h-[85vh] w-full max-w-6xl flex-col overflow-hidden rounded-[28px] border border-[#303640] bg-[#101216] shadow-[0_30px_100px_rgba(0,0,0,0.8)]">
+            <div className="flex items-center justify-between border-b border-[#303640] bg-[#171A20]/95 px-5 py-4 backdrop-blur-xl sm:px-6">
+              <div className="flex min-w-0 items-center gap-3">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[#D6AD69]/20 bg-[#D6AD69]/[0.05] text-[#D6AD69]">
+                  <Layers className="h-4 w-4" />
+                </div>
+
+                <div className="min-w-0">
+                  <h2 className="truncate font-[var(--font-space-grotesk)] text-sm font-bold text-[#F0F1F3] sm:text-base">
+                    {previewProject.title}
+                  </h2>
+
+                  <p className="font-[var(--font-geist-mono)] text-[9px] uppercase tracking-wider text-[#D6AD69]">
                     {DIAGRAM_TYPE_LABELS[previewProject.diagramType]} Spec
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 <Link
                   href={`/workspace/generate?project=${previewProject.id}`}
-                  onClick={() => { setActiveProjectId(previewProject.id); setPreviewProject(null); }}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-[#0a0b04] bg-[#7bc963] hover:bg-[#91e577] rounded-xl transition-colors"
+                  onClick={() => {
+                    store?.setActiveProjectId(previewProject.id);
+                    setPreviewProject(null);
+                  }}
+                  className="hidden items-center gap-1.5 rounded-xl bg-[#D6AD69] px-4 py-2.5 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[#101216] transition-all hover:bg-[#E0BC7A] sm:inline-flex"
                 >
-                  <Sparkles className="h-3.5 w-3.5" /> Edit in Studio
+                  <Sparkles className="h-3.5 w-3.5" />
+                  Edit in Studio
                 </Link>
 
                 <button
                   type="button"
                   onClick={() => setPreviewProject(null)}
-                  className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#dddb9d]/20 bg-[#12140a] text-[#c8c69d] hover:text-white"
+                  className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#303640] bg-[#171A20] text-[#4A5060] transition-all hover:border-[#D6AD69]/25 hover:text-[#F0F1F3]"
                   aria-label="Close modal"
                 >
                   <X className="h-5 w-5" />
@@ -290,8 +444,7 @@ export default function ProjectsPage() {
               </div>
             </div>
 
-            {/* Modal Canvas View */}
-            <div className="relative flex-1 overflow-hidden">
+            <div className="relative flex-1 overflow-hidden bg-[#101216]">
               <ArchitectureCanvas
                 chart={previewProject.result.mermaidCode}
                 result={previewProject.result}

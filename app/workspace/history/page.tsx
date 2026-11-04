@@ -2,120 +2,232 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { History, Search, ArrowRight, CheckCircle2, AlertCircle, GitCommit, Play, Sparkles } from "lucide-react";
-import { getHistory, setActiveProjectId } from "@/lib/storage/store";
+import {
+  History,
+  Search,
+  AlertCircle,
+  Play,
+  Sparkles,
+} from "lucide-react";
+import { useStore } from "@/hooks/UserStoreContext";
 import type { HistoryEntry } from "@/lib/storage/types";
 import { DIAGRAM_TYPE_LABELS } from "@/lib/storage/types";
+import PageHeader from "@/components/workspace/PageHeader";
 
 export default function HistoryPage() {
+  const store = useStore();
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<"all" | "success" | "error">("all");
 
   useEffect(() => {
-    const id = requestAnimationFrame(() => setHistory(getHistory()));
+    if (!store) return;
+    const id = requestAnimationFrame(() => setHistory(store.getHistory()));
     return () => cancelAnimationFrame(id);
-  }, []);
+  }, [store]);
 
   const filtered = useMemo(() => {
-    const list = history.filter((entry) => {
+    return history.filter((entry) => {
       if (filter !== "all" && entry.status !== filter) return false;
+
       if (!query.trim()) return true;
+
       const q = query.toLowerCase();
+
       return (
         entry.projectTitle.toLowerCase().includes(q) ||
         entry.prompt.toLowerCase().includes(q) ||
-        DIAGRAM_TYPE_LABELS[entry.diagramType].toLowerCase().includes(q)
+        DIAGRAM_TYPE_LABELS[entry.diagramType]
+          .toLowerCase()
+          .includes(q)
       );
     });
-    return list;
   }, [history, query, filter]);
 
   return (
-    <div className="mx-auto max-w-5xl p-6 lg:p-10 pt-8 sm:pt-12 pb-16 space-y-8">
-      {/* Header */}
-      <div className="border-b border-[#dddb9d]/15 pb-6">
-        <div className="mb-2.5 inline-flex items-center gap-2 rounded-full border border-[#7bc963]/30 bg-[#7bc963]/10 px-3.5 py-1 backdrop-blur-md">
-          <History className="h-3.5 w-3.5 text-[#7bc963]" />
-          <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-[#7bc963]">
-            Architecture Evolution &amp; Version System
-          </span>
-        </div>
-        <h1 className="text-4xl font-extrabold tracking-tight text-[#f2f1da] sm:text-5xl">
-          Architecture Evolution Timeline
-        </h1>
-        <p className="mt-2 text-base text-[#c8c69d] max-w-xl">
-          Track architecture versions (v1 → v2 → v3), prompt refinements, health score gains, and system changes over time.
-        </p>
+    <div className="relative min-h-full overflow-hidden bg-[#101216]">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute left-[8%] top-[-180px] h-[480px] w-[480px] rounded-full bg-[#D6AD69]/[0.025] blur-[130px]" />
+
+        <div className="absolute right-[8%] top-[20%] h-[350px] w-[350px] rounded-full bg-[#D6AD69]/[0.018] blur-[120px]" />
+
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(214, 173, 105,0.012)_1px,transparent_1px),linear-gradient(90deg,rgba(214, 173, 105,0.012)_1px,transparent_1px)] [background-size:48px_48px]" />
       </div>
 
-      {/* Search Bar */}
-      <div className="relative">
-        <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#8e8c6c]" />
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search architecture versions, prompts, or diagram types..."
-          className="w-full rounded-2xl border border-[#dddb9d]/20 bg-[#12140a] pl-11 pr-4 py-3.5 text-xs text-[#f2f1da] placeholder-[#8e8c6c] outline-none focus:border-[#7bc963]"
+      <div className="relative mx-auto max-w-6xl space-y-8 p-6 pb-16 pt-8 sm:p-10 sm:pt-12">
+        <PageHeader
+          eyebrow="Architecture Evolution & Version System"
+          title="Architecture Evolution"
+          titleHighlight="Evolution"
+          description="Track architecture versions, prompt refinements, health changes, and system evolution over time."
         />
-      </div>
 
-      {/* Timeline List */}
-      <div className="space-y-4">
-        {filtered.length === 0 ? (
-          <div className="rounded-3xl border border-[#dddb9d]/15 bg-[#12140a] p-12 text-center text-xs text-[#c8c69d]">
-            No architecture version history recorded yet. Create an architecture to populate version snapshots!
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <div className="relative flex-1">
+            <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#4A5060]" />
+
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search versions, prompts, or diagram types..."
+              className="w-full rounded-2xl border border-[#303640] bg-[#171A20] py-3.5 pl-11 pr-4 font-[var(--font-inter)] text-xs text-[#F0F1F3] outline-none transition-all placeholder:text-[#4A5060] focus:border-[#D6AD69]/40 focus:ring-1 focus:ring-[#D6AD69]/10"
+            />
           </div>
-        ) : (
-          filtered.map((entry, idx) => {
-            const versionTag = `v${filtered.length - idx}.0`;
-            const isSuccess = entry.status === "success";
 
-            return (
-              <div
-                key={entry.id}
-                className="group relative overflow-hidden rounded-3xl border border-[#dddb9d]/15 bg-gradient-to-b from-[#12140a]/90 via-[#0d0f06]/95 to-[#0a0b04] p-6 backdrop-blur-2xl transition-all hover:border-[#dddb9d]/35 flex flex-col sm:flex-row sm:items-center justify-between gap-6"
+          <div className="flex rounded-2xl border border-[#303640] bg-[#171A20] p-1">
+            {(["all", "success", "error"] as const).map((value) => (
+              <button
+                key={value}
+                type="button"
+                onClick={() => setFilter(value)}
+                className={`rounded-xl px-4 py-2 font-[var(--font-geist-mono)] text-[9px] font-bold uppercase tracking-wider transition-all ${filter === value
+                    ? "bg-[#D6AD69]/10 text-[#D6AD69]"
+                    : "text-[#4A5060] hover:text-[#A4AAB5]"
+                  }`}
               >
-                <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-[#7bc963]/30 bg-[#7bc963]/10 text-[#7bc963] font-mono font-bold text-xs">
-                    {versionTag}
-                  </div>
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <span className="font-bold text-sm text-[#f2f1da]">{entry.projectTitle}</span>
-                      <span className="rounded-full border border-[#dddb9d]/15 bg-[#070804] px-2.5 py-0.5 font-mono text-[10px] uppercase text-[#7bc963]">
-                        {DIAGRAM_TYPE_LABELS[entry.diagramType]}
-                      </span>
-                    </div>
-                    <p className="text-xs text-[#c8c69d] font-mono leading-relaxed max-w-xl">
-                      "{entry.prompt}"
-                    </p>
-                    <p className="text-[10px] text-[#8e8c6c] pt-1">
-                      {new Date(entry.createdAt).toLocaleString()}
-                    </p>
-                  </div>
+                {value}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="font-[var(--font-geist-mono)] text-[9px] font-bold uppercase tracking-[0.18em] text-[#4A5060]">
+              Version Stream
+            </p>
+
+            <p className="mt-1 font-[var(--font-space-grotesk)] text-sm font-semibold text-[#A4AAB5]">
+              {filtered.length}{" "}
+              {filtered.length === 1 ? "snapshot" : "snapshots"}
+            </p>
+          </div>
+
+          <div className="hidden items-center gap-2 rounded-full border border-[#303640] bg-[#171A20] px-3 py-1.5 sm:flex">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#D6AD69] shadow-[0_0_8px_rgba(214, 173, 105,0.65)]" />
+
+            <span className="font-[var(--font-geist-mono)] text-[9px] font-bold uppercase tracking-wider text-[#4A5060]">
+              Version Tracking Active
+            </span>
+          </div>
+        </div>
+
+        <div className="relative">
+          <div className="absolute bottom-4 left-[18px] top-4 hidden w-px bg-gradient-to-b from-[#D6AD69]/30 via-[#303640] to-transparent sm:block" />
+
+          <div className="space-y-4">
+            {filtered.length === 0 ? (
+              <div className="rounded-[26px] border border-dashed border-[#303640] bg-[#101216]/80 p-12 text-center">
+                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-[#D6AD69]/15 bg-[#D6AD69]/[0.04] text-[#D6AD69]">
+                  <History className="h-5 w-5" />
                 </div>
 
-                <div className="flex items-center gap-3 shrink-0">
-                  {isSuccess ? (
-                    <Link
-                      href={`/workspace/generate?project=${entry.projectId}`}
-                      onClick={() => setActiveProjectId(entry.projectId)}
-                      className="inline-flex items-center gap-2 rounded-xl border border-[#7bc963]/30 bg-[#7bc963]/10 px-4 py-2 text-xs font-bold text-[#7bc963] hover:bg-[#7bc963] hover:text-[#0a0b04] transition-all"
-                    >
-                      <Play className="h-3.5 w-3.5 fill-current" />
-                      <span>Open Version</span>
-                    </Link>
-                  ) : (
-                    <span className="flex items-center gap-1 font-mono text-xs text-rose-400">
-                      <AlertCircle className="h-4 w-4" /> Generation Error
-                    </span>
-                  )}
-                </div>
+                <p className="font-[var(--font-space-grotesk)] text-sm font-bold text-[#F0F1F3]">
+                  No architecture history found
+                </p>
+
+                <p className="mx-auto mt-2 max-w-md font-[var(--font-inter)] text-xs leading-6 text-[#4A5060]">
+                  Create or generate an architecture to populate the version
+                  timeline.
+                </p>
               </div>
-            );
-          })
+            ) : (
+              filtered.map((entry, idx) => {
+                const versionTag = `v${filtered.length - idx}.0`;
+                const isSuccess = entry.status === "success";
+
+                return (
+                  <div
+                    key={entry.id}
+                    className="group relative sm:pl-12"
+                  >
+                    <div className="absolute left-[11px] top-8 hidden h-4 w-4 items-center justify-center rounded-full border border-[#D6AD69]/30 bg-[#101216] sm:flex">
+                      <span
+                        className={`h-1.5 w-1.5 rounded-full ${isSuccess
+                            ? "bg-[#D6AD69] shadow-[0_0_8px_rgba(214, 173, 105,0.7)]"
+                            : "bg-rose-400 shadow-[0_0_8px_rgba(251,113,133,0.4)]"
+                          }`}
+                      />
+                    </div>
+
+                    <div className="relative overflow-hidden rounded-[24px] border border-[#303640] bg-gradient-to-b from-[#171A20] via-[#0C0E12] to-[#101216] p-5 transition-all duration-300 hover:border-[#D6AD69]/25 hover:shadow-[0_18px_45px_rgba(0,0,0,0.4)] sm:p-6">
+                      <div className="pointer-events-none absolute inset-0 opacity-[0.025]">
+                        <div className="absolute inset-0 bg-[radial-gradient(#D6AD69_1px,transparent_1px)] [background-size:22px_22px]" />
+                      </div>
+
+                      <div className="relative flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+                        <div className="flex min-w-0 items-start gap-4">
+                          <div
+                            className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border font-[var(--font-geist-mono)] text-[10px] font-bold ${isSuccess
+                                ? "border-[#D6AD69]/20 bg-[#D6AD69]/[0.06] text-[#D6AD69]"
+                                : "border-rose-400/20 bg-rose-400/[0.05] text-rose-300"
+                              }`}
+                          >
+                            {versionTag}
+                          </div>
+
+                          <div className="min-w-0 space-y-2">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="truncate font-[var(--font-space-grotesk)] text-sm font-bold text-[#F0F1F3]">
+                                {entry.projectTitle}
+                              </span>
+
+                              <span className="rounded-full border border-[#D6AD69]/20 bg-[#D6AD69]/[0.04] px-2.5 py-0.5 font-[var(--font-geist-mono)] text-[9px] font-bold uppercase tracking-wide text-[#D6AD69]">
+                                {DIAGRAM_TYPE_LABELS[entry.diagramType]}
+                              </span>
+                            </div>
+
+                            <p className="max-w-2xl font-[var(--font-geist-mono)] text-[11px] leading-6 text-[#A4AAB5]">
+                              &ldquo;{entry.prompt}&rdquo;
+                            </p>
+
+                            <div className="flex items-center gap-2">
+                              <span className="h-1 w-1 rounded-full bg-[#4A5060]" />
+
+                              <p className="font-[var(--font-geist-mono)] text-[9px] text-[#4A5060]">
+                                {new Date(entry.createdAt).toLocaleString()}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="shrink-0">
+                          {isSuccess ? (
+                            <Link
+                              href={`/workspace/generate?project=${entry.projectId}`}
+                              onClick={() =>
+                                store?.setActiveProjectId(entry.projectId)
+                              }
+                              className="inline-flex items-center gap-2 rounded-xl border border-[#D6AD69]/20 bg-[#D6AD69]/[0.05] px-4 py-2.5 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[#D6AD69] transition-all hover:border-[#D6AD69]/45 hover:bg-[#D6AD69] hover:text-[#101216]"
+                            >
+                              <Play className="h-3.5 w-3.5 fill-current" />
+                              Open Version
+                            </Link>
+                          ) : (
+                            <span className="inline-flex items-center gap-2 rounded-xl border border-rose-400/15 bg-rose-400/[0.04] px-3 py-2 font-[var(--font-geist-mono)] text-[9px] font-bold uppercase tracking-wide text-rose-300">
+                              <AlertCircle className="h-3.5 w-3.5" />
+                              Generation Error
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
+        </div>
+
+        {filtered.length > 0 && (
+          <div className="flex items-center justify-center gap-2 pt-2">
+            <Sparkles className="h-3.5 w-3.5 text-[#4A5060]" />
+
+            <span className="font-[var(--font-geist-mono)] text-[9px] uppercase tracking-[0.16em] text-[#4A5060]">
+              Architecture evolution tracked by Arqin AI
+            </span>
+          </div>
         )}
       </div>
     </div>

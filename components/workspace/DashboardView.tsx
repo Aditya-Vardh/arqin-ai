@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import {
   Plus, Search, LayoutTemplate, FolderOpen, History, ArrowRight, Sparkles, Activity, GitBranch
 } from "lucide-react";
-import { getProjects, getHistory } from "@/lib/storage/store";
+import { useStore } from "@/hooks/UserStoreContext";
 import type { Project, HistoryEntry } from "@/lib/storage/types";
 import { DIAGRAM_TYPE_LABELS } from "@/lib/storage/types";
 import { TEMPLATES } from "@/lib/templates";
@@ -20,218 +21,188 @@ function getGreeting() {
 }
 
 export default function DashboardView() {
+  const store = useStore();
   const [projects, setProjects] = useState<Project[]>([]);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
 
   useEffect(() => {
+    if (!store) return;
     const id = requestAnimationFrame(() => {
-      setProjects(getProjects().slice(0, 4));
-      setHistory(getHistory().filter((h) => h.status === "success").slice(0, 4));
+      setProjects(store.getProjects().slice(0, 4));
+      setHistory(store.getHistory().filter((h) => h.status === "success").slice(0, 4));
     });
     return () => cancelAnimationFrame(id);
-  }, []);
+  }, [store]);
 
-  const latestWithResult = projects.find((p) => p.result);
-  const health = latestWithResult?.result
-    ? deriveAdaptiveInsights(latestWithResult.result)
+  const latestProject = projects[0];
+  const health = latestProject?.result
+    ? deriveAdaptiveInsights(latestProject.result)
     : null;
 
   return (
-    <div className="mx-auto max-w-6xl p-6 lg:p-10 pt-8 sm:pt-12 pb-16 space-y-10">
-      {/* Header Banner */}
-      <div className="relative overflow-hidden rounded-3xl border border-[#dddb9d]/20 bg-gradient-to-b from-[#12140a]/95 via-[#0d0f06]/98 to-[#0a0b04] p-8 lg:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_35px_rgba(123,201,99,0.15)] backdrop-blur-2xl">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(#dddb9d_1px,transparent_1px)] [background-size:20px_20px] opacity-[0.05]" />
-        <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#7bc963]/15 blur-3xl" />
-        <div className="pointer-events-none absolute -left-20 -bottom-20 h-64 w-64 rounded-full bg-[#567f2b]/15 blur-3xl" />
+    <div className="mx-auto max-w-7xl p-6 lg:p-10 pt-8 sm:pt-12 pb-16 space-y-10">
+      {/* Page Header */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 border-b border-[#A4AAB5]/10 pb-6"
+      >
+        <div>
+          <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-[#D6AD69]/30 bg-[#D6AD69]/10 px-3 py-1 text-[10px] font-mono font-bold uppercase tracking-widest text-[#D6AD69]">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#D6AD69] animate-pulse" />
+            Architecture Studio Workstation
+          </div>
+          <h1 className="text-4xl font-extrabold tracking-tight text-[#F0F1F3] sm:text-5xl">
+            {getGreeting()}, Architect
+          </h1>
+          <p className="mt-2 text-base text-[#A4AAB5] max-w-2xl">
+            Design, analyze, optimize, and synthesize production software architecture systems with AI intelligence.
+          </p>
+        </div>
 
-        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-          <div>
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#7bc963]/30 bg-[#7bc963]/10 px-3.5 py-1 backdrop-blur-md">
-              <span className="h-2 w-2 animate-pulse rounded-full bg-[#7bc963]" />
-              <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-[#7bc963]">
-                Arqen Intelligence Platform Active
+        <div className="flex items-center gap-3 shrink-0">
+          <Link
+            href="/workspace/generate?journey=1"
+            className="inline-flex items-center gap-2 rounded-full border border-[#4A5060] bg-[#171A20] px-4 py-2.5 text-xs font-semibold text-[#A4AAB5] transition-all hover:border-[#D6AD69]/50 hover:text-[#F0F1F3]"
+          >
+            <Sparkles className="h-3.5 w-3.5 text-[#D6AD69]" />
+            <span>Guided Journey</span>
+          </Link>
+        </div>
+      </motion.div>
+
+      {/* Asymmetric Primary Block Composition */}
+      <div className="grid gap-6 lg:grid-cols-12">
+        {/* Large Primary Hero Block (8 cols) */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="lg:col-span-8 group relative overflow-hidden rounded-3xl border border-[#A4AAB5]/12 bg-[#171A20] p-8 lg:p-10 backdrop-blur-xl shadow-2xl flex flex-col justify-between"
+        >
+          <div className="absolute right-0 top-0 h-64 w-64 rounded-full bg-[#D6AD69]/10 blur-3xl pointer-events-none" />
+          <div className="absolute left-0 bottom-0 h-48 w-48 rounded-full bg-[#303640]/10 blur-3xl pointer-events-none" />
+
+          <div className="relative z-10">
+            <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-[#D6AD69]/30 bg-[#1D222A] text-[#F0F1F3]">
+              <Plus className="h-6 w-6 text-[#D6AD69]" />
+            </div>
+            <h2 className="text-2xl font-bold tracking-tight text-[#F0F1F3] sm:text-3xl">
+              Create New Architecture
+            </h2>
+            <p className="mt-3 text-sm text-[#A4AAB5] leading-relaxed max-w-xl">
+              Describe your target platform in natural language. Arqin AI will automatically decompose requirements into system nodes, APIs, databases, caches, and Mermaid diagram specs.
+            </p>
+          </div>
+
+          <div className="relative z-10 mt-8 pt-6 border-t border-[#A4AAB5]/10 flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-4 text-xs font-mono text-[#A4AAB5]/70">
+              <span className="flex items-center gap-1.5">
+                <GitBranch className="h-3.5 w-3.5 text-[#D6AD69]" /> Microservices
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Activity className="h-3.5 w-3.5 text-[#D6AD69]" /> Event-Driven
               </span>
             </div>
-            <h1 className="text-4xl font-extrabold tracking-tight text-[#f2f1da] sm:text-5xl">
-              {getGreeting()}, Architect
-            </h1>
-            <p className="mt-2 text-base text-[#c8c69d] max-w-xl">
-              Design, analyze, optimize, and evolve software architecture graphs with Arqen.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-3 shrink-0">
-            <Link
-              href="/workspace/generate?journey=1"
-              className="inline-flex items-center gap-2 rounded-2xl border border-[#7bc963]/40 bg-[#7bc963]/10 px-5 py-4 text-sm font-bold text-[#7bc963] hover:bg-[#7bc963] hover:text-[#0a0b04] transition-all shadow-[0_0_20px_rgba(123,201,99,0.2)]"
-            >
-              <Sparkles className="h-4 w-4 text-[#7bc963]" />
-              <span>✨ Guided Journey</span>
-            </Link>
 
             <Link
               href="/workspace/generate?new=1"
-              className="group inline-flex items-center gap-2.5 rounded-2xl bg-gradient-to-r from-[#dddb9d] via-[#7bc963] to-[#567f2b] px-6 py-4 text-sm font-bold text-[#0a0b04] shadow-[0_0_30px_rgba(123,201,99,0.3)] transition-all hover:scale-[1.03]"
+              className="inline-flex items-center gap-2 rounded-full border border-[#D6AD69]/40 bg-[#F0F1F3] px-6 py-3 text-xs font-bold text-[#101216] shadow-[0_0_20px_rgba(214,173,105,0.12)] transition-all hover:bg-[#E0BC7A]"
             >
-              <span>New Architecture</span>
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              <span>Launch Studio Canvas</span>
+              <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
-        </div>
-      </div>
+        </motion.div>
 
-      {/* Quick Action Cards */}
-      <div className="grid gap-6 sm:grid-cols-3">
-        {[
-          {
-            href: "/workspace/generate?new=1",
-            icon: Plus,
-            label: "Create Architecture",
-            desc: "Generate custom diagrams from natural language prompt",
-          },
-          {
-            href: "/workspace/research",
-            icon: Search,
-            label: "AI Architecture Research",
-            desc: "Compare system patterns, latencies, and scalability options",
-          },
-          {
-            href: "/workspace/templates",
-            icon: LayoutTemplate,
-            label: "Template Gallery",
-            desc: "Browse 12+ battle-tested starter system blueprints",
-          },
-        ].map((action) => {
-          const Icon = action.icon;
-          return (
-            <Link
-              key={action.label}
-              href={action.href}
-              className="group relative overflow-hidden rounded-3xl border border-[#dddb9d]/15 bg-gradient-to-b from-[#12140a]/90 via-[#0d0f06]/95 to-[#0a0b04] p-7 backdrop-blur-2xl transition-all duration-300 hover:-translate-y-1 hover:border-[#dddb9d]/35 hover:shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(123,201,99,0.15)] flex flex-col justify-between"
-            >
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(#dddb9d_1px,transparent_1px)] [background-size:20px_20px] opacity-[0.05]" />
-              <div className="relative z-10">
-                <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-[#dddb9d]/20 bg-[#dddb9d]/10 text-[#7bc963] shadow-inner group-hover:scale-110 transition-transform">
-                  <Icon className="h-6 w-6" />
-                </div>
-                <h3 className="text-lg font-bold text-[#f2f1da] group-hover:text-[#7bc963] transition-colors">
-                  {action.label}
-                </h3>
-                <p className="mt-1.5 text-xs text-[#c8c69d] leading-relaxed">
-                  {action.desc}
-                </p>
-              </div>
-              <div className="relative z-10 mt-6 pt-3 flex items-center justify-between text-xs font-bold text-[#7bc963]">
-                <span>Launch</span>
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </div>
-            </Link>
-          );
-        })}
-      </div>
-
-      {/* Health & AI Adaptive Insights */}
-      <div className="grid gap-6 lg:grid-cols-3">
-        {/* Architecture Score Card */}
-        <div className="relative overflow-hidden rounded-3xl border border-[#dddb9d]/15 bg-gradient-to-b from-[#12140a]/90 via-[#0d0f06]/95 to-[#0a0b04] p-7 backdrop-blur-2xl border-l-4 border-l-[#7bc963]">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-base font-bold text-[#f2f1da] flex items-center gap-2">
-              <Activity className="h-5 w-5 text-[#7bc963]" /> System Health Score
-            </h2>
-            <span className="rounded-full bg-[#7bc963]/10 border border-[#7bc963]/30 px-2.5 py-0.5 font-mono text-[10px] text-[#7bc963] font-bold">
-              Adaptive Audit
-            </span>
-          </div>
-
-          {health ? (
-            <div>
-              <div className="mb-3 flex items-baseline gap-2">
-                <span className="text-5xl font-extrabold tracking-tight text-[#f2f1da]">{health.health}</span>
-                <span className="text-sm font-semibold text-[#c8c69d]">/ 100</span>
-              </div>
-              <div className="h-2 w-full overflow-hidden rounded-full bg-[#070804] mb-4 border border-[#dddb9d]/10">
-                <div
-                  className="h-full bg-gradient-to-r from-[#dddb9d] to-[#7bc963] rounded-full transition-all duration-500"
-                  style={{ width: `${health.health}%` }}
-                />
-              </div>
-              <p className="text-xs font-bold text-[#7bc963] mb-1">{health.healthLabel}</p>
-              <p className="text-xs text-[#c8c69d] truncate">From: {latestWithResult?.title}</p>
-            </div>
-          ) : (
-            <div>
-              <div className="mb-3">
-                <span className="text-5xl font-extrabold text-[#8e8c6c]">--</span>
-              </div>
-              <p className="text-xs text-[#c8c69d] leading-relaxed">
-                Generate an architecture in the canvas to run automated resilience and security audit scoring.
-              </p>
-            </div>
-          )}
-        </div>
-
-        {/* AI Recommendations Card */}
-        <div className="lg:col-span-2 relative overflow-hidden rounded-3xl border border-[#dddb9d]/15 bg-gradient-to-b from-[#12140a]/90 via-[#0d0f06]/95 to-[#0a0b04] p-7 backdrop-blur-2xl border-l-4 border-l-[#dddb9d] flex flex-col justify-between">
+        {/* Secondary Recent Architecture Block (4 cols) */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="lg:col-span-4 rounded-3xl border border-[#A4AAB5]/12 bg-[#1D222A] p-7 backdrop-blur-xl flex flex-col justify-between"
+        >
           <div>
-            <div className="mb-3 flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-[#dddb9d]" />
-              <h2 className="text-base font-bold text-[#f2f1da]">AI Adaptive Recommendations</h2>
+            <div className="flex items-center justify-between mb-4">
+              <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#D6AD69]">
+                Latest Session
+              </span>
+              <span className="h-2 w-2 rounded-full bg-[#D6AD69]" />
             </div>
-            <p className="text-sm leading-relaxed text-[#c8c69d]">
-              {health?.suggestions[0]?.reason ?? "Use the 'Adaptive Insights' inspector panel after diagram synthesis to detect single points of failure, scaling bottlenecks, and caching enhancements."}
+
+            <h3 className="text-lg font-bold text-[#F0F1F3]">
+              {latestProject ? latestProject.title : "No Architecture Open"}
+            </h3>
+
+            <p className="mt-2 text-xs text-[#A4AAB5] line-clamp-3 leading-relaxed">
+              {latestProject?.description || "Open the studio canvas or choose a template to begin architecting."}
             </p>
+
+            {health && (
+              <div className="mt-5 p-3 rounded-2xl border border-[#A4AAB5]/10 bg-[#171A20]">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-[#A4AAB5]">Health Score</span>
+                  <span className="font-mono font-bold text-[#F0F1F3]">{health.health} / 100</span>
+                </div>
+                <div className="mt-2 h-1.5 w-full rounded-full bg-[#101216] overflow-hidden">
+                  <div className="h-full bg-[#D6AD69] rounded-full" style={{ width: `${health.health}%` }} />
+                </div>
+              </div>
+            )}
           </div>
-          <div className="mt-6 pt-4 border-t border-[#dddb9d]/10 flex items-center justify-between">
-            <span className="text-xs font-medium text-[#8e8c6c]">Instant AI Optimization</span>
+
+          <div className="mt-6 pt-4 border-t border-[#A4AAB5]/10">
             <Link
-              href="/workspace/generate?new=1"
-              className="inline-flex items-center gap-2 text-xs font-bold text-[#7bc963] hover:text-[#91e577] transition-colors group"
+              href={latestProject ? `/workspace/generate?project=${latestProject.id}` : "/workspace/generate"}
+              className="inline-flex items-center gap-2 text-xs font-bold text-[#F0F1F3] hover:text-[#D6AD69] transition-colors"
             >
-              Open Studio Canvas <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              <span>{latestProject ? "Resume Architecture" : "Open Studio"}</span>
+              <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
-        </div>
+        </motion.div>
       </div>
 
-      {/* Projects & History Split Grid */}
+      {/* Supporting Blocks Grid */}
       <div className="grid gap-8 lg:grid-cols-2">
         {/* Recent Projects */}
-        <section>
+        <section className="rounded-3xl border border-[#A4AAB5]/12 bg-[#171A20] p-7">
           <div className="mb-5 flex items-center justify-between">
-            <h2 className="flex items-center gap-2.5 text-xl font-bold text-[#f2f1da]">
-              <FolderOpen className="h-5 w-5 text-[#7bc963]" /> Recent Projects
-            </h2>
-            <Link href="/workspace/projects" className="text-xs font-bold text-[#7bc963] hover:text-[#91e577] transition-colors">
-              View All Projects →
+            <h3 className="flex items-center gap-2.5 text-lg font-bold text-[#F0F1F3]">
+              <FolderOpen className="h-5 w-5 text-[#D6AD69]" /> Projects Portfolio
+            </h3>
+            <Link href="/workspace/projects" className="text-xs font-bold text-[#D6AD69] hover:text-[#F0F1F3] transition-colors">
+              View All →
             </Link>
           </div>
 
           {projects.length === 0 ? (
-            <div className="rounded-3xl border border-dashed border-[#dddb9d]/20 bg-[#12140a]/50 p-10 text-center">
-              <p className="text-sm text-[#c8c69d]">No saved projects yet. Create your first architecture in the studio.</p>
-              <Link href="/workspace/generate?new=1" className="mt-4 inline-flex items-center gap-2 text-xs font-bold text-[#7bc963]">
-                <Plus className="h-4 w-4" /> Start New Architecture
+            <div className="rounded-2xl border border-dashed border-[#4A5060] p-8 text-center">
+              <p className="text-xs text-[#A4AAB5]">No projects saved yet.</p>
+              <Link href="/workspace/generate?new=1" className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-[#F0F1F3]">
+                <Plus className="h-3.5 w-3.5 text-[#D6AD69]" /> Create Project
               </Link>
             </div>
           ) : (
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-3 sm:grid-cols-2">
               {projects.map((p) => (
                 <Link
                   key={p.id}
                   href={`/workspace/generate?project=${p.id}`}
-                  className="group relative overflow-hidden rounded-2xl border border-[#dddb9d]/15 bg-gradient-to-b from-[#12140a]/90 to-[#0a0b04] p-5 transition-all hover:border-[#dddb9d]/35 hover:shadow-xl hover:-translate-y-0.5"
+                  className="rounded-2xl border border-[#A4AAB5]/10 bg-[#1D222A] p-4 transition-all hover:border-[#D6AD69]/40 group flex flex-col justify-between"
                 >
-                  <div className="mb-3 flex items-center justify-between">
-                    <span className="rounded-full bg-[#dddb9d]/10 border border-[#dddb9d]/20 px-2.5 py-0.5 font-mono text-[10px] font-bold text-[#dddb9d] uppercase">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="rounded-full bg-[#D6AD69]/15 border border-[#D6AD69]/30 px-2 py-0.5 font-mono text-[9px] font-bold text-[#D6AD69] uppercase">
                       {DIAGRAM_TYPE_LABELS[p.diagramType]}
                     </span>
-                    <GitBranch className="h-4 w-4 text-[#8e8c6c] group-hover:text-[#7bc963] transition-colors" />
+                    <GitBranch className="h-3.5 w-3.5 text-[#4A5060] group-hover:text-[#D6AD69] transition-colors" />
                   </div>
-                  <h3 className="truncate text-sm font-bold text-[#f2f1da] group-hover:text-[#7bc963] transition-colors">
+                  <p className="truncate text-xs font-bold text-[#F0F1F3] group-hover:text-[#D6AD69] transition-colors">
                     {p.title}
-                  </h3>
-                  <p className="mt-1 text-[11px] text-[#8e8c6c]">
-                    Updated {new Date(p.updatedAt).toLocaleDateString()}
+                  </p>
+                  <p className="mt-1 text-[10px] text-[#A4AAB5]/60">
+                    {new Date(p.updatedAt).toLocaleDateString()}
                   </p>
                 </Link>
               ))}
@@ -239,63 +210,66 @@ export default function DashboardView() {
           )}
         </section>
 
-        {/* Recent History */}
-        <section>
-          <div className="mb-5 flex items-center justify-between">
-            <h2 className="flex items-center gap-2.5 text-xl font-bold text-[#f2f1da]">
-              <History className="h-5 w-5 text-[#dddb9d]" /> Recent Generations
-            </h2>
-            <Link href="/workspace/history" className="text-xs font-bold text-[#7bc963] hover:text-[#91e577] transition-colors">
-              View Log →
-            </Link>
+        {/* AI Research Workstation Shortcut */}
+        <section className="rounded-3xl border border-[#A4AAB5]/12 bg-[#171A20] p-7 flex flex-col justify-between">
+          <div>
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="flex items-center gap-2.5 text-lg font-bold text-[#F0F1F3]">
+                <Search className="h-5 w-5 text-[#D6AD69]" /> Architecture Intelligence Research
+              </h3>
+              <span className="rounded-full bg-[#D6AD69]/10 border border-[#D6AD69]/30 px-2.5 py-0.5 font-mono text-[10px] font-bold text-[#D6AD69]">
+                Senior Architect AI
+              </span>
+            </div>
+            <p className="text-xs text-[#A4AAB5] leading-relaxed">
+              Synthesize 17-point structural architecture reports, evaluate pattern trade-offs, technology stacks, security strategies, and performance limits.
+            </p>
           </div>
 
-          {history.length === 0 ? (
-            <div className="rounded-3xl border border-dashed border-[#dddb9d]/20 bg-[#12140a]/50 p-10 text-center">
-              <p className="text-sm text-[#c8c69d]">Your generated architecture history will log here automatically.</p>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {history.map((h) => (
-                <Link
-                  key={h.id}
-                  href={`/workspace/generate?project=${h.projectId}`}
-                  className="group flex items-center justify-between rounded-2xl border border-[#dddb9d]/15 bg-gradient-to-b from-[#12140a]/90 to-[#0a0b04] p-4 transition-all hover:border-[#dddb9d]/35"
-                >
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-bold text-[#f2f1da] group-hover:text-[#7bc963] transition-colors">
-                      {h.projectTitle}
-                    </p>
-                    <p className="mt-0.5 text-xs text-[#8e8c6c]">
-                      {new Date(h.createdAt).toLocaleDateString()} · {DIAGRAM_TYPE_LABELS[h.diagramType]}
-                    </p>
-                  </div>
-                  <ArrowRight className="h-4 w-4 shrink-0 text-[#8e8c6c] group-hover:text-[#f2f1da] transition-colors" />
-                </Link>
-              ))}
-            </div>
-          )}
+          <div className="mt-6 pt-4 border-t border-[#A4AAB5]/10 flex items-center justify-between">
+            <span className="text-[11px] font-mono text-[#4A5060]">Groq AI Workstation</span>
+            <Link
+              href="/workspace/research"
+              className="inline-flex items-center gap-2 text-xs font-bold text-[#F0F1F3] hover:text-[#D6AD69] transition-colors"
+            >
+              Open Research Workstation <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
         </section>
       </div>
 
-      {/* Starter Blueprints */}
-      <section>
+      {/* Starter Templates */}
+      <section className="rounded-3xl border border-[#A4AAB5]/12 bg-[#171A20] p-7">
         <div className="mb-6 flex items-center justify-between">
-          <h2 className="flex items-center gap-2.5 text-xl font-bold text-[#f2f1da]">
-            <LayoutTemplate className="h-5 w-5 text-[#7bc963]" /> Quick Architecture Starter Blueprints
-          </h2>
-          <Link href="/workspace/templates" className="text-xs font-bold text-[#7bc963] hover:text-[#91e577] transition-colors">
-            Explore All Templates →
+          <h3 className="flex items-center gap-2.5 text-lg font-bold text-[#F0F1F3]">
+            <LayoutTemplate className="h-5 w-5 text-[#D6AD69]" /> Starter Architecture Blueprints
+          </h3>
+          <Link href="/workspace/templates" className="text-xs font-bold text-[#D6AD69] hover:text-[#F0F1F3] transition-colors">
+            Explore All Blueprints →
           </Link>
         </div>
-        <MagicBento
-          items={TEMPLATES.slice(0, 3).map((t, i) => ({
-            title: t.name,
-            description: t.description,
-            href: `/workspace/generate?template=${t.id}`,
-            accent: (["cyan", "violet", "amber"] as const)[i],
-          }))}
-        />
+        <div className="grid gap-4 sm:grid-cols-3">
+          {TEMPLATES.slice(0, 3).map((t) => (
+            <Link
+              key={t.id}
+              href={`/workspace/generate?template=${t.id}`}
+              className="rounded-2xl border border-[#A4AAB5]/10 bg-[#1D222A] p-5 transition-all hover:border-[#D6AD69]/40 group flex flex-col justify-between"
+            >
+              <div>
+                <h4 className="text-sm font-bold text-[#F0F1F3] group-hover:text-[#D6AD69] transition-colors">
+                  {t.name}
+                </h4>
+                <p className="mt-2 text-xs text-[#A4AAB5] line-clamp-2 leading-relaxed">
+                  {t.description}
+                </p>
+              </div>
+              <div className="mt-4 pt-3 border-t border-[#A4AAB5]/10 flex items-center justify-between text-[11px] text-[#D6AD69] font-bold">
+                <span>Use Blueprint</span>
+                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+              </div>
+            </Link>
+          ))}
+        </div>
       </section>
     </div>
   );

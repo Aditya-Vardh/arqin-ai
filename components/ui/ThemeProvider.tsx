@@ -1,7 +1,9 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
-import { getSettings, saveSettings } from "@/lib/storage/store";
+import { createContext, useContext, useEffect, useMemo } from "react";
+import { useAuth } from "@clerk/nextjs";
+import { createUserStore } from "@/lib/storage/store";
+import { DEFAULT_SETTINGS } from "@/lib/storage/types";
 import type { ThemeMode } from "@/lib/storage/types";
 
 type ThemeContextValue = {
@@ -23,32 +25,48 @@ function resolveTheme(theme: ThemeMode): "dark" | "light" {
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<ThemeMode>("dark");
-  const [resolved, setResolved] = useState<"dark" | "light">("dark");
+  // ThemeProvider lives in the root layout (outside UserStoreProvider), so
+  // we obtain the Clerk userId directly.
+  const { userId, isLoaded } = useAuth();
 
-  useEffect(() => {
-    const settings = getSettings();
-    setThemeState(settings.theme);
-    setResolved(resolveTheme(settings.theme));
-  }, []);
+  // Derive theme and resolved values synchronously from the current user's
+  // settings. useMemo re-runs when userId changes (account switch).
+  const { theme, resolved } = useMemo(() => {
+    const savedTheme: ThemeMode =
+      isLoaded && userId
+        ? createUserStore(userId).getSettings().theme
+        : DEFAULT_SETTINGS.theme;
+    return { theme: savedTheme, resolved: resolveTheme(savedTheme) };
+  }, [isLoaded, userId]);
 
+  // Apply the resolved theme to the document as a DOM side effect.
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", resolved);
   }, [resolved]);
 
+  // Track system preference changes when theme is "system".
   useEffect(() => {
     if (theme !== "system") return;
     const mq = window.matchMedia("(prefers-color-scheme: light)");
-    const handler = () => setResolved(resolveTheme("system"));
+    const handler = () => {
+      document.documentElement.setAttribute(
+        "data-theme",
+        mq.matches ? "light" : "dark",
+      );
+    };
     mq.addEventListener("change", handler);
     return () => mq.removeEventListener("change", handler);
   }, [theme]);
 
   function setTheme(next: ThemeMode) {
-    setThemeState(next);
-    setResolved(resolveTheme(next));
-    const settings = getSettings();
-    saveSettings({ ...settings, theme: next });
+    // Persist the new theme to the user's scoped settings.
+    if (userId) {
+      const store = createUserStore(userId);
+      const settings = store.getSettings();
+      store.saveSettings({ ...settings, theme: next });
+    }
+    // Apply to DOM immediately (without waiting for a re-render cycle).
+    document.documentElement.setAttribute("data-theme", resolveTheme(next));
   }
 
   return (
