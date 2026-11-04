@@ -1,8 +1,27 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, Suspense } from "react";
+import {
+  AlertCircle,
+  AlertTriangle,
+  ChevronDown,
+  ChevronUp,
+  Code2,
+  Cpu,
+  PanelRight,
+  RefreshCw,
+  Sparkles,
+  Wand2,
+  Zap,
+} from "lucide-react";
+import {
+  Suspense,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useSearchParams } from "next/navigation";
-import { AlertCircle, ChevronDown, ChevronUp, Layers, PanelRight, Sparkles, Wand2, RefreshCw, Zap, Cpu, Code2, AlertTriangle, CheckCircle2 } from "lucide-react";
+
 import AIGenerationPanel from "@/components/workspace/AIGenerationPanel";
 import LoadingSequence from "@/components/workspace/LoadingSequence";
 import ArchitectureCanvas from "@/components/workspace/ArchitectureCanvas";
@@ -15,72 +34,176 @@ import ArtifactsModal from "@/components/workspace/ArtifactsModal";
 import ComponentDetailModal from "@/components/workspace/ComponentDetailModal";
 import GuidedJourneyModal from "@/components/workspace/GuidedJourneyModal";
 
-import { DIAGRAM_TYPE_LABELS, type ArchitectureResult, type DiagramType } from "@/lib/storage/types";
 import {
-  addHistoryEntry, createProject, generateId, getActiveProjectId, getProject, getSettings, saveProject, setActiveProjectId,
-} from "@/lib/storage/store";
+  type ArchitectureResult,
+  type DiagramType,
+} from "@/lib/storage/types";
+
+import { generateId } from "@/lib/storage/store";
+import { useStore } from "@/hooks/UserStoreContext";
+
 import { getTemplate } from "@/lib/templates";
-import { toMarkdownExport, downloadText } from "@/lib/export";
+import {
+  downloadText,
+  toMarkdownExport,
+} from "@/lib/export";
+
 import { parseMermaidToGraph } from "@/lib/graph/parser";
-import { graphToMermaid, addCacheToGraph, addGatewayToGraph, improveComponentInGraph } from "@/lib/graph/serializer";
+
+import {
+  addCacheToGraph,
+  addGatewayToGraph,
+  graphToMermaid,
+  improveComponentInGraph,
+} from "@/lib/graph/serializer";
+
 import { optimizeArchitecture } from "@/lib/optimizer/optimizer";
 import { evaluateArchitectureScore } from "@/lib/analysis/scoring";
 import { analyzeArchitectureRisks } from "@/lib/analysis/risk";
-import type { ArchitectureGraph, OptimizationResult, ArchNode } from "@/lib/graph/types";
+
+import type {
+  ArchNode,
+  ArchitectureGraph,
+  OptimizationResult,
+} from "@/lib/graph/types";
 
 function GenerateContent() {
   const searchParams = useSearchParams();
-  const canvasRef = useRef<HTMLDivElement>(null);
-  const [projectId, setProjectId] = useState<string | null>(null);
-  const [title, setTitle] = useState("Untitled Architecture");
-  const [prompt, setPrompt] = useState("");
-  const [diagramType, setDiagramType] = useState<DiagramType>("architecture");
-  const [result, setResult] = useState<ArchitectureResult | null>(null);
-  const [selectedComponent, setSelectedComponent] = useState<string | null>(null);
-  const [highlightedNodeIds, setHighlightedNodeIds] = useState<string[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [saved, setSaved] = useState(false);
-  const [showInspector, setShowInspector] = useState(false);
-  const [editPromptOpen, setEditPromptOpen] = useState(true);
+  const store = useStore();
 
-  // Active Canonical ArchitectureGraph
-  const [activeGraph, setActiveGraph] = useState<ArchitectureGraph | null>(null);
+  const canvasRef =
+    useRef<HTMLDivElement>(null);
 
-  // Modals state
-  const [optimizationResult, setOptimizationResult] = useState<OptimizationResult | null>(null);
-  const [showSimulator, setShowSimulator] = useState(false);
-  const [showArtifacts, setShowArtifacts] = useState(false);
-  const [showJourney, setShowJourney] = useState(false);
-  const [detailNode, setDetailNode] = useState<ArchNode | null>(null);
+  const [projectId, setProjectId] =
+    useState<string | null>(null);
 
-  // AI Confirmation Modal State
-  const [pendingMutation, setPendingMutation] = useState<{ type: string; targetId?: string; title: string; desc: string } | null>(null);
+  const [title, setTitle] =
+    useState("Untitled Architecture");
+
+  const [prompt, setPrompt] =
+    useState("");
+
+  const [diagramType, setDiagramType] =
+    useState<DiagramType>("architecture");
+
+  const [result, setResult] =
+    useState<ArchitectureResult | null>(
+      null,
+    );
+
+  const [selectedComponent, setSelectedComponent] =
+    useState<string | null>(null);
+
+  const [highlightedNodeIds, setHighlightedNodeIds] =
+    useState<string[]>([]);
+
+  const [loading, setLoading] =
+    useState(false);
+
+  const [error, setError] =
+    useState<string | null>(null);
+
+  const [saved, setSaved] =
+    useState(false);
+
+  const [showInspector, setShowInspector] =
+    useState(false);
+
+  const [editPromptOpen, setEditPromptOpen] =
+    useState(true);
+
+  const [activeGraph, setActiveGraph] =
+    useState<ArchitectureGraph | null>(
+      null,
+    );
+
+  const [optimizationResult, setOptimizationResult] =
+    useState<OptimizationResult | null>(
+      null,
+    );
+
+  const [showSimulator, setShowSimulator] =
+    useState(false);
+
+  const [showArtifacts, setShowArtifacts] =
+    useState(false);
+
+  const [showJourney, setShowJourney] =
+    useState(false);
+
+  const [detailNode, setDetailNode] =
+    useState<ArchNode | null>(null);
+
+  const [pendingMutation, setPendingMutation] =
+    useState<{
+      type: string;
+      targetId?: string;
+      title: string;
+      desc: string;
+    } | null>(null);
 
   useEffect(() => {
-    const settings = getSettings();
-    const templateId = searchParams.get("template");
-    const projectParam = searchParams.get("project");
-    const isNew = searchParams.get("new");
-    const isJourney = searchParams.get("journey") === "1";
-    const typeParam = searchParams.get("type") as DiagramType | null;
+    const settings = store?.getSettings();
+
+    const templateId =
+      searchParams.get("template");
+
+    const projectParam =
+      searchParams.get("project");
+
+    const isNew =
+      searchParams.get("new");
+
+    const isJourney =
+      searchParams.get("journey") === "1";
+
+    const typeParam =
+      searchParams.get("type") as
+      | DiagramType
+      | null;
+
     const validTypes: DiagramType[] = [
-      "class", "sequence", "er", "flowchart", "component", "deployment", "state", "architecture",
+      "class",
+      "sequence",
+      "er",
+      "flowchart",
+      "component",
+      "deployment",
+      "state",
+      "architecture",
     ];
-    const typeFromUrl = typeParam && validTypes.includes(typeParam) ? typeParam : null;
+
+    const typeFromUrl =
+      typeParam &&
+        validTypes.includes(typeParam)
+        ? typeParam
+        : null;
 
     if (isJourney) {
       setShowJourney(true);
     }
 
     if (templateId) {
-      const template = getTemplate(templateId);
+      const template =
+        getTemplate(templateId);
+
       if (template) {
-        const project = createProject({ title: template.name, prompt: template.prompt, diagramType: template.diagramType });
+        const project = store?.createProject({
+          title: template.name,
+          prompt: template.prompt,
+          diagramType:
+            template.diagramType,
+        });
+
+        if (!project) return;
+
         setProjectId(project.id);
         setTitle(project.title);
         setPrompt(project.prompt);
-        setDiagramType(project.diagramType);
+        setDiagramType(
+          project.diagramType,
+        );
+
         return;
       }
     }
@@ -93,125 +216,297 @@ function GenerateContent() {
       setActiveGraph(null);
       setSelectedComponent(null);
       setShowInspector(false);
-      setDiagramType(typeFromUrl ?? settings.defaultDiagramType);
+      setDiagramType(
+        typeFromUrl ??
+        (settings?.defaultDiagramType ?? "architecture"),
+      );
+
       return;
     }
 
-    const targetId = projectParam || getActiveProjectId();
-    if (targetId) {
-      const project = getProject(targetId);
-      if (project) {
-        setProjectId(project.id);
-        setTitle(project.title);
-        setPrompt(project.prompt);
-        setDiagramType(project.diagramType);
-        if (project.result) {
-          setResult(project.result);
-          const parsed = parseMermaidToGraph(project.result.mermaidCode, project.result.diagramType, project.result.title, project.result.explanation.components, project.result.technologies);
-          setActiveGraph(parsed);
-          setShowInspector(true);
-          setEditPromptOpen(false);
-        }
-      }
+    const targetId =
+      projectParam ||
+      store?.getActiveProjectId();
+
+    if (!targetId) {
+      return;
     }
-  }, [searchParams]);
 
-  const commitGraphUpdate = useCallback(
-    (newGraph: ArchitectureGraph, customResult?: ArchitectureResult) => {
-      setActiveGraph(newGraph);
-      const generatedMermaid = graphToMermaid(newGraph);
-      const score = evaluateArchitectureScore(newGraph);
-      const risks = analyzeArchitectureRisks(newGraph);
+    const project =
+      store?.getProject(targetId);
 
-      const updatedResult: ArchitectureResult = customResult || {
-        title: newGraph.title,
-        diagramType: newGraph.diagramType,
-        mermaidCode: generatedMermaid,
-        explanation: result?.explanation || {
-          overview: `Production specification for ${newGraph.title}.`,
-          components: newGraph.nodes.map((n) => ({ name: n.name, description: n.description })),
-          dataFlow: "HTTP / Ingress -> Microservices -> Persistence",
-          technologyChoices: newGraph.nodes.map((n) => n.technology).join(", "),
-          scalability: score.scalability.reason,
-          security: score.security.reason,
-          reliability: score.reliability.reason,
-          tradeoffs: "Decoupled architecture balances scalability with service tracing overhead.",
-          improvements: "Add distributed tracing and multi-region read replicas.",
-        },
-        technologies: Array.from(new Set(newGraph.nodes.map((n) => n.technology))),
-        adaptiveInsights: {
-          health: score.overall,
-          healthLabel: score.label,
-          scalability: score.scalability.score,
-          maintainability: score.maintainability.score,
-          reliability: score.reliability.score,
-          security: score.security.score,
-          adaptability: score.coupling.score,
-          potentialIssues: risks.map((r) => r.title),
-          suggestions: risks.map((r) => ({ current: r.title, suggested: r.recommendedSolution, reason: r.whyItMatters, category: "scalability" })),
-        },
-      };
+    if (!project) {
+      return;
+    }
 
-      setResult(updatedResult);
-      setTitle(newGraph.title);
+    setProjectId(project.id);
+    setTitle(project.title);
+    setPrompt(project.prompt);
+    setDiagramType(
+      project.diagramType,
+    );
 
-      if (projectId) {
-        saveProject({ id: projectId, title: newGraph.title, description: "", prompt, diagramType: newGraph.diagramType, result: updatedResult, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() });
-      } else {
-        const created = createProject({ title: newGraph.title, prompt, diagramType: newGraph.diagramType, result: updatedResult });
-        setProjectId(created.id);
-      }
-      setSaved(true);
-      setTimeout(() => setSaved(false), 2000);
-    },
-    [projectId, prompt, result]
-  );
+    if (project.result) {
+      setResult(project.result);
 
-  async function generate(refineInstruction?: string): Promise<string | null> {
-    if (!refineInstruction && prompt.trim().length < 15) return null;
-    if (loading) return null;
+      const parsed =
+        parseMermaidToGraph(
+          project.result.mermaidCode,
+          project.result.diagramType,
+          project.result.title,
+          project.result.explanation
+            .components,
+          project.result.technologies,
+        );
+
+      setActiveGraph(parsed);
+      setShowInspector(true);
+      setEditPromptOpen(false);
+    }
+  }, [searchParams, store]);
+
+  const commitGraphUpdate =
+    useCallback(
+      (
+        newGraph: ArchitectureGraph,
+        customResult?: ArchitectureResult,
+      ) => {
+        setActiveGraph(newGraph);
+
+        const generatedMermaid =
+          graphToMermaid(newGraph);
+
+        const score =
+          evaluateArchitectureScore(
+            newGraph,
+          );
+
+        const risks =
+          analyzeArchitectureRisks(
+            newGraph,
+          );
+
+        const updatedResult:
+          ArchitectureResult =
+          customResult || {
+            title: newGraph.title,
+            diagramType:
+              newGraph.diagramType,
+            mermaidCode:
+              generatedMermaid,
+            explanation:
+              result?.explanation || {
+                overview: `Production specification for ${newGraph.title}.`,
+                components:
+                  newGraph.nodes.map(
+                    (node) => ({
+                      name: node.name,
+                      description:
+                        node.description,
+                    }),
+                  ),
+                dataFlow:
+                  "HTTP / Ingress -> Microservices -> Persistence",
+                technologyChoices:
+                  newGraph.nodes
+                    .map(
+                      (node) =>
+                        node.technology,
+                    )
+                    .join(", "),
+                scalability:
+                  score.scalability.reason,
+                security:
+                  score.security.reason,
+                reliability:
+                  score.reliability.reason,
+                tradeoffs:
+                  "Decoupled architecture balances scalability with service tracing overhead.",
+                improvements:
+                  "Add distributed tracing and multi-region read replicas.",
+              },
+            technologies:
+              Array.from(
+                new Set(
+                  newGraph.nodes.map(
+                    (node) =>
+                      node.technology,
+                  ),
+                ),
+              ),
+            adaptiveInsights: {
+              health: score.overall,
+              healthLabel:
+                score.label,
+              scalability:
+                score.scalability.score,
+              maintainability:
+                score.maintainability
+                  .score,
+              reliability:
+                score.reliability.score,
+              security:
+                score.security.score,
+              adaptability:
+                score.coupling.score,
+              potentialIssues:
+                risks.map(
+                  (risk) =>
+                    risk.title,
+                ),
+              suggestions:
+                risks.map(
+                  (risk) => ({
+                    current:
+                      risk.title,
+                    suggested:
+                      risk.recommendedSolution,
+                    reason:
+                      risk.whyItMatters,
+                    category:
+                      "scalability",
+                  }),
+                ),
+            },
+          };
+
+        setResult(updatedResult);
+        setTitle(newGraph.title);
+
+        if (projectId) {
+          store?.saveProject({
+            id: projectId,
+            title: newGraph.title,
+            description: "",
+            prompt,
+            diagramType:
+              newGraph.diagramType,
+            result: updatedResult,
+            createdAt:
+              new Date().toISOString(),
+            updatedAt:
+              new Date().toISOString(),
+          });
+        } else {
+          const created =
+            store?.createProject({
+              title: newGraph.title,
+              prompt,
+              diagramType:
+                newGraph.diagramType,
+              result: updatedResult,
+            });
+
+          if (created) setProjectId(created.id);
+        }
+
+        setSaved(true);
+
+        setTimeout(
+          () => setSaved(false),
+          2000,
+        );
+      },
+      [projectId, prompt, result, store],
+    );
+
+  async function generate(
+    refineInstruction?: string,
+  ): Promise<string | null> {
+    if (
+      !refineInstruction &&
+      prompt.trim().length < 15
+    ) {
+      return null;
+    }
+
+    if (loading) {
+      return null;
+    }
 
     setLoading(true);
     setError(null);
 
     try {
-      const res = await fetch("/api/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(
-          refineInstruction
-            ? { refineInstruction, currentArchitecture: result, diagramType }
-            : { idea: prompt, diagramType },
-        ),
-      });
+      const res = await fetch(
+        "/api/generate",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+          body: JSON.stringify(
+            refineInstruction
+              ? {
+                refineInstruction,
+                currentArchitecture:
+                  result,
+                diagramType,
+              }
+              : {
+                idea: prompt,
+                diagramType,
+              },
+          ),
+        },
+      );
 
       const data = await res.json();
+
       if (!res.ok) {
-        setError(data.error || "We couldn't generate your architecture right now.");
+        setError(
+          data.error ||
+          "We couldn't generate your architecture right now.",
+        );
+
         return data.error ?? null;
       }
 
-      const architecture = data as ArchitectureResult;
-      const parsedGraph = parseMermaidToGraph(architecture.mermaidCode, architecture.diagramType, architecture.title, architecture.explanation.components, architecture.technologies);
+      const architecture =
+        data as ArchitectureResult;
 
-      commitGraphUpdate(parsedGraph, architecture);
+      const parsedGraph =
+        parseMermaidToGraph(
+          architecture.mermaidCode,
+          architecture.diagramType,
+          architecture.title,
+          architecture.explanation
+            .components,
+          architecture.technologies,
+        );
+
+      commitGraphUpdate(
+        parsedGraph,
+        architecture,
+      );
+
       setShowInspector(true);
       setEditPromptOpen(false);
 
-      addHistoryEntry({
+      store?.addHistoryEntry({
         id: generateId(),
-        projectId: projectId ?? "unknown",
-        projectTitle: architecture.title,
-        prompt: refineInstruction ?? prompt,
-        diagramType: architecture.diagramType,
+        projectId:
+          projectId ?? "unknown",
+        projectTitle:
+          architecture.title,
+        prompt:
+          refineInstruction ??
+          prompt,
+        diagramType:
+          architecture.diagramType,
         status: "success",
         result: architecture,
-        createdAt: new Date().toISOString(),
+        createdAt:
+          new Date().toISOString(),
       });
 
       return `Architecture updated: ${architecture.title}`;
     } catch {
-      setError("Network error. Check your connection and try again.");
+      setError(
+        "Network error. Check your connection and try again.",
+      );
+
       return null;
     } finally {
       setLoading(false);
@@ -219,313 +514,709 @@ function GenerateContent() {
   }
 
   function handleOptimize() {
-    if (!activeGraph) return;
-    const optRes = optimizeArchitecture(activeGraph);
+    if (!activeGraph) {
+      return;
+    }
+
+    const optRes =
+      optimizeArchitecture(
+        activeGraph,
+      );
+
     setOptimizationResult(optRes);
   }
 
   function handleApplyOptimized() {
-    if (!optimizationResult) return;
-    commitGraphUpdate(optimizationResult.optimizedGraph);
+    if (!optimizationResult) {
+      return;
+    }
+
+    commitGraphUpdate(
+      optimizationResult.optimizedGraph,
+    );
+
     setOptimizationResult(null);
   }
 
-  function handleExecuteMutation(type: string, targetId?: string) {
-    if (!activeGraph) return;
+  function handleExecuteMutation(
+    type: string,
+    targetId?: string,
+  ) {
+    if (!activeGraph) {
+      return;
+    }
+
     if (type === "ADD_CACHE") {
-      const targetName = targetId || activeGraph.nodes.find((n) => n.type === "database")?.name || activeGraph.nodes[0]?.name;
-      const mutated = addCacheToGraph(activeGraph, targetName);
-      commitGraphUpdate(mutated);
-    } else if (type === "ADD_GATEWAY") {
-      const mutated = addGatewayToGraph(activeGraph);
-      commitGraphUpdate(mutated);
-    } else if (type === "IMPROVE_COMPONENT" && targetId) {
-      const mutated = improveComponentInGraph(activeGraph, targetId, "Added multi-region auto-scaling and connection pool isolation.");
+      const targetName =
+        targetId ||
+        activeGraph.nodes.find(
+          (node) =>
+            node.type ===
+            "database",
+        )?.name ||
+        activeGraph.nodes[0]?.name;
+
+      const mutated =
+        addCacheToGraph(
+          activeGraph,
+          targetName,
+        );
+
       commitGraphUpdate(mutated);
     }
+
+    if (type === "ADD_GATEWAY") {
+      const mutated =
+        addGatewayToGraph(
+          activeGraph,
+        );
+
+      commitGraphUpdate(mutated);
+    }
+
+    if (
+      type === "IMPROVE_COMPONENT" &&
+      targetId
+    ) {
+      const mutated =
+        improveComponentInGraph(
+          activeGraph,
+          targetId,
+          "Added multi-region auto-scaling and connection pool isolation.",
+        );
+
+      commitGraphUpdate(mutated);
+    }
+
     setPendingMutation(null);
   }
 
+  function handleSelectComponent(
+    compName: string | null,
+  ) {
+    setSelectedComponent(
+      compName,
+    );
+
+    if (
+      !compName ||
+      !activeGraph
+    ) {
+      return;
+    }
+
+    const found =
+      activeGraph.nodes.find(
+        (node) =>
+          node.name.toLowerCase() ===
+          compName.toLowerCase() ||
+          node.id.toLowerCase() ===
+          compName.toLowerCase(),
+      );
+
+    if (found) {
+      setDetailNode(found);
+    }
+  }
+
   return (
-    <div className="flex h-screen w-full flex-col overflow-hidden bg-background text-foreground">
+    <div className="flex h-screen w-full flex-col overflow-hidden bg-[#101216] text-[#F0F1F3]">
       <WorkspaceHeader
         title={title}
-        onTitleChange={(v) => { setTitle(v); if (activeGraph) commitGraphUpdate({ ...activeGraph, title: v }); }}
+        onTitleChange={(value) => {
+          setTitle(value);
+
+          if (activeGraph) {
+            commitGraphUpdate({
+              ...activeGraph,
+              title: value,
+            });
+          }
+        }}
         diagramType={diagramType}
         saved={saved}
-        onExport={() => result && downloadText(toMarkdownExport(result), `${title.toLowerCase().replace(/\s+/g, "-")}.md`)}
-        onFullscreen={() => canvasRef.current?.requestFullscreen()}
+        onExport={() => {
+          if (!result) {
+            return;
+          }
+
+          downloadText(
+            toMarkdownExport(result),
+            `${title
+              .toLowerCase()
+              .replace(
+                /\s+/g,
+                "-",
+              )}.md`,
+          );
+        }}
+        onFullscreen={() =>
+          canvasRef.current?.requestFullscreen()
+        }
       />
 
-      <div className="flex flex-1 min-h-0 min-w-0 overflow-hidden">
+      <div className="flex min-h-0 min-w-0 flex-1 overflow-hidden">
         {!result ? (
-          <div className="flex flex-1 items-center justify-center p-6 overflow-y-auto">
-            <div className="w-full max-w-2xl space-y-6">
+          <div className="relative flex flex-1 items-center justify-center overflow-y-auto bg-[#101216] p-6">
+            <div className="pointer-events-none absolute inset-0">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(214,173,105,0.07),transparent_38%)]" />
+
+              <div className="absolute inset-0 bg-[linear-gradient(rgba(214,173,105,0.018)_1px,transparent_1px),linear-gradient(90deg,rgba(214,173,105,0.018)_1px,transparent_1px)] [background-size:48px_48px]" />
+            </div>
+
+            <div className="relative z-10 w-full max-w-6xl space-y-6">
               <div className="flex justify-end">
                 <button
                   type="button"
-                  onClick={() => setShowJourney(true)}
-                  className="inline-flex items-center gap-2 rounded-2xl border border-[#7bc963]/40 bg-[#7bc963]/10 px-4 py-2.5 text-xs font-bold text-[#7bc963] hover:bg-[#7bc963] hover:text-[#0a0b04] transition-all shadow-[0_0_20px_rgba(123,201,99,0.2)]"
+                  onClick={() =>
+                    setShowJourney(true)
+                  }
+                  className="inline-flex items-center gap-2 rounded-2xl border border-[#303640] bg-[#171A20] px-4 py-2.5 font-[var(--font-space-grotesk)] text-xs font-bold text-[#D6AD69] transition-all hover:bg-[#1D222A]"
                 >
                   <Sparkles className="h-4 w-4" />
-                  <span>✨ Launch Guided Journey</span>
+                  Launch Guided Journey
                 </button>
               </div>
 
               <AIGenerationPanel
                 prompt={prompt}
-                onPromptChange={setPrompt}
-                diagramType={diagramType}
-                onDiagramTypeChange={setDiagramType}
-                onGenerate={() => generate()}
+                onPromptChange={
+                  setPrompt
+                }
+                diagramType={
+                  diagramType
+                }
+                onDiagramTypeChange={
+                  setDiagramType
+                }
+                onGenerate={() =>
+                  generate()
+                }
                 loading={loading}
               />
-              {loading && <LoadingSequence />}
+
+              {loading && (
+                <LoadingSequence />
+              )}
+
               {error && (
                 <div className="flex items-center gap-3 rounded-2xl border border-rose-500/30 bg-rose-500/10 p-4 text-xs text-rose-300">
                   <AlertCircle className="h-5 w-5 shrink-0" />
-                  <span>{error}</span>
+                  <span>
+                    {error}
+                  </span>
                 </div>
               )}
             </div>
           </div>
         ) : (
-          <div className="flex flex-1 min-w-0 flex-col overflow-hidden">
-            {/* Top Action & Prompt Bar */}
-            <div className="shrink-0 border-b border-[#dddb9d]/15 bg-[#12140a]/90 px-6 py-3 backdrop-blur-xl">
-              <div className="flex items-center justify-between gap-4">
+          <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-[#101216]">
+            <div className="relative z-30 shrink-0 border-b border-[#303640] bg-[#0C0E12]/96 px-5 py-2.5 backdrop-blur-2xl">
+              <div className="flex min-h-9 items-center justify-between gap-4">
                 <button
                   type="button"
-                  onClick={() => setEditPromptOpen(!editPromptOpen)}
-                  className="flex items-center gap-2 text-xs font-bold text-[#f2f1da] hover:text-[#7bc963] transition-colors"
+                  onClick={() =>
+                    setEditPromptOpen(
+                      !editPromptOpen,
+                    )
+                  }
+                  className="group flex min-w-0 items-center gap-2.5 text-left"
                 >
-                  <Wand2 className="h-4 w-4 text-[#7bc963]" />
-                  <span>Prompt: <span className="font-mono text-[#c8c69d] font-normal truncate max-w-md inline-block align-bottom">{prompt}</span></span>
-                  {editPromptOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[#303640] bg-[#171A20]">
+                    <Wand2 className="h-3.5 w-3.5 text-[#D6AD69]" />
+                  </div>
+
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="font-[var(--font-space-grotesk)] text-[10px] font-bold uppercase tracking-[0.14em] text-[#4A5060]">
+                        Prompt
+                      </span>
+
+                      {editPromptOpen ? (
+                        <ChevronUp className="h-3.5 w-3.5 text-[#4A5060]" />
+                      ) : (
+                        <ChevronDown className="h-3.5 w-3.5 text-[#4A5060]" />
+                      )}
+                    </div>
+
+                    <div className="mt-0.5 max-w-[560px] truncate font-[var(--font-inter)] text-[11px] text-[#A4AAB5]">
+                      {prompt}
+                    </div>
+                  </div>
                 </button>
 
-                <div className="flex items-center gap-2">
+                <div className="flex shrink-0 items-center gap-1.5">
                   <button
                     type="button"
-                    onClick={() => setShowJourney(true)}
-                    className="inline-flex items-center gap-1.5 rounded-xl border border-[#7bc963]/40 bg-[#7bc963]/10 px-3.5 py-1.5 text-xs font-bold text-[#7bc963] hover:bg-[#7bc963] hover:text-[#0a0b04] transition-all"
+                    onClick={() =>
+                      setShowJourney(
+                        true,
+                      )
+                    }
+                    className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-[#303640] bg-[#171A20] px-3 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[#A4AAB5] transition-all hover:border-[#D6AD69]/40 hover:bg-[#1D222A] hover:text-[#D6AD69]"
                   >
-                    <Sparkles className="h-3.5 w-3.5 text-[#7bc963]" />
-                    <span>✨ Journey</span>
+                    <Sparkles className="h-3.5 w-3.5 text-[#D6AD69]" />
+                    Journey
                   </button>
 
                   <button
                     type="button"
-                    onClick={handleOptimize}
-                    className="inline-flex items-center gap-1.5 rounded-xl border border-[#7bc963]/40 bg-[#7bc963]/10 px-3.5 py-1.5 text-xs font-bold text-[#7bc963] hover:bg-[#7bc963] hover:text-[#0a0b04] transition-all shadow-[0_0_15px_rgba(123,201,99,0.2)]"
+                    onClick={
+                      handleOptimize
+                    }
+                    className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-[#303640] bg-[#171A20] px-3 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[#A4AAB5] transition-all hover:border-[#D6AD69]/40 hover:bg-[#1D222A] hover:text-[#D6AD69]"
                   >
-                    <Zap className="h-3.5 w-3.5" />
-                    <span>✨ Optimize</span>
+                    <Zap className="h-3.5 w-3.5 text-[#D6AD69]" />
+                    Optimize
                   </button>
 
                   <button
                     type="button"
-                    onClick={() => setShowSimulator(true)}
-                    className="inline-flex items-center gap-1.5 rounded-xl border border-[#dddb9d]/20 bg-[#12140a] px-3.5 py-1.5 text-xs font-bold text-[#f2f1da] hover:border-[#7bc963] transition-all"
+                    onClick={() =>
+                      setShowSimulator(
+                        true,
+                      )
+                    }
+                    className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-[#303640] bg-[#171A20] px-3 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[#A4AAB5] transition-all hover:border-[#D6AD69]/40 hover:bg-[#1D222A] hover:text-[#D6AD69]"
                   >
-                    <Cpu className="h-3.5 w-3.5 text-[#7bc963]" />
-                    <span>Simulate</span>
+                    <Cpu className="h-3.5 w-3.5 text-[#D6AD69]" />
+                    Simulate
                   </button>
 
                   <button
                     type="button"
-                    onClick={() => setShowArtifacts(true)}
-                    className="inline-flex items-center gap-1.5 rounded-xl border border-[#dddb9d]/20 bg-[#12140a] px-3.5 py-1.5 text-xs font-bold text-[#c8c69d] hover:border-[#dddb9d]/40 transition-all"
+                    onClick={() =>
+                      setShowArtifacts(
+                        true,
+                      )
+                    }
+                    className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-[#303640] bg-[#171A20] px-3 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[#A4AAB5] transition-all hover:border-[#D6AD69]/40 hover:bg-[#1D222A] hover:text-[#D6AD69]"
                   >
-                    <Code2 className="h-3.5 w-3.5" />
-                    <span>Artifacts</span>
+                    <Code2 className="h-3.5 w-3.5 text-[#D6AD69]" />
+                    Artifacts
                   </button>
 
                   <button
                     type="button"
-                    onClick={() => generate()}
+                    onClick={() =>
+                      generate()
+                    }
                     disabled={loading}
-                    className="inline-flex items-center gap-1.5 rounded-xl border border-[#dddb9d]/20 bg-[#dddb9d]/10 px-3.5 py-1.5 text-xs font-bold text-[#c8c69d] hover:text-[#f2f1da] transition-all"
+                    className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-[#D6AD69]/40 bg-[#1D222A] px-3 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[#D6AD69] transition-all hover:border-[#D6AD69] hover:bg-[#1D222A] disabled:opacity-50"
                   >
-                    <RefreshCw className={`h-3.5 w-3.5 ${loading ? "animate-spin" : ""}`} />
-                    <span>Regenerate</span>
+                    <RefreshCw
+                      className={
+                        loading
+                          ? "h-3.5 w-3.5 animate-spin"
+                          : "h-3.5 w-3.5"
+                      }
+                    />
+                    Regenerate
                   </button>
+
+                  <div className="mx-1 h-5 w-px bg-[#303640]" />
 
                   <button
                     type="button"
-                    onClick={() => setShowInspector(!showInspector)}
-                    className={`inline-flex items-center gap-1.5 rounded-xl border px-3.5 py-1.5 text-xs font-bold transition-all ${
-                      showInspector ? "border-[#7bc963] bg-[#7bc963] text-[#0a0b04]" : "border-[#dddb9d]/20 bg-[#12140a] text-[#f2f1da]"
-                    }`}
+                    onClick={() =>
+                      setShowInspector(
+                        !showInspector,
+                      )
+                    }
+                    className={`inline-flex h-8 items-center gap-1.5 rounded-lg border px-3 font-[var(--font-space-grotesk)] text-[10px] font-bold transition-all ${showInspector
+                      ? "border-[#303640] bg-[#1D222A] text-[#D6AD69]"
+                      : "border-[#303640] bg-[#171A20] text-[#4A5060] hover:text-[#D6AD69]"
+                      }`}
                   >
-                    <PanelRight className="h-4 w-4" />
-                    <span>Inspector</span>
+                    <PanelRight className="h-3.5 w-3.5" />
+                    Inspector
                   </button>
                 </div>
               </div>
 
               {editPromptOpen && (
-                <div className="mt-4 pt-4 border-t border-[#dddb9d]/15 space-y-3">
-                  <textarea
-                    value={prompt}
-                    onChange={(e) => setPrompt(e.target.value)}
-                    rows={2}
-                    className="w-full resize-none rounded-2xl border border-[#dddb9d]/20 bg-[#070804] p-3 text-xs leading-relaxed text-[#f2f1da] outline-none focus:border-[#7bc963]"
-                  />
-                  <div className="flex justify-end">
-                    <button type="button" onClick={() => generate()} disabled={loading} className="rounded-xl bg-[#7bc963] px-4 py-1.5 text-xs font-bold text-[#0a0b04]">
-                      Synthesize Updated Architecture
+                <div className="mt-3 border-t border-[#303640] pt-3">
+                  <div className="flex items-end gap-3">
+                    <textarea
+                      value={prompt}
+                      onChange={(event) =>
+                        setPrompt(
+                          event.target
+                            .value,
+                        )
+                      }
+                      rows={2}
+                      className="min-h-[56px] flex-1 resize-none rounded-xl border border-[#303640] bg-[#171A20] px-3.5 py-3 font-[var(--font-inter)] text-[11px] leading-relaxed text-[#F0F1F3] outline-none placeholder:text-[#4A5060] focus:border-[#303640]"
+                      placeholder="Describe the architecture you want Arqin AI to synthesize..."
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        generate()
+                      }
+                      disabled={loading}
+                      className="h-10 shrink-0 rounded-xl bg-[#D6AD69] px-4 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[#101216] transition-all hover:bg-[#E0BC7A] disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      {loading
+                        ? "Synthesizing..."
+                        : "Synthesize"}
                     </button>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Main Canvas & Inspector Workspace */}
-            <div className="relative flex flex-1 min-h-0 min-w-0 overflow-hidden">
-              <div className="relative flex-1 min-h-0 overflow-hidden" ref={canvasRef}>
+            <div
+              ref={canvasRef}
+              className={`relative min-h-0 min-w-0 flex-1 overflow-hidden transition-[padding] duration-300 ease-out ${showInspector
+                  ? "lg:pr-[390px]"
+                  : "pr-0"
+                }`}
+            >
+              <div className="relative h-full min-h-0 min-w-0 overflow-hidden">
                 <ArchitectureCanvas
-                  chart={result.mermaidCode}
+                  chart={
+                    result.mermaidCode
+                  }
                   result={result}
-                  onRegenerate={() => generate()}
-                  selectedComponent={selectedComponent}
-                  highlightedNodeIds={highlightedNodeIds}
-                  onSelectComponent={(compName) => {
-                    setSelectedComponent(compName);
-                    if (compName && activeGraph) {
-                      const found = activeGraph.nodes.find((n) => n.name.toLowerCase() === compName.toLowerCase() || n.id.toLowerCase() === compName.toLowerCase());
-                      if (found) setDetailNode(found);
-                    }
-                  }}
+                  onRegenerate={() =>
+                    generate()
+                  }
+                  selectedComponent={
+                    selectedComponent
+                  }
+                  highlightedNodeIds={
+                    highlightedNodeIds
+                  }
+                  onSelectComponent={
+                    handleSelectComponent
+                  }
                 />
               </div>
 
-              {/* Context Inspector Drawer */}
-              {showInspector && (
-                <aside className="w-80 sm:w-[380px] border-l border-[#dddb9d]/15 bg-[#12140a]/95 backdrop-blur-2xl overflow-y-auto shrink-0 h-full z-10">
-                  <PropertyInspector
-                    result={result}
-                    graph={activeGraph}
-                    selectedComponent={selectedComponent}
-                    onSelectComponent={setSelectedComponent}
-                    onRefine={(instruction) => generate(instruction)}
-                    onOptimize={handleOptimize}
-                    onSimulate={() => setShowSimulator(true)}
-                    onArtifacts={() => setShowArtifacts(true)}
-                    onSelectRiskNodes={(nodeIds) => {
-                      setHighlightedNodeIds(nodeIds);
-                      if (nodeIds.length > 0 && activeGraph) {
-                        const matched = activeGraph.nodes.find((n) => nodeIds.includes(n.id));
-                        if (matched) setSelectedComponent(matched.name);
+              <div
+                className={`absolute inset-y-0 right-0 z-40 w-[min(390px,calc(100vw-40px))] transform border-l border-[#303640] bg-[#0C0E12]/96 shadow-[-24px_0_60px_rgba(0,0,0,0.45)] backdrop-blur-2xl transition-transform duration-300 ease-out ${showInspector
+                  ? "translate-x-0"
+                  : "translate-x-full"
+                  }`}
+              >
+                <div className="flex h-full flex-col">
+                  <div className="flex h-11 shrink-0 items-center justify-between border-b border-[#303640] px-4">
+                    <div>
+                      <div className="font-[var(--font-space-grotesk)] text-[9px] font-bold uppercase tracking-[0.16em] text-[#4A5060]">
+                        Intelligence
+                      </div>
+
+                      <div className="mt-0.5 font-[var(--font-space-grotesk)] text-[12px] font-bold text-[#F0F1F3]">
+                        Architecture Inspector
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setShowInspector(
+                          false,
+                        )
                       }
-                    }}
-                    onApplyMutation={(type, targetId) => {
-                      setPendingMutation({
+                      className="flex h-7 w-7 items-center justify-center rounded-lg text-[#4A5060] transition-colors hover:bg-[#1D222A] hover:text-[#D6AD69]"
+                      aria-label="Close inspector"
+                    >
+                      <ChevronDown className="h-4 w-4 rotate-90" />
+                    </button>
+                  </div>
+
+                  <div className="min-h-0 flex-1 overflow-y-auto">
+                    <PropertyInspector
+                      result={result}
+                      graph={activeGraph}
+                      selectedComponent={
+                        selectedComponent
+                      }
+                      onSelectComponent={
+                        setSelectedComponent
+                      }
+                      onRefine={(
+                        instruction,
+                      ) =>
+                        generate(
+                          instruction,
+                        )
+                      }
+                      onOptimize={
+                        handleOptimize
+                      }
+                      onSimulate={() =>
+                        setShowSimulator(
+                          true,
+                        )
+                      }
+                      onArtifacts={() =>
+                        setShowArtifacts(
+                          true,
+                        )
+                      }
+                      onSelectRiskNodes={(
+                        nodeIds,
+                      ) => {
+                        setHighlightedNodeIds(
+                          nodeIds,
+                        );
+
+                        if (
+                          nodeIds.length >
+                          0 &&
+                          activeGraph
+                        ) {
+                          const matched =
+                            activeGraph.nodes.find(
+                              (node) =>
+                                nodeIds.includes(
+                                  node.id,
+                                ),
+                            );
+
+                          if (matched) {
+                            setSelectedComponent(
+                              matched.name,
+                            );
+                          }
+                        }
+                      }}
+                      onApplyMutation={(
                         type,
                         targetId,
-                        title: `Confirm Graph Mutation (${type})`,
-                        desc: `Executing this mutation will update ArchitectureGraph, re-evaluate health scores, and push a version snapshot.`,
-                      });
-                    }}
-                    loading={loading}
-                    className="h-full"
-                  />
-                </aside>
+                      ) => {
+                        setPendingMutation(
+                          {
+                            type,
+                            targetId,
+                            title: `Confirm Graph Mutation (${type})`,
+                            desc: "Executing this mutation will update ArchitectureGraph, re-evaluate health scores, and push a version snapshot.",
+                          },
+                        );
+                      }}
+                      loading={loading}
+                      className="h-full"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {showInspector && (
+                <button
+                  type="button"
+                  aria-label="Close inspector"
+                  onClick={() =>
+                    setShowInspector(
+                      false,
+                    )
+                  }
+                  className="absolute inset-0 z-30 bg-black/10 lg:hidden"
+                />
               )}
             </div>
           </div>
         )}
       </div>
 
-      {/* Confirmation Modal for AI Graph Mutations */}
       {pendingMutation && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-xl">
-          <div className="w-full max-w-md rounded-3xl border border-[#dddb9d]/20 bg-[#0a0b04] p-6 space-y-4 text-[#f2f1da] shadow-2xl">
+          <div className="w-full max-w-md space-y-4 rounded-3xl border border-[#303640] bg-[#101216] p-6 text-[#F0F1F3] shadow-2xl">
             <div className="flex items-center gap-3">
-              <AlertTriangle className="h-6 w-6 text-amber-400 shrink-0" />
-              <h3 className="text-base font-bold">{pendingMutation.title}</h3>
+              <AlertTriangle className="h-6 w-6 shrink-0 text-[#D6AD69]" />
+
+              <h3 className="text-base font-bold">
+                {
+                  pendingMutation.title
+                }
+              </h3>
             </div>
-            <p className="text-xs text-[#c8c69d] leading-relaxed">{pendingMutation.desc}</p>
+
+            <p className="text-xs leading-relaxed text-[#A4AAB5]">
+              {
+                pendingMutation.desc
+              }
+            </p>
+
             <div className="flex justify-end gap-3 pt-2">
               <button
                 type="button"
-                onClick={() => setPendingMutation(null)}
-                className="rounded-xl border border-[#dddb9d]/15 bg-[#12140a] px-4 py-2 text-xs font-bold text-[#c8c69d]"
+                onClick={() =>
+                  setPendingMutation(
+                    null,
+                  )
+                }
+                className="rounded-xl border border-[#303640] bg-[#171A20] px-4 py-2 text-xs font-bold text-[#A4AAB5] transition-colors hover:text-[#F0F1F3]"
               >
                 Cancel
               </button>
+
               <button
                 type="button"
-                onClick={() => handleExecuteMutation(pendingMutation.type, pendingMutation.targetId)}
-                className="rounded-xl bg-[#7bc963] px-4 py-2 text-xs font-bold text-[#0a0b04]"
+                onClick={() =>
+                  handleExecuteMutation(
+                    pendingMutation.type,
+                    pendingMutation.targetId,
+                  )
+                }
+                className="rounded-xl bg-[#D6AD69] px-4 py-2 text-xs font-bold text-[#101216] transition-colors hover:bg-[#E0BC7A]"
               >
-                Confirm &amp; Apply Mutation
+                Confirm & Apply
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Guided Journey Modal */}
       {showJourney && (
         <GuidedJourneyModal
           graph={activeGraph}
-          onClose={() => setShowJourney(false)}
-          onGeneratePrompt={async (pText) => {
-            setPrompt(pText);
+          onClose={() =>
+            setShowJourney(false)
+          }
+          onGeneratePrompt={async (
+            generatedPrompt,
+          ) => {
+            setPrompt(
+              generatedPrompt,
+            );
+
             await generate();
           }}
-          onHighlightNodes={(nodeIds) => setHighlightedNodeIds(nodeIds)}
-          onApplyOptimization={handleApplyOptimized}
-          onOpenArtifacts={() => setShowArtifacts(true)}
-          onOpenCopilot={() => {}}
+          onHighlightNodes={(
+            nodeIds,
+          ) =>
+            setHighlightedNodeIds(
+              nodeIds,
+            )
+          }
+          onApplyOptimization={
+            handleApplyOptimized
+          }
+          onOpenArtifacts={() =>
+            setShowArtifacts(true)
+          }
+          onOpenCopilot={() => { }}
         />
       )}
 
-      {/* Modals */}
       {optimizationResult && (
         <ComparisonModal
           result={optimizationResult}
-          onClose={() => setOptimizationResult(null)}
-          onApplyOptimized={handleApplyOptimized}
+          onClose={() =>
+            setOptimizationResult(
+              null,
+            )
+          }
+          onApplyOptimized={
+            handleApplyOptimized
+          }
         />
       )}
 
-      {showSimulator && activeGraph && (
-        <ArchitectureSimulator
-          graph={activeGraph}
-          onClose={() => setShowSimulator(false)}
-          onHighlightBottlenecks={(bNodeIds) => {
-            setHighlightedNodeIds(bNodeIds);
-            const first = activeGraph.nodes.find((n) => bNodeIds.includes(n.id));
-            if (first) setSelectedComponent(first.name);
-          }}
-        />
-      )}
+      {showSimulator &&
+        activeGraph && (
+          <ArchitectureSimulator
+            graph={activeGraph}
+            onClose={() =>
+              setShowSimulator(
+                false,
+              )
+            }
+            onHighlightBottlenecks={(
+              nodeIds,
+            ) => {
+              setHighlightedNodeIds(
+                nodeIds,
+              );
 
-      {showArtifacts && activeGraph && (
-        <ArtifactsModal
-          graph={activeGraph}
-          onClose={() => setShowArtifacts(false)}
-        />
-      )}
+              const first =
+                activeGraph.nodes.find(
+                  (node) =>
+                    nodeIds.includes(
+                      node.id,
+                    ),
+                );
 
-      {detailNode && activeGraph && (
-        <ComponentDetailModal
-          node={detailNode}
-          graph={activeGraph}
-          onClose={() => setDetailNode(null)}
-        />
-      )}
+              if (first) {
+                setSelectedComponent(
+                  first.name,
+                );
+              }
+            }}
+          />
+        )}
 
-      <AIAssistantDock onAsk={(q) => generate(q)} loading={loading} projectTitle={title} />
+      {showArtifacts &&
+        activeGraph && (
+          <ArtifactsModal
+            graph={activeGraph}
+            onClose={() =>
+              setShowArtifacts(
+                false,
+              )
+            }
+          />
+        )}
+
+      {detailNode &&
+        activeGraph && (
+          <ComponentDetailModal
+            node={detailNode}
+            graph={activeGraph}
+            onClose={() =>
+              setDetailNode(null)
+            }
+          />
+        )}
+
+      <AIAssistantDock
+        onAsk={async (message) => {
+          try {
+            const res = await fetch("/api/copilot", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                message,
+                architecture: result ?? null,
+              }),
+            });
+            const data = await res.json() as
+              | { type: "answer"; text: string }
+              | { type: "proposal"; text: string; proposedChanges: { description: string } }
+              | { error: string };
+            if (!res.ok || "error" in data) {
+              return null;
+            }
+            return data;
+          } catch {
+            return null;
+          }
+        }}
+        onApplyModification={(instruction) =>
+          generate(instruction)
+        }
+        loading={loading}
+        projectTitle={title}
+        onOptimize={handleOptimize}
+        onSimulate={() => setShowSimulator(true)}
+        onArtifacts={() => setShowArtifacts(true)}
+      />
     </div>
   );
 }
 
 export default function GeneratePage() {
   return (
-    <Suspense fallback={<div className="p-8 text-sm text-[#c8c69d]">Loading Arqen workspace…</div>}>
+    <Suspense
+      fallback={
+        <div className="flex h-screen items-center justify-center bg-[#101216] font-[var(--font-inter)] text-sm text-[#A4AAB5]">
+          Loading Arqin AI Studio...
+        </div>
+      }
+    >
       <GenerateContent />
     </Suspense>
   );
