@@ -1,16 +1,40 @@
+import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  Inter,
+  Space_Grotesk,
+} from "next/font/google";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
 import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
+  adjustFontFallback: false,
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
+  adjustFontFallback: false,
+});
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  display: "swap",
+  adjustFontFallback: false,
+});
+
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
+  subsets: ["latin"],
+  display: "swap",
+  adjustFontFallback: false,
 });
 
 const siteUrl =
@@ -19,8 +43,8 @@ const siteUrl =
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Arqen AI — System Architecture & UML Synthesizer",
-    template: "%s | Arqen AI",
+    default: "Arqin AI — System Architecture & UML Synthesizer",
+    template: "%s | Arqin AI",
   },
   description:
     "Turn natural language system descriptions into exportable UML diagrams, microservice maps, and structural specifications in seconds.",
@@ -34,13 +58,13 @@ export const metadata: Metadata = {
     "AI synthesis",
     "microservices",
   ],
-  authors: [{ name: "ArchiGen AI" }],
+  authors: [{ name: "Arqin AI" }],
   openGraph: {
     type: "website",
     locale: "en_US",
     url: siteUrl,
-    siteName: "ArchiGen AI",
-    title: "ArchiGen AI — System Architecture & UML Synthesizer",
+    siteName: "Arqin AI",
+    title: "Arqin AI — System Architecture & UML Synthesizer",
     description:
       "Turn natural language system descriptions into exportable UML diagrams, microservice maps, and structural specifications in seconds.",
     images: [
@@ -48,13 +72,13 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "ArchiGen AI — System Architecture & UML Synthesizer",
+        alt: "Arqin AI — System Architecture & UML Synthesizer",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "ArchiGen AI — System Architecture & UML Synthesizer",
+    title: "Arqin AI — System Architecture & UML Synthesizer",
     description:
       "Turn natural language system descriptions into exportable UML diagrams, microservice maps, and structural specifications in seconds.",
     images: ["/og-image.png"],
@@ -70,11 +94,28 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       data-theme="dark"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${spaceGrotesk.variable} h-full antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=DM+Sans:wght@400;500;600&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-background text-foreground">
-        <ThemeProvider>{children}</ThemeProvider>
+        <ClerkProvider
+          afterSignOutUrl="/"
+          appearance={{
+            variables: {
+              colorPrimary: "#D6AD69",
+            } as Record<string, string>,
+          }}
+        >
+          <ThemeProvider>{children}</ThemeProvider>
+        </ClerkProvider>
       </body>
     </html>
   );
