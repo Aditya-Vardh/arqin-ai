@@ -178,10 +178,19 @@ export default function DashboardView() {
           </div>
 
           {projects.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-[var(--border)] p-8 text-center">
-              <p className="text-xs text-[var(--text-muted)]">No projects saved yet.</p>
-              <Link href="/workspace/generate?new=1" className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-[var(--text-primary)]">
-                <Plus className="h-3.5 w-3.5 text-[var(--accent)]" /> Create Project
+            <div className="rounded-2xl border border-dashed border-[var(--border)] p-8 text-center flex flex-col items-center gap-3">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className="opacity-40">
+                <rect x="6" y="10" width="36" height="28" rx="3" stroke="currentColor" strokeWidth="1.5" className="text-[var(--text-muted)]"/>
+                <rect x="12" y="16" width="10" height="10" rx="1.5" stroke="currentColor" strokeWidth="1.5" className="text-[var(--accent)]"/>
+                <rect x="26" y="16" width="10" height="4" rx="1" stroke="currentColor" strokeWidth="1.5" className="text-[var(--text-muted)]"/>
+                <rect x="26" y="22" width="6" height="4" rx="1" stroke="currentColor" strokeWidth="1.5" className="text-[var(--text-muted)]"/>
+                <line x1="12" y1="30" x2="36" y2="30" stroke="currentColor" strokeWidth="1.5" className="text-[var(--border)]"/>
+                <line x1="12" y1="34" x2="28" y2="34" stroke="currentColor" strokeWidth="1.5" className="text-[var(--border)]"/>
+              </svg>
+              <p className="text-sm font-medium text-[var(--text-primary)]">No projects yet</p>
+              <p className="text-xs text-[var(--text-muted)]">Generate your first architecture to get started.</p>
+              <Link href="/workspace/generate?new=1" className="mt-1 inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20 hover:bg-[var(--accent)]/20 transition-colors">
+                <Plus className="h-3 w-3" /> Create Architecture
               </Link>
             </div>
           ) : (
@@ -190,7 +199,7 @@ export default function DashboardView() {
                 <Link
                   key={p.id}
                   href={`/workspace/generate?project=${p.id}`}
-                  className="rounded-2xl border border-[var(--border)] bg-[var(--surface-elevated)] p-4 transition-all hover:border-[var(--accent)]/40 group flex flex-col justify-between"
+                  className="rounded-2xl border border-[var(--border)] bg-[var(--surface-elevated)] p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)]/30 hover:shadow-lg active:scale-[0.98] group flex flex-col justify-between"
                 >
                   <div className="flex items-center justify-between mb-2">
                     <span className="rounded-full bg-[var(--accent)]/15 border border-[var(--accent)]/30 px-2 py-0.5 font-mono text-[9px] font-bold text-[var(--accent)] uppercase">
@@ -253,7 +262,7 @@ export default function DashboardView() {
             <Link
               key={t.id}
               href={`/workspace/generate?template=${t.id}`}
-              className="rounded-2xl border border-[var(--border)] bg-[var(--surface-elevated)] p-5 transition-all hover:border-[var(--accent)]/40 group flex flex-col justify-between"
+              className="rounded-2xl border border-[var(--border)] bg-[var(--surface-elevated)] p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)]/30 hover:shadow-lg active:scale-[0.98] group flex flex-col justify-between"
             >
               <div>
                 <h4 className="text-sm font-bold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors">

@@ -229,7 +229,7 @@ export default function ProjectsPage() {
               return (
                 <div
                   key={project.id}
-                  className="group relative flex min-h-[310px] flex-col justify-between overflow-hidden rounded-[24px] border border-[#A4AAB5]/12 bg-[#171A20] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-[#D6AD69]/40 hover:bg-[#1D222A]"
+                  className="group relative flex min-h-[310px] flex-col justify-between overflow-hidden rounded-[24px] border border-[#A4AAB5]/12 bg-[#171A20] p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)]/30 hover:shadow-lg active:scale-[0.98]"
                 >
                   <div className="pointer-events-none absolute inset-0 opacity-20">
                     <div className="absolute inset-0 bg-[radial-gradient(rgba(48,54,64,0.6)_1px,transparent_1px)] [background-size:22px_22px]" />

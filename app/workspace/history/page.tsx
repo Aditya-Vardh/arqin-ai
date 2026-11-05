@@ -8,6 +8,7 @@ import {
   AlertCircle,
   Play,
   Sparkles,
+  Plus,
 } from "lucide-react";
 import { useStore } from "@/hooks/UserStoreContext";
 import type { HistoryEntry } from "@/lib/storage/types";
@@ -131,6 +132,13 @@ export default function HistoryPage() {
                   Create or generate an architecture to populate the version
                   timeline.
                 </p>
+                <Link
+                  href="/workspace/generate?new=1"
+                  className="mt-4 inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20 hover:bg-[var(--accent)]/20 transition-colors"
+                >
+                  <Plus className="h-3 w-3" />
+                  Generate Architecture
+                </Link>
               </div>
             ) : (
               filtered.map((entry, idx) => {
@@ -151,7 +159,7 @@ export default function HistoryPage() {
                       />
                     </div>
 
-                    <div className="relative overflow-hidden rounded-[24px] border border-[#303640] bg-gradient-to-b from-[#171A20] via-[#0C0E12] to-[#101216] p-5 transition-all duration-300 hover:border-[#D6AD69]/25 hover:shadow-[0_18px_45px_rgba(0,0,0,0.4)] sm:p-6">
+                    <div className="relative overflow-hidden rounded-[24px] border border-[#303640] bg-gradient-to-b from-[#171A20] via-[#0C0E12] to-[#101216] p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)]/30 hover:shadow-lg active:scale-[0.98] sm:p-6">
                       <div className="pointer-events-none absolute inset-0 opacity-[0.025]">
                         <div className="absolute inset-0 bg-[radial-gradient(#D6AD69_1px,transparent_1px)] [background-size:22px_22px]" />
                       </div>
@@ -199,13 +207,13 @@ export default function HistoryPage() {
                               onClick={() =>
                                 store?.setActiveProjectId(entry.projectId)
                               }
-                              className="inline-flex items-center gap-2 rounded-xl border border-[#D6AD69]/20 bg-[#D6AD69]/[0.05] px-4 py-2.5 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[#D6AD69] transition-all hover:border-[#D6AD69]/45 hover:bg-[#D6AD69] hover:text-[#101216]"
+                              className="inline-flex items-center gap-2 rounded-xl border border-[#D6AD69]/20 bg-[#D6AD69]/[0.05] px-4 py-2.5 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[#D6AD69] transition-all hover:bg-[var(--accent)]/10 hover:border-[var(--accent)]/40 hover:border-[#D6AD69]/45 hover:bg-[#D6AD69] hover:text-[#101216]"
                             >
                               <Play className="h-3.5 w-3.5 fill-current" />
                               Open Version
                             </Link>
                           ) : (
-                            <span className="inline-flex items-center gap-2 rounded-xl border border-rose-400/15 bg-rose-400/[0.04] px-3 py-2 font-[var(--font-geist-mono)] text-[9px] font-bold uppercase tracking-wide text-rose-300">
+                            <span className="inline-flex items-center gap-2 rounded-xl border border-rose-500/20 bg-rose-500/10 px-3 py-2 font-[var(--font-geist-mono)] text-[9px] font-bold uppercase tracking-wide text-rose-400">
                               <AlertCircle className="h-3.5 w-3.5" />
                               Generation Error
                             </span>

@@ -2,7 +2,22 @@
 
 import { useState } from "react";
 import {
-  LayoutGrid, Boxes, GitBranch, Sparkles, ChevronDown, Zap, ShieldAlert, AlertTriangle, ShieldCheck, Eye, Layers, DollarSign, Activity, CheckCircle2
+  LayoutGrid,
+  Boxes,
+  ChevronDown,
+  Zap,
+  ShieldAlert,
+  ShieldCheck,
+  Eye,
+  Layers,
+  DollarSign,
+  Activity,
+  Sparkles,
+  ArrowUpRight,
+  CircleCheck,
+  CircleAlert,
+  Network,
+  Server,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { ArchitectureResult } from "@/lib/storage/types";
@@ -10,18 +25,71 @@ import type { ArchitectureGraph } from "@/lib/graph/types";
 import { evaluateUnifiedIntelligence } from "@/lib/intelligence/engine";
 import { analyzeComponentFailurePath } from "@/lib/intelligence/failure";
 
-type Tab = "overview" | "security" | "reliability" | "failure" | "observability" | "patterns" | "cost" | "recommendations";
+type Tab =
+  | "overview"
+  | "security"
+  | "reliability"
+  | "failure"
+  | "observability"
+  | "patterns"
+  | "cost"
+  | "recommendations";
 
-const TABS: { id: Tab; label: string; short: string; icon: LucideIcon }[] = [
-  { id: "overview", label: "Overview", short: "Overview", icon: LayoutGrid },
-  { id: "security", label: "Security", short: "Security", icon: ShieldCheck },
-  { id: "reliability", label: "Reliability", short: "Reliability", icon: ShieldAlert },
-  { id: "failure", label: "Failure Analysis", short: "Failure", icon: Activity },
-  { id: "observability", label: "Observability", short: "Observe", icon: Eye },
-  { id: "patterns", label: "Patterns", short: "Patterns", icon: Layers },
-  { id: "cost", label: "Cost Intelligence", short: "Cost", icon: DollarSign },
-  { id: "recommendations", label: "Recommendations", short: "Recs", icon: Zap },
-];
+const TABS: {
+  id: Tab;
+  label: string;
+  short: string;
+  icon: LucideIcon;
+}[] = [
+    {
+      id: "overview",
+      label: "Overview",
+      short: "Overview",
+      icon: LayoutGrid,
+    },
+    {
+      id: "security",
+      label: "Security",
+      short: "Security",
+      icon: ShieldCheck,
+    },
+    {
+      id: "reliability",
+      label: "Reliability",
+      short: "Reliability",
+      icon: ShieldAlert,
+    },
+    {
+      id: "failure",
+      label: "Failure Analysis",
+      short: "Failure",
+      icon: Activity,
+    },
+    {
+      id: "observability",
+      label: "Observability",
+      short: "Observe",
+      icon: Eye,
+    },
+    {
+      id: "patterns",
+      label: "Patterns",
+      short: "Patterns",
+      icon: Layers,
+    },
+    {
+      id: "cost",
+      label: "Cost Intelligence",
+      short: "Cost",
+      icon: DollarSign,
+    },
+    {
+      id: "recommendations",
+      label: "Recommendations",
+      short: "Recs",
+      icon: Zap,
+    },
+  ];
 
 type Props = {
   result: ArchitectureResult | null;
@@ -38,37 +106,181 @@ type Props = {
   className?: string;
 };
 
-function MetricBar({ label, value }: { label: string; value: number }) {
+function ScoreRing({ score }: { score: number }) {
+  const safeScore = Math.max(0, Math.min(100, score));
+  const radius = 43;
+  const circumference = 2 * Math.PI * radius;
+  const offset =
+    circumference - (safeScore / 100) * circumference;
+
   return (
-    <div className="metric-bar">
-      <div className="metric-bar-label">
-        <span>{label}</span>
-        <span>{value}%</span>
-      </div>
-      <div className="metric-bar-track">
-        <div className="metric-bar-fill" style={{ width: `${value}%` }} />
+    <div className="relative h-[112px] w-[112px] shrink-0">
+      <svg
+        viewBox="0 0 112 112"
+        className="h-full w-full -rotate-90"
+        aria-hidden="true"
+      >
+        <circle
+          cx="56"
+          cy="56"
+          r={radius}
+          fill="none"
+          stroke="#1D222A"
+          strokeWidth="7"
+        />
+        <circle
+          cx="56"
+          cy="56"
+          r={radius}
+          fill="none"
+          stroke="#D6AD69"
+          strokeWidth="7"
+          strokeLinecap="round"
+          strokeDasharray={circumference}
+          strokeDashoffset={offset}
+        />
+      </svg>
+
+      <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <span className="text-[31px] font-bold leading-none text-[#F0F1F3]">
+          {safeScore}
+        </span>
+        <span className="mt-1 text-[8px] font-semibold uppercase tracking-[0.18em] text-[#A4AAB5]/70">
+          health
+        </span>
       </div>
     </div>
   );
 }
 
+function Metric({
+  label,
+  value,
+}: {
+  label: string;
+  value: number;
+}) {
+  const safeValue = Math.max(0, Math.min(100, value));
+
+  return (
+    <div className="space-y-1.5">
+      <div className="flex items-center justify-between gap-3">
+        <span className="text-[10px] text-[#A4AAB5]">
+          {label}
+        </span>
+        <span className="font-mono text-[10px] font-bold text-[#D6AD69]">
+          {safeValue}%
+        </span>
+      </div>
+
+      <div className="h-1 overflow-hidden rounded-full bg-[#101216]">
+        <div
+          className="h-full rounded-full bg-[#D6AD69] transition-[width] duration-700 ease-out"
+          style={{ width: `${safeValue}%` }}
+        />
+      </div>
+    </div>
+  );
+}
+
+function FindingCard({
+  title,
+  description,
+  recommendation,
+  severity,
+  onClick,
+}: {
+  title: string;
+  description: string;
+  recommendation: string;
+  severity?: string;
+  onClick?: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="group w-full rounded-2xl border border-[#A4AAB5]/12 bg-[#171A20] p-4 text-left transition-all duration-200 hover:border-[#D6AD69]/40 hover:bg-[#1D222A]"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex min-w-0 items-start gap-2.5">
+          <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-[#D6AD69]/30 bg-[#1D222A]">
+            <CircleAlert className="h-3.5 w-3.5 text-[#D6AD69]" />
+          </span>
+          <span className="text-[11px] font-bold leading-snug text-[#F0F1F3]">
+            {title}
+          </span>
+        </div>
+
+        {severity && (
+          <span className={`shrink-0 rounded-full border px-2 py-1 font-mono text-[8px] font-bold uppercase tracking-[0.12em] ${
+            (severity === "CRITICAL" || severity === "HIGH")
+              ? "border-rose-500/20 bg-rose-500/10 text-rose-400"
+              : severity === "MEDIUM"
+              ? "border-amber-500/20 bg-amber-500/10 text-amber-400"
+              : severity === "LOW"
+              ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-400"
+              : "border-[#D6AD69]/30 bg-[#D6AD69]/10 text-[#D6AD69]"
+          }`}>
+            {severity}
+          </span>
+        )}
+      </div>
+
+      <p className="mt-3 text-[10px] leading-relaxed text-[#A4AAB5]">
+        {description}
+      </p>
+
+      <div className="mt-3 flex items-start gap-2 border-t border-[#A4AAB5]/10 pt-3">
+        <Sparkles className="mt-0.5 h-3 w-3 shrink-0 text-[#D6AD69]" />
+        <span className="text-[9px] leading-relaxed text-[#A4AAB5]">
+          {recommendation}
+        </span>
+      </div>
+    </button>
+  );
+}
+
 export default function PropertyInspector({
-  result, graph, selectedComponent, onSelectComponent, onRefine, onOptimize, onSimulate, onArtifacts, onSelectRiskNodes, onApplyMutation, loading, className = "",
+  result,
+  graph,
+  selectedComponent,
+  onSelectComponent,
+  onRefine,
+  onOptimize,
+  onSimulate,
+  onArtifacts,
+  onSelectRiskNodes,
+  onApplyMutation,
+  loading,
+  className = "",
 }: Props) {
   const [tab, setTab] = useState<Tab>("overview");
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [selectedFailureNodeId, setSelectedFailureNodeId] = useState<string>("");
+  const [selectedFailureNodeId, setSelectedFailureNodeId] =
+    useState<string>("");
 
   if (!result || !graph) {
     return (
-      <aside className={`w-[320px] shrink-0 border-l border-[var(--border-subtle)] bg-[var(--bg-surface)] ${className}`}>
-        <div className="flex h-full flex-col items-center justify-center p-6 text-center">
-          <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#7bc963]/10 shadow-[0_0_40px_rgba(123,201,99,0.15)] ring-1 ring-[#7bc963]/20">
-            <Boxes className="h-8 w-8 text-[#7bc963]" />
+      <aside
+        className={`flex h-full w-full flex-col bg-[#101216] ${className}`}
+      >
+        <div className="flex h-full flex-col items-center justify-center px-7 text-center">
+          <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-[#A4AAB5]/12 bg-[#171A20]">
+            <Boxes className="h-6 w-6 text-[#D6AD69]" />
           </div>
-          <h3 className="text-[15px] font-semibold text-white">Arqen Intelligence Control Center</h3>
-          <p className="mt-2 text-[13px] leading-relaxed text-[var(--text-muted)] max-w-[200px]">
-            Generate an architecture graph to evaluate security, reliability, failure paths, patterns, and cost intelligence.
+
+          <p className="font-[var(--font-space-grotesk)] text-[9px] font-bold uppercase tracking-[0.18em] text-[#D6AD69]">
+            Arqin Intelligence
+          </p>
+
+          <h3 className="mt-2 font-[var(--font-space-grotesk)] text-sm font-bold text-[#F0F1F3]">
+            Architecture Inspector
+          </h3>
+
+          <p className="mt-2 max-w-[230px] font-[var(--font-inter)] text-[10px] leading-relaxed text-[#A4AAB5]/70">
+            Generate an architecture graph to inspect security, reliability,
+            failure paths, patterns, and cost intelligence.
           </p>
         </div>
       </aside>
@@ -76,273 +288,688 @@ export default function PropertyInspector({
   }
 
   const unifiedIntel = evaluateUnifiedIntelligence(graph);
-  const effectiveFailureId = selectedFailureNodeId || graph.nodes[0]?.id || "";
+
+  const effectiveFailureId =
+    selectedFailureNodeId ||
+    graph.nodes[0]?.id ||
+    "";
+
   const failurePathResult = effectiveFailureId
-    ? analyzeComponentFailurePath(graph, effectiveFailureId)
+    ? analyzeComponentFailurePath(
+      graph,
+      effectiveFailureId,
+    )
     : null;
 
   const component = selectedComponent
-    ? result.explanation.components.find((c) => c.name === selectedComponent)
+    ? result.explanation.components.find(
+      (item) => item.name === selectedComponent,
+    )
     : null;
 
-  const activeTab = TABS.find((t) => t.id === tab)!;
+  const activeTab = TABS.find(
+    (item) => item.id === tab,
+  )!;
+
+  const score = unifiedIntel.overallHealthScore;
 
   return (
-    <aside className={`flex w-[320px] sm:w-[380px] shrink-0 flex-col overflow-hidden border-l border-[var(--border-subtle)] bg-[var(--bg-surface)] transition-all ${className}`}>
-      {/* Top Title Bar */}
-      <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-black/10 px-4 py-3.5">
-        <div className="min-w-0 flex-1">
-          <p className="inspector-label">Arqen Intelligence Control Center</p>
-          <h2 className="truncate text-sm font-semibold">{graph.title}</h2>
+    <aside
+      className={`flex h-full w-full min-w-0 flex-col overflow-hidden bg-[#101216] text-[#F0F1F3] ${className}`}
+    >
+      <div className="shrink-0 border-b border-[#A4AAB5]/12 bg-[#101216]">
+        <div className="flex min-h-[82px] items-center justify-between gap-3 px-4">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2">
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[#A4AAB5]/12 bg-[#171A20]">
+                <Network className="h-3.5 w-3.5 text-[#D6AD69]" />
+              </span>
+
+              <div className="min-w-0">
+                <p className="font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.2em] text-[#D6AD69]">
+                  Intelligence
+                </p>
+
+                <h2 className="mt-0.5 truncate font-[var(--font-space-grotesk)] text-[13px] font-bold text-[#F0F1F3]">
+                  Architecture Inspector
+                </h2>
+              </div>
+            </div>
+
+            <p className="mt-2 truncate pl-9 font-[var(--font-inter)] text-[9px] text-[#A4AAB5]/70">
+              {graph.title}
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={() =>
+              setMobileOpen(!mobileOpen)
+            }
+            className="flex h-8 shrink-0 items-center gap-2 rounded-xl border border-[#A4AAB5]/15 bg-[#171A20] px-2.5 font-[var(--font-space-grotesk)] text-[9px] font-bold text-[#F0F1F3] transition-colors hover:border-[#D6AD69]"
+          >
+            <activeTab.icon className="h-3.5 w-3.5 text-[#D6AD69]" />
+            <span className="hidden sm:inline">
+              {activeTab.short}
+            </span>
+            <ChevronDown
+              className={`h-3 w-3 transition-transform ${mobileOpen
+                ? "rotate-180"
+                : ""
+                }`}
+            />
+          </button>
         </div>
-        <button
-          type="button"
-          className="inspector-mobile-tab xl:hidden"
-          onClick={() => setMobileOpen(!mobileOpen)}
-        >
-          <activeTab.icon className="h-4 w-4" />
-          <span>{activeTab.short}</span>
-          <ChevronDown className={`h-3 w-3 transition-transform ${mobileOpen ? "rotate-180" : ""}`} />
-        </button>
       </div>
 
-      {/* Navigation Tabs */}
-      <div className="inspector-body">
-        <nav className={`inspector-tab-rail ${mobileOpen ? "inspector-tab-rail-open" : ""}`}>
-          {TABS.map((t) => (
+      <div className="flex min-h-0 flex-1 overflow-hidden">
+        <nav
+          className={`flex w-[48px] shrink-0 flex-col items-center gap-1 border-r border-[#A4AAB5]/12 bg-[#0C0E12] py-2 ${mobileOpen
+            ? "absolute left-0 right-0 z-50 w-full flex-row overflow-x-auto border-b"
+            : ""
+            }`}
+        >
+          {TABS.map((item) => (
             <button
-              key={t.id}
+              key={item.id}
               type="button"
-              onClick={() => { setTab(t.id); setMobileOpen(false); }}
-              className={`inspector-tab ${tab === t.id ? "inspector-tab-active" : ""}`}
-              title={t.label}
-              aria-label={t.label}
+              onClick={() => {
+                setTab(item.id);
+                setMobileOpen(false);
+              }}
+              title={item.label}
+              aria-label={item.label}
+              className={`group relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl transition-all ${tab === item.id
+                ? "border border-[#D6AD69]/40 bg-[#1D222A] text-[#F0F1F3]"
+                : "text-[#A4AAB5]/50 hover:bg-[#171A20] hover:text-[#F0F1F3]"
+                }`}
             >
-              <t.icon className="h-4 w-4 shrink-0" />
-              <span className="inspector-tab-label">{t.short}</span>
+              <item.icon className="h-3.5 w-3.5" />
+
+              {tab === item.id && (
+                <span className="absolute left-0 top-2 h-5 w-0.5 rounded-r-full bg-[#D6AD69]" />
+              )}
             </button>
           ))}
         </nav>
 
-        {/* Tab Contents */}
-        <div className="inspector-content">
-          {component && (
-            <div className="inspector-selected-card">
-              <p className="inspector-selected-label">Selected Component</p>
-              <p className="font-semibold text-foreground">{component.name}</p>
-              <p className="mt-1 text-xs leading-relaxed text-muted">{component.description}</p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    const match = graph.nodes.find((n) => n.name === component.name);
-                    setSelectedFailureNodeId(match ? match.id : component.name);
-                    setTab("failure");
-                  }}
-                  className="inspector-action tone-amber"
-                >
-                  Failure Path
-                </button>
-                <button type="button" onClick={() => onApplyMutation?.("ADD_CACHE", component.name)} className="inspector-action tone-cyan">+ Cache</button>
-              </div>
-            </div>
-          )}
+        <div className="min-w-0 flex-1 overflow-y-auto">
+          <div className="space-y-4 p-4">
+            {component && (
+              <div className="rounded-2xl border border-[#D6AD69]/30 bg-gradient-to-br from-[#171A20] to-[#0C0E12] p-4 border-l-2 border-l-[var(--accent)] pl-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.16em] text-[#D6AD69]">
+                      Selected Component
+                    </p>
 
-          <div className="inspector-section">
-            {/* OVERVIEW TAB */}
+                    <p className="mt-1 truncate font-[var(--font-space-grotesk)] text-[12px] font-bold text-[#F0F1F3]">
+                      {component.name}
+                    </p>
+                  </div>
+
+                  <CircleCheck className="h-4 w-4 shrink-0 text-[#D6AD69]" />
+                </div>
+
+                <p className="mt-2 font-[var(--font-inter)] text-[9px] leading-relaxed text-[#A4AAB5]">
+                  {component.description}
+                </p>
+
+                <div className="mt-3 flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const match =
+                        graph.nodes.find(
+                          (node) =>
+                            node.name ===
+                            component.name,
+                        );
+
+                      setSelectedFailureNodeId(
+                        match
+                          ? match.id
+                          : component.name,
+                      );
+                      setTab("failure");
+                    }}
+                    className="flex-1 rounded-lg border border-[#A4AAB5]/15 bg-[#1D222A] px-2 py-2 font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.08em] text-[#F0F1F3] transition-colors hover:border-[#D6AD69]/50"
+                  >
+                    Failure Path
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      onApplyMutation?.(
+                        "ADD_CACHE",
+                        component.name,
+                      )
+                    }
+                    className="flex-1 rounded-lg border border-[#D6AD69]/30 bg-[#171A20] px-2 py-2 font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.08em] text-[#D6AD69] transition-colors hover:border-[#D6AD69]"
+                  >
+                    + Cache
+                  </button>
+                </div>
+              </div>
+            )}
+
             {tab === "overview" && (
               <div className="space-y-4">
-                <div className="rounded-2xl border border-[#7bc963]/30 bg-[#7bc963]/10 p-5 space-y-3">
-                  <p className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#7bc963] mb-1">Unified Architecture Score</p>
-                  <div className="flex items-end gap-1.5">
-                    <span className="font-mono text-4xl font-extrabold leading-none text-[#7bc963]">{unifiedIntel.overallHealthScore}</span>
-                    <span className="font-mono text-sm font-bold text-[#7bc963]/60 pb-1">/100</span>
+                <div className="rounded-2xl border border-[#A4AAB5]/15 bg-gradient-to-br from-[#171A20] via-[#0C0E12] to-[#101216] p-4">
+                  <div className="flex items-center gap-4">
+                    <ScoreRing score={score} />
+
+                    <div className="min-w-0">
+                      <p className="font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.18em] text-[#D6AD69]">
+                        Unified Architecture
+                      </p>
+
+                      <p className="mt-1 font-[var(--font-space-grotesk)] text-sm font-bold text-[#F0F1F3]">
+                        {score >= 80
+                          ? "Healthy foundation"
+                          : score >= 60
+                            ? "Needs attention"
+                            : "Requires review"}
+                      </p>
+
+                      <p className="mt-1 font-[var(--font-inter)] text-[9px] leading-relaxed text-[#A4AAB5]/70">
+                        Deterministic analysis across the generated system.
+                      </p>
+                    </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-2 text-[11px] font-mono text-[#c8c69d] pt-1">
-                    <div>Scalability: {unifiedIntel.dimensionScores.scalability}%</div>
-                    <div>Reliability: {unifiedIntel.dimensionScores.reliability}%</div>
-                    <div>Security: {unifiedIntel.dimensionScores.security}%</div>
-                    <div>Observability: {unifiedIntel.dimensionScores.observability}%</div>
+
+                  <div className="mt-5 grid grid-cols-2 gap-x-4 gap-y-3 border-t border-[#A4AAB5]/12 pt-4">
+                    <Metric
+                      label="Scalability"
+                      value={
+                        unifiedIntel.dimensionScores
+                          .scalability
+                      }
+                    />
+                    <Metric
+                      label="Reliability"
+                      value={
+                        unifiedIntel.dimensionScores
+                          .reliability
+                      }
+                    />
+                    <Metric
+                      label="Security"
+                      value={
+                        unifiedIntel.dimensionScores
+                          .security
+                      }
+                    />
+                    <Metric
+                      label="Observability"
+                      value={
+                        unifiedIntel.dimensionScores
+                          .observability
+                      }
+                    />
                   </div>
                 </div>
 
-                <div className="rounded-2xl border border-[#dddb9d]/15 bg-[#070804] p-4 space-y-2">
-                  <p className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#7bc963]">Findings Inventory</p>
-                  <p className="text-xs text-[#c8c69d]">{unifiedIntel.findings.length} deterministic finding(s) detected across security, reliability, and observability.</p>
+                <div className="rounded-2xl border border-[#A4AAB5]/12 bg-[#0C0E12] p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.16em] text-[#D6AD69]">
+                        Findings Inventory
+                      </p>
+                      <p className="mt-1 font-[var(--font-space-grotesk)] text-lg font-bold text-[#F0F1F3]">
+                        {unifiedIntel.findings.length}
+                      </p>
+                    </div>
+
+                    <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#A4AAB5]/15 bg-[#1D222A]">
+                      <CircleAlert className="h-4 w-4 text-[#D6AD69]" />
+                    </div>
+                  </div>
+
+                  <p className="mt-2 font-[var(--font-inter)] text-[9px] leading-relaxed text-[#A4AAB5]/70">
+                    Deterministic findings across security,
+                    reliability, and observability.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={onOptimize}
+                    disabled={loading}
+                    className="rounded-xl border border-[#A4AAB5]/15 bg-[#171A20] px-3 py-2.5 text-left transition-colors hover:border-[#D6AD69] hover:bg-[#1D222A] disabled:opacity-50"
+                  >
+                    <Zap className="h-3.5 w-3.5 text-[#D6AD69]" />
+                    <span className="mt-1.5 block font-[var(--font-space-grotesk)] text-[9px] font-bold text-[#F0F1F3]">
+                      Optimize
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={onSimulate}
+                    className="rounded-xl border border-[#A4AAB5]/15 bg-[#171A20] px-3 py-2.5 text-left transition-colors hover:border-[#D6AD69] hover:bg-[#1D222A]"
+                  >
+                    <Activity className="h-3.5 w-3.5 text-[#D6AD69]" />
+                    <span className="mt-1.5 block font-[var(--font-space-grotesk)] text-[9px] font-bold text-[#F0F1F3]">
+                      Simulate
+                    </span>
+                  </button>
                 </div>
               </div>
             )}
 
-            {/* SECURITY TAB */}
             {tab === "security" && (
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs font-bold text-[#7bc963]">Security Intelligence ({unifiedIntel.dimensionScores.security}%)</span>
-                </div>
-                {unifiedIntel.findings.filter((f) => f.category === "SECURITY").map((f) => (
-                  <div
-                    key={f.id}
-                    onClick={() => onSelectRiskNodes?.(f.affectedNodes)}
-                    className="rounded-2xl border border-rose-500/30 bg-[#070804] p-4 space-y-2 cursor-pointer hover:border-rose-400 transition-colors"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-xs text-[#f2f1da]">{f.title}</span>
-                      <span className="rounded bg-rose-500/20 px-2 py-0.5 font-mono text-[9px] font-bold text-rose-400">{f.severity}</span>
-                    </div>
-                    <p className="text-[11px] text-[#c8c69d]">{f.description}</p>
-                    <p className="text-[10px] text-[#7bc963] font-medium pt-1">💡 {f.recommendation}</p>
-                  </div>
-                ))}
+              <div className="space-y-3">
+                <SectionHeading
+                  icon={ShieldCheck}
+                  title="Security Intelligence"
+                  value={
+                    unifiedIntel.dimensionScores
+                      .security
+                  }
+                />
+
+                {unifiedIntel.findings
+                  .filter(
+                    (finding) =>
+                      finding.category ===
+                      "SECURITY",
+                  )
+                  .map((finding) => (
+                    <FindingCard
+                      key={finding.id}
+                      title={finding.title}
+                      description={
+                        finding.description
+                      }
+                      recommendation={
+                        finding.recommendation
+                      }
+                      severity={
+                        finding.severity
+                      }
+                      onClick={() =>
+                        onSelectRiskNodes?.(
+                          finding.affectedNodes,
+                        )
+                      }
+                    />
+                  ))}
               </div>
             )}
 
-            {/* RELIABILITY TAB */}
             {tab === "reliability" && (
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs font-bold text-[#7bc963]">Reliability Intelligence ({unifiedIntel.dimensionScores.reliability}%)</span>
-                </div>
-                {unifiedIntel.findings.filter((f) => f.category === "RELIABILITY").map((f) => (
-                  <div
-                    key={f.id}
-                    onClick={() => onSelectRiskNodes?.(f.affectedNodes)}
-                    className="rounded-2xl border border-amber-500/30 bg-[#070804] p-4 space-y-2 cursor-pointer hover:border-amber-400 transition-colors"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-xs text-[#f2f1da]">{f.title}</span>
-                      <span className="rounded bg-amber-500/20 px-2 py-0.5 font-mono text-[9px] font-bold text-amber-400">{f.severity}</span>
-                    </div>
-                    <p className="text-[11px] text-[#c8c69d]">{f.description}</p>
-                    <p className="text-[10px] text-[#7bc963] font-medium pt-1">💡 {f.recommendation}</p>
-                  </div>
-                ))}
+              <div className="space-y-3">
+                <SectionHeading
+                  icon={ShieldAlert}
+                  title="Reliability Intelligence"
+                  value={
+                    unifiedIntel.dimensionScores
+                      .reliability
+                  }
+                />
+
+                {unifiedIntel.findings
+                  .filter(
+                    (finding) =>
+                      finding.category ===
+                      "RELIABILITY",
+                  )
+                  .map((finding) => (
+                    <FindingCard
+                      key={finding.id}
+                      title={finding.title}
+                      description={
+                        finding.description
+                      }
+                      recommendation={
+                        finding.recommendation
+                      }
+                      severity={
+                        finding.severity
+                      }
+                      onClick={() =>
+                        onSelectRiskNodes?.(
+                          finding.affectedNodes,
+                        )
+                      }
+                    />
+                  ))}
               </div>
             )}
 
-            {/* FAILURE ANALYSIS TAB */}
             {tab === "failure" && (
               <div className="space-y-4">
-                <p className="font-mono text-xs font-bold text-[#7bc963]">Failure-Path Analysis</p>
+                <SectionHeading
+                  icon={Activity}
+                  title="Failure-Path Analysis"
+                />
 
-                <div className="space-y-2">
-                  <label className="block text-[10px] font-bold uppercase text-[#8e8c6c]">Select Component to Simulate Failure</label>
+                <div>
+                  <label className="mb-2 block font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.14em] text-[#D6AD69]">
+                    Failure Target
+                  </label>
+
                   <select
                     value={effectiveFailureId}
-                    onChange={(e) => {
-                      const nodeId = e.target.value;
-                      setSelectedFailureNodeId(nodeId);
-                      const fResult = analyzeComponentFailurePath(graph, nodeId);
-                      onSelectRiskNodes?.([fResult.sourceNodeId, ...fResult.directlyAffectedNodeIds]);
+                    onChange={(event) => {
+                      const nodeId =
+                        event.target.value;
+
+                      setSelectedFailureNodeId(
+                        nodeId,
+                      );
+
+                      const failure =
+                        analyzeComponentFailurePath(
+                          graph,
+                          nodeId,
+                        );
+
+                      onSelectRiskNodes?.([
+                        failure.sourceNodeId,
+                        ...failure.directlyAffectedNodeIds,
+                      ]);
                     }}
-                    className="w-full rounded-xl border border-[#dddb9d]/20 bg-[#12140a] p-2.5 text-xs text-[#f2f1da] outline-none focus:border-[#7bc963]"
+                    className="w-full rounded-xl border border-[#A4AAB5]/15 bg-[#171A20] px-3 py-2.5 font-[var(--font-inter)] text-[10px] text-[#F0F1F3] outline-none focus:border-[#D6AD69]"
                   >
-                    {graph.nodes.map((n) => (
-                      <option key={n.id} value={n.id}>{n.name} ({n.type})</option>
+                    {graph.nodes.map((node) => (
+                      <option
+                        key={node.id}
+                        value={node.id}
+                      >
+                        {node.name} ({node.type})
+                      </option>
                     ))}
                   </select>
                 </div>
 
                 {failurePathResult && (
-                  <div className="rounded-2xl border border-amber-500/30 bg-[#070804] p-4 space-y-3">
-                    <p className="text-xs font-bold text-amber-400">Cascading Path for {failurePathResult.sourceNodeName}:</p>
-                    {failurePathResult.cascadingChain.length > 0 ? (
-                      <p className="font-mono text-xs text-[#7bc963]">{failurePathResult.cascadingChain.join(" → ")}</p>
+                  <div className="rounded-2xl border border-[#A4AAB5]/15 bg-[#171A20] p-4">
+                    <div className="flex items-center gap-2">
+                      <Server className="h-4 w-4 text-[#D6AD69]" />
+                      <span className="font-[var(--font-space-grotesk)] text-[10px] font-bold text-[#F0F1F3]">
+                        {failurePathResult.sourceNodeName}
+                      </span>
+                    </div>
+
+                    {failurePathResult.cascadingChain
+                      .length > 0 ? (
+                      <div className="mt-3 rounded-xl border border-[#A4AAB5]/12 bg-[#101216] p-3">
+                        <p className="font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.14em] text-[#D6AD69]">
+                          Cascading Path
+                        </p>
+                        <p className="mt-2 font-[var(--font-inter)] text-[9px] leading-relaxed text-[#A4AAB5]">
+                          {failurePathResult.cascadingChain.join(
+                            "  →  ",
+                          )}
+                        </p>
+                      </div>
                     ) : (
-                      <p className="font-mono text-xs text-[#8e8c6c]">No dependent path detected.</p>
+                      <p className="mt-3 font-[var(--font-inter)] text-[9px] text-[#A4AAB5]/70">
+                        No dependent path detected.
+                      </p>
                     )}
-                    <p className="text-xs leading-relaxed text-[#c8c69d]">{failurePathResult.explanation}</p>
-                    <div className="border-t border-[#dddb9d]/10 pt-2 text-[11px] text-[#7bc963] font-medium">
-                      💡 {failurePathResult.resilienceRecommendation}
+
+                    <p className="mt-3 font-[var(--font-inter)] text-[9px] leading-relaxed text-[#A4AAB5]/80">
+                      {failurePathResult.explanation}
+                    </p>
+
+                    <div className="mt-3 border-t border-[#A4AAB5]/12 pt-3">
+                      <p className="font-[var(--font-inter)] text-[9px] leading-relaxed text-[#D6AD69]">
+                        {failurePathResult.resilienceRecommendation}
+                      </p>
                     </div>
                   </div>
                 )}
               </div>
             )}
 
-            {/* OBSERVABILITY TAB */}
             {tab === "observability" && (
-              <div className="space-y-4">
-                <span className="font-mono text-xs font-bold text-[#7bc963]">Observability Telemetry ({unifiedIntel.dimensionScores.observability}%)</span>
-                {unifiedIntel.findings.filter((f) => f.category === "OBSERVABILITY").map((f) => (
-                  <div key={f.id} className="rounded-2xl border border-[#dddb9d]/15 bg-[#070804] p-4 space-y-2">
-                    <p className="font-bold text-xs text-[#f2f1da]">{f.title}</p>
-                    <p className="text-[11px] text-[#c8c69d]">{f.description}</p>
-                    <p className="text-[10px] text-[#7bc963]">💡 {f.recommendation}</p>
-                  </div>
-                ))}
+              <div className="space-y-3">
+                <SectionHeading
+                  icon={Eye}
+                  title="Observability Telemetry"
+                  value={
+                    unifiedIntel.dimensionScores
+                      .observability
+                  }
+                />
+
+                {unifiedIntel.findings
+                  .filter(
+                    (finding) =>
+                      finding.category ===
+                      "OBSERVABILITY",
+                  )
+                  .map((finding) => (
+                    <FindingCard
+                      key={finding.id}
+                      title={finding.title}
+                      description={
+                        finding.description
+                      }
+                      recommendation={
+                        finding.recommendation
+                      }
+                    />
+                  ))}
               </div>
             )}
 
-            {/* PATTERNS TAB */}
             {tab === "patterns" && (
-              <div className="space-y-4">
-                <span className="font-mono text-xs font-bold text-[#7bc963]">Detected Architecture Patterns ({unifiedIntel.patterns.length})</span>
-                {unifiedIntel.patterns.map((p) => (
-                  <div key={p.id} className="rounded-2xl border border-[#7bc963]/30 bg-[#070804] p-4 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-xs text-[#f2f1da]">{p.name}</span>
-                      <span className="rounded bg-[#7bc963]/20 px-2 py-0.5 font-mono text-[9px] font-bold text-[#7bc963]">{p.confidence} Confidence</span>
-                    </div>
-                    <ul className="space-y-1 text-[11px] text-[#c8c69d]">
-                      {p.evidence.map((ev, idx) => (
-                        <li key={idx}>• {ev}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            )}
+              <div className="space-y-3">
+                <SectionHeading
+                  icon={Layers}
+                  title="Detected Patterns"
+                  value={
+                    unifiedIntel.patterns.length
+                  }
+                  suffix=""
+                />
 
-            {/* COST TAB */}
-            {tab === "cost" && (
-              <div className="space-y-4">
-                {unifiedIntel.cost.map((c, idx) => (
-                  <div key={idx} className="rounded-2xl border border-[#dddb9d]/15 bg-[#070804] p-4 space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="font-mono text-xs font-bold text-[#8e8c6c]">Infrastructure Cost Tier:</span>
-                      <span className="font-bold text-sm text-[#7bc963]">{c.costTier}</span>
-                    </div>
-                    <p className="text-xs text-[#c8c69d]">{c.tradeoffExplanation}</p>
-                    <div>
-                      <p className="font-mono text-[10px] uppercase text-[#8e8c6c] mb-1">Primary Drivers:</p>
-                      <ul className="space-y-1 text-[11px] text-[#f2f1da]">
-                        {c.primaryDrivers.map((d, i) => (
-                          <li key={i}>• {d}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* RECOMMENDATIONS TAB */}
-            {tab === "recommendations" && (
-              <div className="space-y-4">
-                <span className="font-mono text-xs font-bold text-[#7bc963]">Architectural Recommendations ({unifiedIntel.recommendations.length})</span>
-                {unifiedIntel.recommendations.map((rec) => (
-                  <div key={rec.id} className="rounded-2xl border border-[#7bc963]/30 bg-[#070804] p-4 space-y-3">
-                    <p className="font-bold text-xs text-[#f2f1da]">{rec.title}</p>
-                    <div className="space-y-1 text-[11px] text-[#c8c69d]">
-                      <p><strong className="text-[#f2f1da]">Problem:</strong> {rec.decision.problem}</p>
-                      <p><strong className="text-[#7bc963]">Decision:</strong> {rec.decision.decision}</p>
-                      <p><strong className="text-[#f2f1da]">Benefit:</strong> {rec.decision.benefit}</p>
-                      <p><strong className="text-[#8e8c6c]">Trade-off:</strong> {rec.decision.tradeoff}</p>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => onApplyMutation?.(rec.mutationType, rec.targetNodeId)}
-                      className="w-full rounded-xl bg-[#7bc963] py-2 text-xs font-bold text-[#0a0b04] hover:bg-[#7bc963]/90 transition-all"
+                {unifiedIntel.patterns.map(
+                  (pattern) => (
+                    <div
+                      key={pattern.id}
+                      className="rounded-2xl border border-[#A4AAB5]/12 bg-[#0C0E12] p-4"
                     >
-                      Apply Recommendation
-                    </button>
-                  </div>
-                ))}
+                      <div className="flex items-start justify-between gap-3">
+                        <span className="font-[var(--font-space-grotesk)] text-[11px] font-bold text-[#F0F1F3]">
+                          {pattern.name}
+                        </span>
+
+                        <span className="rounded-full border border-[#D6AD69]/30 bg-[#1D222A] px-2 py-1 font-[var(--font-inter)] text-[8px] font-bold text-[#D6AD69]">
+                          {pattern.confidence}
+                        </span>
+                      </div>
+
+                      <div className="mt-3 space-y-2">
+                        {pattern.evidence.map(
+                          (evidence, index) => (
+                            <p
+                              key={index}
+                              className="font-[var(--font-inter)] text-[9px] leading-relaxed text-[#A4AAB5]"
+                            >
+                              <span className="mr-1 text-[#D6AD69]">
+                                •
+                              </span>
+                              {evidence}
+                            </p>
+                          ),
+                        )}
+                      </div>
+                    </div>
+                  ),
+                )}
+              </div>
+            )}
+
+            {tab === "cost" && (
+              <div className="space-y-3">
+                <SectionHeading
+                  icon={DollarSign}
+                  title="Cost Intelligence"
+                />
+
+                {unifiedIntel.cost.map(
+                  (cost, index) => (
+                    <div
+                      key={index}
+                      className="rounded-2xl border border-[#A4AAB5]/12 bg-[#0C0E12] p-4"
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="font-[var(--font-inter)] text-[9px] text-[#A4AAB5]/70">
+                          Infrastructure tier
+                        </span>
+
+                        <span className="font-[var(--font-space-grotesk)] text-sm font-bold text-[#F0F1F3]">
+                          {cost.costTier}
+                        </span>
+                      </div>
+
+                      <p className="mt-3 font-[var(--font-inter)] text-[9px] leading-relaxed text-[#A4AAB5]">
+                        {cost.tradeoffExplanation}
+                      </p>
+
+                      <div className="mt-4 border-t border-[#A4AAB5]/12 pt-3">
+                        <p className="font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.14em] text-[#D6AD69]">
+                          Primary Drivers
+                        </p>
+
+                        <div className="mt-2 space-y-1.5">
+                          {cost.primaryDrivers.map(
+                            (driver, driverIndex) => (
+                              <p
+                                key={driverIndex}
+                                className="font-[var(--font-inter)] text-[9px] text-[#A4AAB5]"
+                              >
+                                • {driver}
+                              </p>
+                            ),
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ),
+                )}
+              </div>
+            )}
+
+            {tab === "recommendations" && (
+              <div className="space-y-3">
+                <SectionHeading
+                  icon={Zap}
+                  title="Recommendations"
+                  value={
+                    unifiedIntel.recommendations
+                      .length
+                  }
+                  suffix=""
+                />
+
+                {unifiedIntel.recommendations.map(
+                  (recommendation) => (
+                    <div
+                      key={recommendation.id}
+                      className="rounded-2xl border border-[#D6AD69]/30 bg-gradient-to-br from-[#171A20] to-[#0C0E12] p-4"
+                    >
+                      <div className="flex items-start gap-3">
+                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[#D6AD69]/40 bg-[#1D222A]">
+                          <Sparkles className="h-3.5 w-3.5 text-[#D6AD69]" />
+                        </span>
+
+                        <p className="font-[var(--font-space-grotesk)] text-[11px] font-bold leading-snug text-[#F0F1F3]">
+                          {recommendation.title}
+                        </p>
+                      </div>
+
+                      <div className="mt-4 space-y-2 font-[var(--font-inter)] text-[9px] leading-relaxed text-[#A4AAB5]">
+                        <p>
+                          <span className="font-semibold text-[#F0F1F3]">
+                            Problem:
+                          </span>{" "}
+                          {recommendation.decision.problem}
+                        </p>
+
+                        <p>
+                          <span className="font-semibold text-[#D6AD69]">
+                            Decision:
+                          </span>{" "}
+                          {recommendation.decision.decision}
+                        </p>
+
+                        <p>
+                          <span className="font-semibold text-[#F0F1F3]">
+                            Benefit:
+                          </span>{" "}
+                          {recommendation.decision.benefit}
+                        </p>
+
+                        <p>
+                          <span className="font-semibold text-[#A4AAB5]">
+                            Trade-off:
+                          </span>{" "}
+                          {recommendation.decision.tradeoff}
+                        </p>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          onApplyMutation?.(
+                            recommendation.mutationType,
+                            recommendation.targetNodeId,
+                          )
+                        }
+                        className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-[#F0F1F3] py-2.5 text-[9px] font-bold uppercase tracking-[0.08em] text-[#101216] transition-all hover:bg-[#E0BC7A]"
+                      >
+                        Apply Recommendation
+                        <ArrowUpRight className="h-3 w-3" />
+                      </button>
+                    </div>
+                  ),
+                )}
               </div>
             )}
           </div>
         </div>
       </div>
     </aside>
+  );
+}
+
+function SectionHeading({
+  icon: Icon,
+  title,
+  value,
+  suffix = "%",
+}: {
+  icon: LucideIcon;
+  title: string;
+  value?: number;
+  suffix?: string;
+}) {
+  return (
+    <div className="flex items-center justify-between rounded-2xl border border-[#A4AAB5]/12 bg-[#171A20] px-3.5 py-3">
+      <div className="flex min-w-0 items-center gap-2.5">
+        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[#A4AAB5]/12 bg-[#1D222A]">
+          <Icon className="h-3.5 w-3.5 text-[#D6AD69]" />
+        </span>
+
+        <span className="truncate text-[10px] font-bold text-[#F0F1F3]">
+          {title}
+        </span>
+      </div>
+
+      {typeof value === "number" && (
+        <span className="font-mono text-[10px] font-bold text-[#D6AD69]">
+          {value}
+          {suffix}
+        </span>
+      )}
+    </div>
   );
 }

@@ -262,7 +262,11 @@ export default function AIAssistantDock({
         {messages.map((msg) => (
           <div key={msg.id}>
             {msg.role === "system" ? (
-              <div className="flex items-center gap-2 rounded-lg border border-[#D6AD69]/15 bg-[#D6AD69]/05 px-3 py-2 text-[10px] text-[#D6AD69]">
+              <div className={`flex items-center gap-2 rounded-lg border px-3 py-2 text-[10px] ${
+                (msg.text.toLowerCase().includes("error") || msg.text.toLowerCase().includes("failed"))
+                  ? "border-rose-500/20 bg-rose-500/10 text-rose-400"
+                  : "border-[#D6AD69]/15 bg-[#D6AD69]/05 text-[#D6AD69]"
+              }`}>
                 <Loader2 className="h-3 w-3 animate-spin" />
                 {msg.text}
               </div>
@@ -313,16 +317,20 @@ export default function AIAssistantDock({
         ))}
 
         {(busy && messages.length > 0 && messages[messages.length - 1]?.role === "user") && (
-          <div className="flex items-center gap-2 rounded-xl border border-[#D6AD69]/20 bg-[#D6AD69]/10 p-2.5 font-mono text-[10px] text-[#D6AD69]">
-            <Loader2 className="h-3.5 w-3.5 animate-spin" />
-            <span>Analysing architecture…</span>
+          <div className="flex items-center gap-2 rounded-xl border border-[#D6AD69]/20 bg-[#D6AD69]/10 p-2.5 text-[#D6AD69]">
+            <div className="flex items-center gap-1 px-1 py-0.5">
+              <span className="typing-dot" /><span className="typing-dot" /><span className="typing-dot" />
+            </div>
+            <span className="font-mono text-[10px]">Analysing architecture…</span>
           </div>
         )}
 
         {loading && (
-          <div className="flex items-center gap-2 rounded-xl border border-[#D6AD69]/20 bg-[#D6AD69]/10 p-2.5 font-mono text-[10px] text-[#D6AD69]">
-            <Loader2 className="h-3.5 w-3.5 animate-spin" />
-            <span>Applying architecture changes…</span>
+          <div className="flex items-center gap-2 rounded-xl border border-[#D6AD69]/20 bg-[#D6AD69]/10 p-2.5 text-[#D6AD69]">
+            <div className="flex items-center gap-1 px-1 py-0.5">
+              <span className="typing-dot" /><span className="typing-dot" /><span className="typing-dot" />
+            </div>
+            <span className="font-mono text-[10px]">Applying architecture changes…</span>
           </div>
         )}
 
@@ -339,8 +347,8 @@ export default function AIAssistantDock({
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder={pendingModification ? "Pending confirmation above…" : "Ask anything or say 'Add Redis'…"}
-          disabled={!!pendingModification}
-          className="flex-1 rounded-xl border border-[#4A5060] bg-[#101216] px-3 py-2.5 text-xs text-[#F0F1F3] outline-none placeholder:text-[#A4AAB5]/50 transition-all focus:border-[#D6AD69] focus:ring-1 focus:ring-[#D6AD69]/20 disabled:opacity-40"
+          disabled={!!pendingModification || busy}
+          className={`flex-1 rounded-xl border border-[#4A5060] bg-[#101216] px-3 py-2.5 text-xs text-[#F0F1F3] outline-none placeholder:text-[#A4AAB5]/50 transition-all focus:border-[#D6AD69] focus:ring-1 focus:ring-[#D6AD69]/20 disabled:opacity-50 disabled:cursor-not-allowed ${(!!pendingModification || busy) ? "opacity-50 cursor-not-allowed" : ""}`}
         />
         <button
           type="submit"
