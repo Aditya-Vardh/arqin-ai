@@ -2,6 +2,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "@xyflow/react/dist/style.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -3968,4 +3969,86 @@ input::placeholder {
   .animate-page-enter {
     animation: none;
   }
+}
+
+/* ─── React Flow dark theme overrides ─────────────────────────────────────── */
+.react-flow__background {
+  background: #101216 !important;
+}
+
+.react-flow__controls {
+  background: rgba(12,14,18,0.92) !important;
+  border: 1px solid rgba(48,54,64,0.85) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.5) !important;
+}
+
+.react-flow__controls-button {
+  background: transparent !important;
+  border-bottom: 1px solid rgba(48,54,64,0.5) !important;
+  color: #B8C0CC !important;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.react-flow__controls-button:hover {
+  background: rgba(214,173,105,0.10) !important;
+  color: #D6AD69 !important;
+}
+
+.react-flow__controls-button svg {
+  fill: currentColor !important;
+}
+
+.react-flow__minimap {
+  background: rgba(12,14,18,0.92) !important;
+  border: 1px solid rgba(48,54,64,0.85) !important;
+  border-radius: 10px !important;
+}
+
+.react-flow__edge-path {
+  stroke-linecap: round;
+}
+
+/* Animated edge dash — make it amber */
+.react-flow__edge.animated .react-flow__edge-path {
+  stroke-dasharray: 8;
+  animation: dashdraw 0.8s linear infinite;
+}
+
+@keyframes dashdraw {
+  to {
+    stroke-dashoffset: -16;
+  }
+}
+
+/* Node handles */
+.react-flow__handle {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.react-flow__node:hover .react-flow__handle,
+.react-flow__node.selected .react-flow__handle {
+  opacity: 1;
+}
+
+/* Selection box */
+.react-flow__selection {
+  background: rgba(214,173,105,0.06) !important;
+  border: 1px solid rgba(214,173,105,0.40) !important;
+}
+
+/* Edge label */
+.react-flow__edge-textbg {
+  fill: #0C0E12 !important;
+}
+
+/* Node selected ring */
+.react-flow__node.selected > div {
+  outline: none !important;
+}
+
+/* Remove default white node shadow */
+.react-flow__node-arch {
+  box-shadow: none !important;
 }

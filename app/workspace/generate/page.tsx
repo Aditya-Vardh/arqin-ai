@@ -25,6 +25,7 @@ import { useSearchParams } from "next/navigation";
 import AIGenerationPanel from "@/components/workspace/AIGenerationPanel";
 import LoadingSequence from "@/components/workspace/LoadingSequence";
 import ArchitectureCanvas from "@/components/workspace/ArchitectureCanvas";
+import InteractiveCanvas from "@/components/workspace/InteractiveCanvas";
 import PropertyInspector from "@/components/workspace/PropertyInspector";
 import AIAssistantDock from "@/components/workspace/AIAssistantDock";
 import WorkspaceHeader from "@/components/workspace/WorkspaceHeader";
@@ -127,6 +128,9 @@ function GenerateContent() {
 
   const [showArtifacts, setShowArtifacts] =
     useState(false);
+
+  const [aiSuggestions, setAiSuggestions] =
+    useState<string[]>([]);
 
   const [showJourney, setShowJourney] =
     useState(false);
@@ -524,6 +528,10 @@ function GenerateContent() {
       );
 
     setOptimizationResult(optRes);
+    // Surface AI suggestions from optimizer in the canvas overlay
+    if (optRes.aiSuggestions && optRes.aiSuggestions.length > 0) {
+      setAiSuggestions(optRes.aiSuggestions);
+    }
   }
 
   function handleApplyOptimized() {
@@ -875,24 +883,26 @@ function GenerateContent() {
                 }`}
             >
               <div className="relative h-full min-h-0 min-w-0 overflow-hidden">
-                <ArchitectureCanvas
-                  chart={
-                    result.mermaidCode
-                  }
-                  result={result}
-                  onRegenerate={() =>
-                    generate()
-                  }
-                  selectedComponent={
-                    selectedComponent
-                  }
-                  highlightedNodeIds={
-                    highlightedNodeIds
-                  }
-                  onSelectComponent={
-                    handleSelectComponent
-                  }
-                />
+                {activeGraph ? (
+                  <InteractiveCanvas
+                    graph={activeGraph}
+                    result={result}
+                    selectedComponent={selectedComponent}
+                    onSelectComponent={handleSelectComponent}
+                    onOptimize={handleOptimize}
+                    aiSuggestions={aiSuggestions}
+                    onDismissSuggestions={() => setAiSuggestions([])}
+                  />
+                ) : (
+                  <ArchitectureCanvas
+                    chart={result.mermaidCode}
+                    result={result}
+                    onRegenerate={() => generate()}
+                    selectedComponent={selectedComponent}
+                    highlightedNodeIds={highlightedNodeIds}
+                    onSelectComponent={handleSelectComponent}
+                  />
+                )}
               </div>
 
               <div
