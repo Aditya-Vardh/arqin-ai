@@ -37,7 +37,15 @@ export default function DashboardView() {
   const health = latest?.result ? deriveAdaptiveInsights(latest.result) : null;
 
   return (
-    <div className="mx-auto max-w-7xl px-6 pb-16 pt-8 sm:px-10 sm:pt-12 lg:px-12 space-y-8">
+    <div
+      className="relative mx-auto max-w-7xl px-6 pb-16 pt-8 sm:px-10 sm:pt-12 lg:px-12 space-y-8"
+      style={{ minHeight: "100%" }}
+    >
+      {/* Ambient glow — matches landing page color grading */}
+      <div className="pointer-events-none fixed inset-0 -z-10" aria-hidden>
+        <div style={{ position:"absolute", top:"-10%", left:"15%", width:"600px", height:"500px", background:"radial-gradient(ellipse, rgba(214,173,105,0.055) 0%, transparent 65%)", filter:"blur(40px)" }} />
+        <div style={{ position:"absolute", top:"30%", right:"10%", width:"400px", height:"400px", background:"radial-gradient(ellipse, rgba(214,173,105,0.03) 0%, transparent 60%)", filter:"blur(50px)" }} />
+      </div>
 
       {/* ── Header ───────────────────────────────────────────────────────── */}
       <div className="flex flex-col gap-4 border-b border-[var(--border)] pb-6 sm:flex-row sm:items-end sm:justify-between">

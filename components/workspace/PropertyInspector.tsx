@@ -924,7 +924,7 @@ export default function PropertyInspector({
                             recommendation.targetNodeId,
                           )
                         }
-                        className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--text-primary)] py-2.5 text-[9px] font-bold uppercase tracking-[0.08em] text-[var(--on-accent)] transition-all hover:bg-[var(--accent-hover)]"
+                        className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--accent)] py-2.5 text-[9px] font-bold uppercase tracking-[0.08em] text-[var(--on-accent)] transition-all hover:bg-[var(--accent-hover)]"
                       >
                         Apply Recommendation
                         <ArrowUpRight className="h-3 w-3" />

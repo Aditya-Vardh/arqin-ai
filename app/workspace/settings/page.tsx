@@ -37,7 +37,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="mx-auto max-w-4xl p-6 lg:p-10 pt-8 sm:pt-12 pb-16 space-y-8">
+    <div className="mx-auto max-w-4xl p-6 lg:p-10 pt-8 sm:pt-12 pb-16 space-y-8" style={{ minHeight: "100%", background: "#101216" }}>
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 border-b border-[var(--accent)]/15 pb-6">
         <div>

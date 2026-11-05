@@ -111,7 +111,7 @@ export default function AIGenerationPanel({
           type="button"
           onClick={onGenerate}
           disabled={!canGenerate || loading}
-          className="inline-flex items-center gap-2 rounded-xl bg-[var(--text-primary)] px-4 py-2 text-xs font-bold text-[var(--on-accent)] transition-all hover:bg-[var(--accent-hover)] disabled:opacity-50"
+          className="inline-flex items-center gap-2 rounded-xl bg-[var(--accent)] px-4 py-2 text-xs font-bold text-[var(--on-accent)] transition-all hover:bg-[var(--accent-hover)] disabled:opacity-50"
         >
           {loading ? (
             <Loader2 className="h-4 w-4 animate-spin text-[var(--accent)]" />
@@ -249,7 +249,7 @@ export default function AIGenerationPanel({
             type="button"
             onClick={onGenerate}
             disabled={!canGenerate || loading}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-[var(--accent)]/30 bg-[var(--text-primary)] px-8 py-4 text-xs font-bold text-[var(--on-accent)] shadow-[0_12px_35px_rgba(214,173,105,0.10)] transition-all hover:-translate-y-0.5 hover:bg-[var(--accent-hover)] disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-[var(--accent)]/30 bg-[var(--accent)] px-8 py-4 text-xs font-bold text-[var(--on-accent)] shadow-[0_12px_35px_rgba(214,173,105,0.10)] transition-all hover:-translate-y-0.5 hover:bg-[var(--accent-hover)] disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto"
           >
             {loading ? (
               <>

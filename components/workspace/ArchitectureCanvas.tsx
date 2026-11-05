@@ -854,7 +854,7 @@ export default function ArchitectureCanvas({
                 onClick={
                   handleCopy
                 }
-                className="flex items-center gap-2 rounded-lg bg-[var(--text-primary)] px-3 py-2 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[var(--on-accent)]"
+                className="flex items-center gap-2 rounded-lg bg-[var(--accent)] px-3 py-2 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[var(--on-accent)]"
               >
                 {copied ? (
                   <Check className="h-3.5 w-3.5" />
@@ -897,7 +897,7 @@ export default function ArchitectureCanvas({
                   onClick={
                     onRegenerate
                   }
-                  className="mt-5 rounded-lg bg-[var(--text-primary)] px-4 py-2 font-[var(--font-space-grotesk)] text-xs font-bold text-[var(--on-accent)]"
+                  className="mt-5 rounded-lg bg-[var(--accent)] px-4 py-2 font-[var(--font-space-grotesk)] text-xs font-bold text-[var(--on-accent)]"
                 >
                   Regenerate
                 </button>

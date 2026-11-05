@@ -275,7 +275,7 @@ export default function AIAssistantDock({
                 <div
                   className={`max-w-[85%] rounded-2xl p-3 text-xs leading-relaxed ${
                     msg.role === "user"
-                      ? "bg-[var(--text-primary)] font-medium text-[var(--on-accent)]"
+                      ? "bg-[var(--accent)] font-medium text-[var(--on-accent)]"
                       : "border border-white/[0.08] bg-[var(--surface)] text-[var(--text-muted)]"
                   }`}
                 >
@@ -353,7 +353,7 @@ export default function AIAssistantDock({
         <button
           type="submit"
           disabled={!input.trim() || busy || !!pendingModification}
-          className="rounded-xl bg-[var(--text-primary)] p-2.5 text-[var(--on-accent)] transition-all hover:bg-[var(--accent-hover)] disabled:cursor-not-allowed disabled:opacity-40"
+          className="rounded-xl bg-[var(--accent)] p-2.5 text-[var(--on-accent)] transition-all hover:bg-[var(--accent-hover)] disabled:cursor-not-allowed disabled:opacity-40"
           aria-label="Send message"
         >
           <Send className="h-3.5 w-3.5 text-[var(--accent)]" />

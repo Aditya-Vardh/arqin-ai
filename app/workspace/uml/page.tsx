@@ -61,7 +61,7 @@ function UmlContent() {
   const activeItem = UML_TYPES.find((t) => t.id === type) ?? UML_TYPES[0];
 
   return (
-    <div className="mx-auto max-w-6xl p-6 lg:p-10 pt-8 sm:pt-12 pb-16 space-y-10">
+    <div className="mx-auto max-w-6xl p-6 lg:p-10 pt-8 sm:pt-12 pb-16 space-y-10" style={{ minHeight: "100%", background: "#101216" }}>
       {/* Header */}
       <div className="border-b border-[var(--accent)]/15 pb-6">
         <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-3.5 py-1 backdrop-blur-md">
@@ -90,7 +90,7 @@ function UmlContent() {
               className={`group relative overflow-hidden flex flex-col justify-between rounded-3xl border p-6 text-left transition-all duration-300 ${
                 active 
                   ? "bg-gradient-to-b from-[var(--background)] to-[var(--background)] border-[var(--accent)] shadow-[0_0_35px_rgba(214,173,105,0.25)]" 
-                  : "bg-gradient-to-b from-[var(--background)]/90 to-[var(--background)] border-[var(--accent)]/15 hover:border-[var(--accent)]/35 hover:-translate-y-1"
+                  : "bg-[#171A20] border-[var(--accent)]/15 hover:border-[var(--accent)]/35 hover:-translate-y-1"
               }`}
             >
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(#D6AD69_1px,transparent_1px)] [background-size:20px_20px] opacity-[0.04]" />
@@ -126,7 +126,7 @@ function UmlContent() {
       </div>
 
       {/* Synthesis Control Box */}
-      <div className="relative overflow-hidden rounded-3xl border border-[var(--accent)]/20 bg-gradient-to-b from-[var(--background)] via-[var(--background-2)] to-[var(--background)] p-8 shadow-2xl backdrop-blur-xl space-y-6">
+      <div className="relative overflow-hidden rounded-3xl border border-[var(--accent)]/20 bg-[#0F1318] p-8 shadow-2xl backdrop-blur-xl space-y-6">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(#D6AD69_1px,transparent_1px)] [background-size:20px_20px] opacity-[0.05]" />
         
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">

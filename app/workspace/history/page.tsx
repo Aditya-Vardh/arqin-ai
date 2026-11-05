@@ -13,7 +13,7 @@ import {
 import { useStore } from "@/hooks/UserStoreContext";
 import type { HistoryEntry } from "@/lib/storage/types";
 import { DIAGRAM_TYPE_LABELS } from "@/lib/storage/types";
-import PageHeader from "@/components/workspace/PageHeader";
+import PageHeader from "@/components/workspace/PageHeader";
 
 export default function HistoryPage() {
   const store = useStore();
@@ -46,7 +46,7 @@ export default function HistoryPage() {
   }, [history, query, filter]);
 
   return (
-    <div className="relative min-h-full overflow-hidden bg-[var(--background)]">
+    <div className="relative min-h-full overflow-hidden" style={{ background: "#101216" }}>
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute left-[8%] top-[-180px] h-[480px] w-[480px] rounded-full bg-[var(--accent)]/[0.025] blur-[130px]" />
 

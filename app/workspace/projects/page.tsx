@@ -130,7 +130,7 @@ export default function ProjectsPage() {
   }
 
   return (
-    <div className="relative min-h-full overflow-hidden bg-[var(--background)]">
+    <div className="relative min-h-full overflow-hidden" style={{ background: "#101216" }}>
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute left-[10%] top-[-180px] h-[500px] w-[500px] rounded-full bg-[var(--accent)]/[0.025] blur-[130px]" />
 
@@ -168,7 +168,7 @@ export default function ProjectsPage() {
 
           <Link
             href="/workspace/generate?new=1"
-            className="group inline-flex shrink-0 items-center justify-center gap-2.5 rounded-2xl border border-[var(--accent)]/30 bg-[var(--text-primary)] px-5 py-3.5 text-xs font-bold text-[var(--on-accent)] shadow-[0_0_28px_rgba(0,0,0,0.15)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[var(--accent-hover)]"
+            className="group inline-flex shrink-0 items-center justify-center gap-2.5 rounded-2xl border border-[var(--accent)]/30 bg-[var(--accent)] px-5 py-3.5 text-xs font-bold text-[var(--on-accent)] shadow-[0_0_28px_rgba(0,0,0,0.15)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[var(--accent-hover)]"
           >
             <Plus className="h-4 w-4 text-[var(--accent)]" />
             Create New Project
@@ -213,7 +213,7 @@ export default function ProjectsPage() {
 
             <Link
               href="/workspace/generate?new=1"
-              className="mt-7 inline-flex items-center gap-2 rounded-xl bg-[var(--text-primary)] px-5 py-3 text-xs font-bold text-[var(--on-accent)] transition-all hover:bg-[var(--accent-hover)]"
+              className="mt-7 inline-flex items-center gap-2 rounded-xl bg-[var(--accent)] px-5 py-3 text-xs font-bold text-[var(--on-accent)] transition-all hover:bg-[var(--accent-hover)]"
             >
               <Plus className="h-4 w-4 text-[var(--accent)]" />
               Launch Studio Canvas

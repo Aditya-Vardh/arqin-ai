@@ -107,7 +107,7 @@ function QualitativeBadge({ label }: { label: string }) {
   const color = isHigh
     ? "border-[var(--accent)]/40 bg-[var(--accent)]/10 text-[var(--accent)]"
     : isLow
-    ? "border-[var(--text-primary)]/40 bg-[var(--text-primary)]/10 text-[var(--text-primary)]"
+    ? "border-[var(--text-primary)]/40 bg-[var(--accent)]/10 text-[var(--text-primary)]"
     : "border-white/[0.08] bg-[var(--border-subtle)] text-[var(--text-muted)]";
 
   return (
@@ -285,7 +285,7 @@ export default function ResearchPage() {
   };
 
   return (
-    <div className="mx-auto max-w-6xl p-6 pb-20 pt-8 lg:p-10 lg:pt-10">
+    <div className="mx-auto max-w-6xl p-6 pb-20 pt-8 lg:p-10 lg:pt-10" style={{ minHeight: "100%", background: "#101216" }}>
       <div className="mb-8 border-b border-white/[0.08] pb-6">
         <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/25 bg-[var(--accent)]/10 px-3.5 py-1 backdrop-blur-md">
           <BookOpen className="h-3.5 w-3.5 text-[var(--accent)]" />
@@ -343,7 +343,7 @@ export default function ResearchPage() {
                 onClick={submit}
                 disabled={!canSubmit}
                 aria-label="Run architecture research"
-                className="mt-4 w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--text-primary)] px-6 py-3 text-xs font-bold uppercase tracking-wider text-[var(--on-accent)] transition-all hover:bg-[var(--accent-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30 disabled:cursor-not-allowed disabled:opacity-40"
+                className="mt-4 w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--accent)] px-6 py-3 text-xs font-bold uppercase tracking-wider text-[var(--on-accent)] transition-all hover:bg-[var(--accent-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 {loading ? (
                   <>

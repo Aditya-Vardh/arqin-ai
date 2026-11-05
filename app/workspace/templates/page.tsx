@@ -205,7 +205,7 @@ export default function TemplatesPage() {
       : TEMPLATES.filter((t) => t.category === active);
 
   return (
-    <div className="mx-auto max-w-7xl space-y-10 px-6 pb-16 pt-8 sm:pt-12 lg:p-10">
+    <div className="mx-auto max-w-7xl space-y-10 px-6 pb-16 pt-8 sm:pt-12 lg:p-10" style={{ minHeight: "100%", background: "#101216" }}>
       {/* Page Header */}
       <div className="border-b border-[var(--accent)]/15 pb-8">
         <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-3.5 py-1 backdrop-blur-md">
