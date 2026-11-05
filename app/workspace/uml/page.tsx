@@ -70,10 +70,10 @@ function UmlContent() {
             Standardized UML Synthesizer
           </span>
         </div>
-        <h1 className="text-4xl font-extrabold tracking-tight text-[#F0F1F3] sm:text-5xl leading-tight mb-2">
+        <h1 className="text-4xl font-extrabold tracking-tight text-[var(--text-primary)] sm:text-5xl leading-tight mb-2">
           UML Diagram Generator
         </h1>
-        <p className="text-base text-[#A4AAB5] max-w-2xl leading-relaxed">
+        <p className="text-base text-[var(--text-muted)] max-w-2xl leading-relaxed">
           Select a standardized UML diagram specification, customize your design prompt, and generate clean, production-ready Mermaid diagrams.
         </p>
       </div>
@@ -98,7 +98,7 @@ function UmlContent() {
               
               <div className="relative z-10">
                 <div className="mb-4 flex items-center justify-between">
-                  <div className={`flex h-11 w-11 items-center justify-center rounded-2xl border ${active ? "border-[#D6AD69] bg-[#D6AD69]/20 text-[#D6AD69]" : "border-[#D6AD69]/20 bg-[#D6AD69]/10 text-[#4A5060]"} group-hover:scale-110 transition-transform`}>
+                  <div className={`flex h-11 w-11 items-center justify-center rounded-2xl border ${active ? "border-[#D6AD69] bg-[#D6AD69]/20 text-[#D6AD69]" : "border-[#D6AD69]/20 bg-[#D6AD69]/10 text-[var(--text-faint)]"} group-hover:scale-110 transition-transform`}>
                     <GitBranch className="h-5 w-5" />
                   </div>
                   {active && (
@@ -108,10 +108,10 @@ function UmlContent() {
                   )}
                 </div>
 
-                <h3 className={`text-lg font-bold ${active ? "text-[#F0F1F3]" : "text-[#A4AAB5] group-hover:text-[#F0F1F3]"}`}>
+                <h3 className={`text-lg font-bold ${active ? "text-[var(--text-primary)]" : "text-[var(--text-muted)] group-hover:text-[var(--text-primary)]"}`}>
                   {t.label}
                 </h3>
-                <p className="mt-2 text-xs leading-relaxed text-[#A4AAB5]">
+                <p className="mt-2 text-xs leading-relaxed text-[var(--text-muted)]">
                   {t.desc}
                 </p>
               </div>
@@ -135,8 +135,8 @@ function UmlContent() {
               <Sparkles className="h-6 w-6" />
             </div>
             <div>
-              <p className="text-xl font-extrabold text-[#F0F1F3]">{activeItem.label} Generator</p>
-              <p className="mt-1 text-xs text-[#A4AAB5]">
+              <p className="text-xl font-extrabold text-[var(--text-primary)]">{activeItem.label} Generator</p>
+              <p className="mt-1 text-xs text-[var(--text-muted)]">
                 Enter a system description below or click Synthesize to view standard {activeItem.label} specs.
               </p>
             </div>
@@ -156,7 +156,7 @@ function UmlContent() {
             <button
               type="button"
               onClick={openInStudio}
-              className="inline-flex items-center gap-2 rounded-2xl border border-[#D6AD69]/20 bg-[#101216] px-5 py-3.5 text-xs font-bold text-[#F0F1F3] hover:border-[#D6AD69]/40 transition-colors"
+              className="inline-flex items-center gap-2 rounded-2xl border border-[#D6AD69]/20 bg-[var(--background)] px-5 py-3.5 text-xs font-bold text-[var(--text-primary)] hover:border-[#D6AD69]/40 transition-colors"
             >
               <Layers className="h-4 w-4 text-[#D6AD69]" />
               Open in Studio
@@ -171,7 +171,7 @@ function UmlContent() {
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             placeholder={`Customize prompt for ${activeItem.label} (e.g. User auth flow with JWT tokens, rate limiting and database lookup)...`}
-            className="w-full rounded-2xl border border-[#D6AD69]/20 bg-[#0C0E12] px-5 py-3.5 text-xs font-medium text-[#F0F1F3] placeholder-[#4A5060] outline-none focus:border-[#D6AD69]"
+            className="w-full rounded-2xl border border-[#D6AD69]/20 bg-[var(--background-2)] px-5 py-3.5 text-xs font-medium text-[var(--text-primary)] placeholder-[#4A5060] outline-none focus:border-[#D6AD69]"
           />
         </div>
       </div>
@@ -185,9 +185,9 @@ function UmlContent() {
 
       {/* Live Canvas View */}
       {result && (
-        <div className="relative overflow-hidden rounded-3xl border border-[#D6AD69]/20 bg-[#101216] h-[600px] shadow-2xl">
-          <div className="flex items-center justify-between px-6 py-3 border-b border-[#D6AD69]/15 bg-[#101216]">
-            <span className="text-xs font-bold text-[#F0F1F3] flex items-center gap-2">
+        <div className="relative overflow-hidden rounded-3xl border border-[#D6AD69]/20 bg-[var(--background)] h-[600px] shadow-2xl">
+          <div className="flex items-center justify-between px-6 py-3 border-b border-[#D6AD69]/15 bg-[var(--background)]">
+            <span className="text-xs font-bold text-[var(--text-primary)] flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4 text-[#D6AD69]" />
               {result.title}  —  {DIAGRAM_TYPE_LABELS[result.diagramType]} Live Preview
             </span>
@@ -208,7 +208,7 @@ function UmlContent() {
 
 export default function UmlPage() {
   return (
-    <Suspense fallback={<div className="p-8 text-sm text-[#A4AAB5]">Loading UML engine...</div>}>
+    <Suspense fallback={<div className="p-8 text-sm text-[var(--text-muted)]">Loading UML engine...</div>}>
       <UmlContent />
     </Suspense>
   );

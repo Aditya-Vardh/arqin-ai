@@ -169,8 +169,8 @@ export default function LineSidebar({ open, onClose }: Props) {
             className="flex min-w-0 items-center gap-3"
             onClick={onClose}
           >
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[#D6AD69]/30 bg-[#171A20] p-[1px] shadow-[0_0_18px_rgba(0,0,0,0.15)]">
-              <div className="flex h-full w-full items-center justify-center rounded-[11px] bg-[#101216]">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[#D6AD69]/30 bg-[var(--surface)] p-[1px] shadow-[0_0_18px_rgba(0,0,0,0.15)]">
+              <div className="flex h-full w-full items-center justify-center rounded-[11px] bg-[var(--background)]">
                 <Image
                   src="/icon.svg"
                   alt="Arqin AI Logo"

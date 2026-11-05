@@ -151,7 +151,7 @@ export default function AIAssistantDock({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 rounded-full border border-[#D6AD69]/30 bg-[#171A20]/95 px-5 py-3 text-xs font-bold text-[#F0F1F3] shadow-[0_0_35px_rgba(0,0,0,0.85),0_0_24px_rgba(0,0,0,0.15)] backdrop-blur-2xl transition-all duration-300 hover:scale-[1.03] hover:border-[#D6AD69]/55 hover:bg-[#1D222A]"
+        className="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 rounded-full border border-[#D6AD69]/30 bg-[var(--surface)]/95 px-5 py-3 text-xs font-bold text-[var(--text-primary)] shadow-[0_0_35px_rgba(0,0,0,0.85),0_0_24px_rgba(0,0,0,0.15)] backdrop-blur-2xl transition-all duration-300 hover:scale-[1.03] hover:border-[#D6AD69]/55 hover:bg-[var(--surface-elevated)]"
         aria-label="Open Arqin AI Copilot"
       >
         <div className="flex h-6 w-6 items-center justify-center rounded-full border border-[#D6AD69]/30 bg-[#D6AD69]/10 text-[#D6AD69]">
@@ -164,22 +164,22 @@ export default function AIAssistantDock({
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex h-[520px] w-[380px] flex-col overflow-hidden rounded-[26px] border border-[#A4AAB5]/12 bg-[#0C0E12]/96 text-[#F0F1F3] shadow-[0_0_70px_rgba(0,0,0,0.9),0_0_35px_rgba(0,0,0,0.12)] backdrop-blur-2xl">
+    <div className="fixed bottom-6 right-6 z-50 flex h-[520px] w-[380px] flex-col overflow-hidden rounded-[26px] border border-[#A4AAB5]/12 bg-[var(--background-2)]/96 text-[var(--text-primary)] shadow-[0_0_70px_rgba(0,0,0,0.9),0_0_35px_rgba(0,0,0,0.12)] backdrop-blur-2xl">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-[#A4AAB5]/10 bg-[#171A20]/90 px-4 py-3.5 shrink-0">
+      <div className="flex items-center justify-between border-b border-[#A4AAB5]/10 bg-[var(--surface)]/90 px-4 py-3.5 shrink-0">
         <div className="flex items-center gap-3">
           <div className="flex h-8 w-8 items-center justify-center rounded-xl border border-[#D6AD69]/30 bg-[#D6AD69]/10 text-[#D6AD69]">
             <Sparkles className="h-4 w-4" />
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <p className="text-xs font-bold text-[#F0F1F3]">Arqin AI</p>
+              <p className="text-xs font-bold text-[var(--text-primary)]">Arqin AI</p>
               <span className="font-mono text-[9px] font-bold uppercase tracking-wider text-[#D6AD69]">
                 Copilot
               </span>
             </div>
             {projectTitle && (
-              <p className="mt-0.5 max-w-[190px] truncate text-[10px] text-[#A4AAB5]">
+              <p className="mt-0.5 max-w-[190px] truncate text-[10px] text-[var(--text-muted)]">
                 {projectTitle}
               </p>
             )}
@@ -188,7 +188,7 @@ export default function AIAssistantDock({
         <button
           type="button"
           onClick={() => setOpen(false)}
-          className="rounded-xl border border-transparent p-1.5 text-[#A4AAB5] transition-all hover:border-[#4A5060] hover:bg-[#1D222A] hover:text-[#F0F1F3]"
+          className="rounded-xl border border-transparent p-1.5 text-[var(--text-muted)] transition-all hover:border-[#4A5060] hover:bg-[var(--surface-elevated)] hover:text-[var(--text-primary)]"
           aria-label="Close Copilot"
         >
           <X className="h-4 w-4" />
@@ -197,7 +197,7 @@ export default function AIAssistantDock({
 
       {/* Quick actions bar */}
       {(onOptimize || onSimulate || onArtifacts) && (
-        <div className="grid grid-cols-3 gap-1.5 border-b border-[#A4AAB5]/10 bg-[#101216] p-2 shrink-0">
+        <div className="grid grid-cols-3 gap-1.5 border-b border-[#A4AAB5]/10 bg-[var(--background)] p-2 shrink-0">
           {onOptimize && (
             <button
               type="button"
@@ -212,7 +212,7 @@ export default function AIAssistantDock({
             <button
               type="button"
               onClick={() => { onSimulate(); setOpen(false); }}
-              className="flex items-center justify-center gap-1 rounded-xl border border-[#4A5060] bg-[#171A20] py-1.5 text-[10px] font-bold text-[#A4AAB5] transition-all hover:border-[#D6AD69]/40 hover:text-[#F0F1F3]"
+              className="flex items-center justify-center gap-1 rounded-xl border border-[#4A5060] bg-[var(--surface)] py-1.5 text-[10px] font-bold text-[var(--text-muted)] transition-all hover:border-[#D6AD69]/40 hover:text-[var(--text-primary)]"
             >
               <Cpu className="h-3 w-3 text-[#D6AD69]" />
               Simulate
@@ -222,7 +222,7 @@ export default function AIAssistantDock({
             <button
               type="button"
               onClick={() => { onArtifacts(); setOpen(false); }}
-              className="flex items-center justify-center gap-1 rounded-xl border border-[#4A5060] bg-[#171A20] py-1.5 text-[10px] font-bold text-[#A4AAB5] transition-all hover:border-[#D6AD69]/40 hover:text-[#F0F1F3]"
+              className="flex items-center justify-center gap-1 rounded-xl border border-[#4A5060] bg-[var(--surface)] py-1.5 text-[10px] font-bold text-[var(--text-muted)] transition-all hover:border-[#D6AD69]/40 hover:text-[var(--text-primary)]"
             >
               <Code2 className="h-3 w-3 text-[#D6AD69]" />
               Artifacts
@@ -232,15 +232,15 @@ export default function AIAssistantDock({
       )}
 
       {/* Messages */}
-      <div className="flex-1 space-y-3 overflow-y-auto bg-[#101216] p-4">
+      <div className="flex-1 space-y-3 overflow-y-auto bg-[var(--background)] p-4">
         {messages.length === 0 && (
           <div className="space-y-4 p-2 text-center">
             <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-2xl border border-[#D6AD69]/30 bg-[#D6AD69]/10 text-[#D6AD69]">
               <Bot className="h-5 w-5" />
             </div>
             <div>
-              <p className="text-xs font-bold text-[#F0F1F3]">Architecture intelligence</p>
-              <p className="mt-1.5 text-[10px] leading-relaxed text-[#A4AAB5]">
+              <p className="text-xs font-bold text-[var(--text-primary)]">Architecture intelligence</p>
+              <p className="mt-1.5 text-[10px] leading-relaxed text-[var(--text-muted)]">
                 Ask questions about your architecture. Say <em>&ldquo;Add Redis&rdquo;</em> to propose a modification.
               </p>
             </div>
@@ -250,7 +250,7 @@ export default function AIAssistantDock({
                   key={q}
                   type="button"
                   onClick={() => send(q)}
-                  className="rounded-full border border-[#4A5060] bg-[#171A20] px-2.5 py-1.5 text-[10px] text-[#A4AAB5] transition-all hover:border-[#D6AD69]/40 hover:bg-[#D6AD69]/10 hover:text-[#F0F1F3]"
+                  className="rounded-full border border-[#4A5060] bg-[var(--surface)] px-2.5 py-1.5 text-[10px] text-[var(--text-muted)] transition-all hover:border-[#D6AD69]/40 hover:bg-[#D6AD69]/10 hover:text-[var(--text-primary)]"
                 >
                   {q}
                 </button>
@@ -276,13 +276,13 @@ export default function AIAssistantDock({
                   className={`max-w-[85%] rounded-2xl p-3 text-xs leading-relaxed ${
                     msg.role === "user"
                       ? "bg-[#F0F1F3] font-medium text-[#101216]"
-                      : "border border-[#A4AAB5]/12 bg-[#171A20] text-[#A4AAB5]"
+                      : "border border-[#A4AAB5]/12 bg-[var(--surface)] text-[var(--text-muted)]"
                   }`}
                 >
                   {/* Render basic markdown-like bold */}
                   {msg.text.split(/\*\*(.+?)\*\*/g).map((part, i) =>
                     i % 2 === 1
-                      ? <strong key={i} className="text-[#F0F1F3]">{part}</strong>
+                      ? <strong key={i} className="text-[var(--text-primary)]">{part}</strong>
                       : <span key={i}>{part}</span>
                   )}
 
@@ -304,7 +304,7 @@ export default function AIAssistantDock({
                           setPendingModification(null);
                           addMessage({ role: "ai", text: "Modification cancelled. Architecture is unchanged." });
                         }}
-                        className="flex items-center gap-1.5 rounded-lg border border-[#303640] bg-[#101216] px-3 py-1.5 text-[10px] font-bold text-[#A4AAB5] transition-all hover:text-[#F0F1F3]"
+                        className="flex items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-1.5 text-[10px] font-bold text-[var(--text-muted)] transition-all hover:text-[var(--text-primary)]"
                       >
                         Cancel
                       </button>
@@ -340,7 +340,7 @@ export default function AIAssistantDock({
       {/* Input */}
       <form
         onSubmit={(e) => { e.preventDefault(); send(input); }}
-        className="flex items-center gap-2 border-t border-[#A4AAB5]/10 bg-[#171A20]/95 p-3 shrink-0"
+        className="flex items-center gap-2 border-t border-[#A4AAB5]/10 bg-[var(--surface)]/95 p-3 shrink-0"
       >
         <input
           type="text"
@@ -348,7 +348,7 @@ export default function AIAssistantDock({
           onChange={(e) => setInput(e.target.value)}
           placeholder={pendingModification ? "Pending confirmation above…" : "Ask anything or say 'Add Redis'…"}
           disabled={!!pendingModification || busy}
-          className={`flex-1 rounded-xl border border-[#4A5060] bg-[#101216] px-3 py-2.5 text-xs text-[#F0F1F3] outline-none placeholder:text-[#A4AAB5]/50 transition-all focus:border-[#D6AD69] focus:ring-1 focus:ring-[#D6AD69]/20 disabled:opacity-50 disabled:cursor-not-allowed ${(!!pendingModification || busy) ? "opacity-50 cursor-not-allowed" : ""}`}
+          className={`flex-1 rounded-xl border border-[#4A5060] bg-[var(--background)] px-3 py-2.5 text-xs text-[var(--text-primary)] outline-none placeholder:text-[var(--text-muted)]/50 transition-all focus:border-[#D6AD69] focus:ring-1 focus:ring-[#D6AD69]/20 disabled:opacity-50 disabled:cursor-not-allowed ${(!!pendingModification || busy) ? "opacity-50 cursor-not-allowed" : ""}`}
         />
         <button
           type="submit"

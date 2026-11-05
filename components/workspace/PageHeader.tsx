@@ -36,7 +36,7 @@ export default function PageHeader({
   };
 
   return (
-    <div className="flex flex-col gap-4 border-b border-[#303640] pb-8 sm:flex-row sm:items-end sm:justify-between">
+    <div className="flex flex-col gap-4 border-b border-[var(--border)] pb-8 sm:flex-row sm:items-end sm:justify-between">
       <div className="min-w-0">
         {/* Eyebrow badge */}
         <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#D6AD69]/30 bg-[#D6AD69]/10 px-3.5 py-1">
@@ -47,12 +47,12 @@ export default function PageHeader({
         </div>
 
         {/* Title */}
-        <h1 className="text-4xl font-extrabold leading-tight tracking-tight text-[#F0F1F3] sm:text-5xl">
+        <h1 className="text-4xl font-extrabold leading-tight tracking-tight text-[var(--text-primary)] sm:text-5xl">
           {renderTitle()}
         </h1>
 
         {/* Description */}
-        <p className="mt-2 max-w-2xl text-base leading-relaxed text-[#A4AAB5]">
+        <p className="mt-2 max-w-2xl text-base leading-relaxed text-[var(--text-muted)]">
           {description}
         </p>
       </div>

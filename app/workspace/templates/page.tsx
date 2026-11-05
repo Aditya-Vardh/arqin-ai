@@ -218,11 +218,11 @@ export default function TemplatesPage() {
           </span>
         </div>
 
-        <h1 className="mb-3 text-4xl font-extrabold leading-tight tracking-tight text-[#F0F1F3] sm:text-5xl">
+        <h1 className="mb-3 text-4xl font-extrabold leading-tight tracking-tight text-[var(--text-primary)] sm:text-5xl">
           System Templates
         </h1>
 
-        <p className="max-w-2xl text-base leading-relaxed text-[#A4AAB5]">
+        <p className="max-w-2xl text-base leading-relaxed text-[var(--text-muted)]">
           Start from a battle-tested production architecture template,
           customize it for your stack, and generate Mermaid diagrams instantly.
         </p>
@@ -287,10 +287,10 @@ export default function TemplatesPage() {
       ) : (
         <div className="rounded-2xl border border-white/10 bg-[#151515] px-6 py-16 text-center">
           <LayoutTemplate className="mx-auto mb-4 h-9 w-9 text-[#D6AD69]" />
-          <h2 className="text-lg font-semibold text-[#F0F1F3]">
+          <h2 className="text-lg font-semibold text-[var(--text-primary)]">
             No templates found
           </h2>
-          <p className="mt-2 text-sm text-[#A4AAB5]">
+          <p className="mt-2 text-sm text-[var(--text-muted)]">
             There are currently no templates in this category.
           </p>
           <button

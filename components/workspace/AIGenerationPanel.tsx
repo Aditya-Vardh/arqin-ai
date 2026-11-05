@@ -102,8 +102,8 @@ export default function AIGenerationPanel({
 
   if (collapsed) {
     return (
-      <div className="rounded-2xl border border-[#A4AAB5]/12 bg-[#171A20]/95 p-3 backdrop-blur-xl flex items-center justify-between">
-        <span className="text-xs font-bold text-[#F0F1F3]">
+      <div className="rounded-2xl border border-[#A4AAB5]/12 bg-[var(--surface)]/95 p-3 backdrop-blur-xl flex items-center justify-between">
+        <span className="text-xs font-bold text-[var(--text-primary)]">
           Architecture Prompt Panel
         </span>
 
@@ -125,7 +125,7 @@ export default function AIGenerationPanel({
   }
 
   return (
-    <div className="group relative mx-auto w-full max-w-5xl overflow-hidden rounded-[28px] border border-[#A4AAB5]/12 bg-[#171A20] p-7 shadow-[0_30px_80px_rgba(0,0,0,0.7),0_0_45px_rgba(0,0,0,0.12)] backdrop-blur-2xl sm:p-8">
+    <div className="group relative mx-auto w-full max-w-5xl overflow-hidden rounded-[28px] border border-[#A4AAB5]/12 bg-[var(--surface)] p-7 shadow-[0_30px_80px_rgba(0,0,0,0.7),0_0_45px_rgba(0,0,0,0.12)] backdrop-blur-2xl sm:p-8">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(rgba(48,54,64,0.6)_1px,transparent_1px)] [background-size:24px_24px] opacity-40" />
 
       <div className="pointer-events-none absolute -right-32 -top-32 h-80 w-80 rounded-full bg-[#D6AD69]/10 blur-[90px]" />
@@ -142,18 +142,18 @@ export default function AIGenerationPanel({
               </p>
             </div>
 
-            <h2 className="text-3xl font-bold tracking-tight text-[#F0F1F3] sm:text-4xl">
+            <h2 className="text-3xl font-bold tracking-tight text-[var(--text-primary)] sm:text-4xl">
               Describe Your Architecture
             </h2>
 
-            <p className="mt-2 max-w-xl text-sm leading-relaxed text-[#A4AAB5]">
+            <p className="mt-2 max-w-xl text-sm leading-relaxed text-[var(--text-muted)]">
               Tell Arqin AI what you&apos;re building — components, technology,
               and relationships.
             </p>
           </div>
 
           <div className="shrink-0">
-            <label className="mb-1.5 block font-mono text-[10px] font-bold uppercase tracking-wider text-[#4A5060]">
+            <label className="mb-1.5 block font-mono text-[10px] font-bold uppercase tracking-wider text-[var(--text-faint)]">
               Diagram Spec
             </label>
 
@@ -162,11 +162,11 @@ export default function AIGenerationPanel({
               onChange={(e) =>
                 onDiagramTypeChange(e.target.value as DiagramType)
               }
-              className="w-full rounded-xl border border-[#4A5060] bg-[#101216] px-4 py-2.5 text-xs font-semibold text-[#F0F1F3] outline-none transition-all hover:border-[#D6AD69]/40 focus:border-[#D6AD69] md:w-auto"
+              className="w-full rounded-xl border border-[#4A5060] bg-[var(--background)] px-4 py-2.5 text-xs font-semibold text-[var(--text-primary)] outline-none transition-all hover:border-[#D6AD69]/40 focus:border-[#D6AD69] md:w-auto"
               aria-label="Diagram type"
             >
               {Object.entries(DIAGRAM_TYPE_LABELS).map(([v, l]) => (
-                <option key={v} value={v} className="bg-[#171A20]">
+                <option key={v} value={v} className="bg-[var(--surface)]">
                   {l}
                 </option>
               ))}
@@ -183,14 +183,14 @@ export default function AIGenerationPanel({
                 key={ex.title}
                 type="button"
                 onClick={() => onPromptChange(ex.prompt)}
-                className="group/chip relative flex flex-col items-start gap-2.5 overflow-hidden rounded-2xl border border-[#A4AAB5]/10 bg-[#1D222A] p-4 text-left transition-all duration-300 hover:-translate-y-1 hover:border-[#D6AD69]/35 hover:bg-[#1D222A]/90 shadow-sm"
+                className="group/chip relative flex flex-col items-start gap-2.5 overflow-hidden rounded-2xl border border-[#A4AAB5]/10 bg-[var(--surface-elevated)] p-4 text-left transition-all duration-300 hover:-translate-y-1 hover:border-[#D6AD69]/35 hover:bg-[var(--surface-elevated)]/90 shadow-sm"
               >
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#D6AD69]/30 bg-[#171A20] text-[#D6AD69] transition-all duration-300 group-hover/chip:scale-110">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#D6AD69]/30 bg-[var(--surface)] text-[#D6AD69] transition-all duration-300 group-hover/chip:scale-110">
                   <Icon className="h-4 w-4" />
                 </div>
 
                 <div className="w-full min-w-0">
-                  <p className="truncate text-xs font-bold text-[#F0F1F3] transition-colors group-hover/chip:text-[#D6AD69]">
+                  <p className="truncate text-xs font-bold text-[var(--text-primary)] transition-colors group-hover/chip:text-[#D6AD69]">
                     {ex.title}
                   </p>
 
@@ -198,7 +198,7 @@ export default function AIGenerationPanel({
                     {ex.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="rounded-full border border-[#4A5060] bg-[#101216] px-2 py-0.5 font-mono text-[9px] font-semibold text-[#A4AAB5]"
+                        className="rounded-full border border-[#4A5060] bg-[var(--background)] px-2 py-0.5 font-mono text-[9px] font-semibold text-[var(--text-muted)]"
                       >
                         {tag}
                       </span>
@@ -217,7 +217,7 @@ export default function AIGenerationPanel({
             onKeyDown={handleKeyDown}
             rows={5}
             placeholder="e.g. Build a scalable e-commerce platform with React frontend, Node.js API gateway, PostgreSQL database, and Redis caching..."
-            className="w-full resize-none rounded-2xl border border-[#4A5060] bg-[#101216] p-5 text-sm leading-relaxed text-[#F0F1F3] placeholder-[#A4AAB5]/50 outline-none transition-all focus:border-[#D6AD69] focus:ring-1 focus:ring-[#D6AD69]/20"
+            className="w-full resize-none rounded-2xl border border-[#4A5060] bg-[var(--background)] p-5 text-sm leading-relaxed text-[var(--text-primary)] placeholder-[#A4AAB5]/50 outline-none transition-all focus:border-[#D6AD69] focus:ring-1 focus:ring-[#D6AD69]/20"
             aria-label="Architecture description"
           />
 
@@ -226,7 +226,7 @@ export default function AIGenerationPanel({
               className={`font-mono text-xs ${
                 prompt.length > 0 && prompt.length < MIN_CHARS
                   ? "font-bold text-amber-400"
-                  : "text-[#A4AAB5]/60"
+                  : "text-[var(--text-muted)]/60"
               }`}
             >
               {prompt.length} chars
@@ -235,7 +235,7 @@ export default function AIGenerationPanel({
         </div>
 
         <div className="flex flex-col items-center justify-between gap-4 border-t border-[#A4AAB5]/10 pt-6 sm:flex-row">
-          <p className="text-xs text-[#A4AAB5]">
+          <p className="text-xs text-[var(--text-muted)]">
             {prompt.length > 0 && prompt.length < MIN_CHARS ? (
               <span className="font-bold text-amber-400">
                 Minimum 15 characters required for AI synthesis.

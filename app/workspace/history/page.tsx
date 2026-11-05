@@ -46,7 +46,7 @@ export default function HistoryPage() {
   }, [history, query, filter]);
 
   return (
-    <div className="relative min-h-full overflow-hidden bg-[#101216]">
+    <div className="relative min-h-full overflow-hidden bg-[var(--background)]">
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute left-[8%] top-[-180px] h-[480px] w-[480px] rounded-full bg-[#D6AD69]/[0.025] blur-[130px]" />
 
@@ -65,18 +65,18 @@ export default function HistoryPage() {
 
         <div className="flex flex-col gap-3 sm:flex-row">
           <div className="relative flex-1">
-            <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#4A5060]" />
+            <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--text-faint)]" />
 
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search versions, prompts, or diagram types..."
-              className="w-full rounded-2xl border border-[#303640] bg-[#171A20] py-3.5 pl-11 pr-4 font-[var(--font-inter)] text-xs text-[#F0F1F3] outline-none transition-all placeholder:text-[#4A5060] focus:border-[#D6AD69]/40 focus:ring-1 focus:ring-[#D6AD69]/10"
+              className="w-full rounded-2xl border border-[var(--border)] bg-[var(--surface)] py-3.5 pl-11 pr-4 font-[var(--font-inter)] text-xs text-[var(--text-primary)] outline-none transition-all placeholder:text-[var(--text-faint)] focus:border-[#D6AD69]/40 focus:ring-1 focus:ring-[#D6AD69]/10"
             />
           </div>
 
-          <div className="flex rounded-2xl border border-[#303640] bg-[#171A20] p-1">
+          <div className="flex rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-1">
             {(["all", "success", "error"] as const).map((value) => (
               <button
                 key={value}
@@ -84,7 +84,7 @@ export default function HistoryPage() {
                 onClick={() => setFilter(value)}
                 className={`rounded-xl px-4 py-2 font-[var(--font-geist-mono)] text-[9px] font-bold uppercase tracking-wider transition-all ${filter === value
                     ? "bg-[#D6AD69]/10 text-[#D6AD69]"
-                    : "text-[#4A5060] hover:text-[#A4AAB5]"
+                    : "text-[var(--text-faint)] hover:text-[var(--text-muted)]"
                   }`}
               >
                 {value}
@@ -95,20 +95,20 @@ export default function HistoryPage() {
 
         <div className="flex items-center justify-between">
           <div>
-            <p className="font-[var(--font-geist-mono)] text-[9px] font-bold uppercase tracking-[0.18em] text-[#4A5060]">
+            <p className="font-[var(--font-geist-mono)] text-[9px] font-bold uppercase tracking-[0.18em] text-[var(--text-faint)]">
               Version Stream
             </p>
 
-            <p className="mt-1 font-[var(--font-space-grotesk)] text-sm font-semibold text-[#A4AAB5]">
+            <p className="mt-1 font-[var(--font-space-grotesk)] text-sm font-semibold text-[var(--text-muted)]">
               {filtered.length}{" "}
               {filtered.length === 1 ? "snapshot" : "snapshots"}
             </p>
           </div>
 
-          <div className="hidden items-center gap-2 rounded-full border border-[#303640] bg-[#171A20] px-3 py-1.5 sm:flex">
+          <div className="hidden items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 sm:flex">
             <span className="h-1.5 w-1.5 rounded-full bg-[#D6AD69] shadow-[0_0_8px_rgba(214, 173, 105,0.65)]" />
 
-            <span className="font-[var(--font-geist-mono)] text-[9px] font-bold uppercase tracking-wider text-[#4A5060]">
+            <span className="font-[var(--font-geist-mono)] text-[9px] font-bold uppercase tracking-wider text-[var(--text-faint)]">
               Version Tracking Active
             </span>
           </div>
@@ -119,16 +119,16 @@ export default function HistoryPage() {
 
           <div className="space-y-4">
             {filtered.length === 0 ? (
-              <div className="rounded-[26px] border border-dashed border-[#303640] bg-[#101216]/80 p-12 text-center">
+              <div className="rounded-[26px] border border-dashed border-[var(--border)] bg-[var(--background)]/80 p-12 text-center">
                 <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-[#D6AD69]/15 bg-[#D6AD69]/[0.04] text-[#D6AD69]">
                   <History className="h-5 w-5" />
                 </div>
 
-                <p className="font-[var(--font-space-grotesk)] text-sm font-bold text-[#F0F1F3]">
+                <p className="font-[var(--font-space-grotesk)] text-sm font-bold text-[var(--text-primary)]">
                   No architecture history found
                 </p>
 
-                <p className="mx-auto mt-2 max-w-md font-[var(--font-inter)] text-xs leading-6 text-[#4A5060]">
+                <p className="mx-auto mt-2 max-w-md font-[var(--font-inter)] text-xs leading-6 text-[var(--text-faint)]">
                   Create or generate an architecture to populate the version
                   timeline.
                 </p>
@@ -150,7 +150,7 @@ export default function HistoryPage() {
                     key={entry.id}
                     className="group relative sm:pl-12"
                   >
-                    <div className="absolute left-[11px] top-8 hidden h-4 w-4 items-center justify-center rounded-full border border-[#D6AD69]/30 bg-[#101216] sm:flex">
+                    <div className="absolute left-[11px] top-8 hidden h-4 w-4 items-center justify-center rounded-full border border-[#D6AD69]/30 bg-[var(--background)] sm:flex">
                       <span
                         className={`h-1.5 w-1.5 rounded-full ${isSuccess
                             ? "bg-[#D6AD69] shadow-[0_0_8px_rgba(214, 173, 105,0.7)]"
@@ -159,7 +159,7 @@ export default function HistoryPage() {
                       />
                     </div>
 
-                    <div className="relative overflow-hidden rounded-[24px] border border-[#303640] bg-gradient-to-b from-[#171A20] via-[#0C0E12] to-[#101216] p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)]/30 hover:shadow-lg active:scale-[0.98] sm:p-6">
+                    <div className="relative overflow-hidden rounded-[24px] border border-[var(--border)] bg-gradient-to-b from-[#171A20] via-[#0C0E12] to-[#101216] p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)]/30 hover:shadow-lg active:scale-[0.98] sm:p-6">
                       <div className="pointer-events-none absolute inset-0 opacity-[0.025]">
                         <div className="absolute inset-0 bg-[radial-gradient(#D6AD69_1px,transparent_1px)] [background-size:22px_22px]" />
                       </div>
@@ -177,7 +177,7 @@ export default function HistoryPage() {
 
                           <div className="min-w-0 space-y-2">
                             <div className="flex flex-wrap items-center gap-2">
-                              <span className="truncate font-[var(--font-space-grotesk)] text-sm font-bold text-[#F0F1F3]">
+                              <span className="truncate font-[var(--font-space-grotesk)] text-sm font-bold text-[var(--text-primary)]">
                                 {entry.projectTitle}
                               </span>
 
@@ -186,14 +186,14 @@ export default function HistoryPage() {
                               </span>
                             </div>
 
-                            <p className="max-w-2xl font-[var(--font-geist-mono)] text-[11px] leading-6 text-[#A4AAB5]">
+                            <p className="max-w-2xl font-[var(--font-geist-mono)] text-[11px] leading-6 text-[var(--text-muted)]">
                               &ldquo;{entry.prompt}&rdquo;
                             </p>
 
                             <div className="flex items-center gap-2">
                               <span className="h-1 w-1 rounded-full bg-[#4A5060]" />
 
-                              <p className="font-[var(--font-geist-mono)] text-[9px] text-[#4A5060]">
+                              <p className="font-[var(--font-geist-mono)] text-[9px] text-[var(--text-faint)]">
                                 {new Date(entry.createdAt).toLocaleString()}
                               </p>
                             </div>
@@ -230,9 +230,9 @@ export default function HistoryPage() {
 
         {filtered.length > 0 && (
           <div className="flex items-center justify-center gap-2 pt-2">
-            <Sparkles className="h-3.5 w-3.5 text-[#4A5060]" />
+            <Sparkles className="h-3.5 w-3.5 text-[var(--text-faint)]" />
 
-            <span className="font-[var(--font-geist-mono)] text-[9px] uppercase tracking-[0.16em] text-[#4A5060]">
+            <span className="font-[var(--font-geist-mono)] text-[9px] uppercase tracking-[0.16em] text-[var(--text-faint)]">
               Architecture evolution tracked by Arqin AI
             </span>
           </div>

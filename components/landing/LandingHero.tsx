@@ -69,17 +69,17 @@ export default function LandingHero() {
 
             {/* Headline */}
             <h1
-              className="font-display font-semibold leading-[1.03] tracking-[-0.035em] text-[#F2EFE8]"
-              style={{ fontSize: "clamp(40px, 5.5vw, 80px)" }}
+              className="font-display font-semibold leading-[1.05] tracking-[-0.02em] text-[#F2EFE8]"
+              style={{ fontSize: "clamp(40px, 5.5vw, 78px)" }}
             >
-              Architecture systems,
+              Describe it,
               <br />
-              <span className="text-[#D6AD69]">built in pieces.</span>
+              <span className="text-[#D6AD69]">Architecture it.</span>
             </h1>
 
             {/* Description */}
             <p
-              className="mt-5 leading-[1.65] text-[#8B949E]"
+              className="mt-5 leading-[1.65] text-[#B0BAC8]"
               style={{ fontSize: "clamp(15px, 1.5vw, 17px)", maxWidth: "460px" }}
             >
               Describe your software system and Arqin AI synthesizes

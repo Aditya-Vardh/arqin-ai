@@ -89,8 +89,8 @@ function ResultCard({
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(#D6AD69_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.03]" />
       <div className="relative z-10">
         <div className="mb-3 flex items-center gap-2">
-          <span className={accent ? "text-[#F0F1F3]" : "text-[#D6AD69]"}>{icon}</span>
-          <h3 className="text-xs font-bold uppercase tracking-wider text-[#F0F1F3]">{title}</h3>
+          <span className={accent ? "text-[var(--text-primary)]" : "text-[#D6AD69]"}>{icon}</span>
+          <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--text-primary)]">{title}</h3>
         </div>
         {children}
       </div>
@@ -107,8 +107,8 @@ function QualitativeBadge({ label }: { label: string }) {
   const color = isHigh
     ? "border-[#D6AD69]/40 bg-[#D6AD69]/10 text-[#D6AD69]"
     : isLow
-    ? "border-[#F0F1F3]/40 bg-[#F0F1F3]/10 text-[#F0F1F3]"
-    : "border-[#A4AAB5]/40 bg-[#A4AAB5]/10 text-[#A4AAB5]";
+    ? "border-[#F0F1F3]/40 bg-[#F0F1F3]/10 text-[var(--text-primary)]"
+    : "border-[#A4AAB5]/40 bg-[#A4AAB5]/10 text-[var(--text-muted)]";
 
   return (
     <span
@@ -142,7 +142,7 @@ function CollapsibleSection({
       >
         <div className="flex items-center gap-2">
           <span className="text-[#D6AD69]">{icon}</span>
-          <span className="text-xs font-bold uppercase tracking-wider text-[#F0F1F3]">{title}</span>
+          <span className="text-xs font-bold uppercase tracking-wider text-[var(--text-primary)]">{title}</span>
         </div>
         {open ? (
           <ChevronUp className="h-4 w-4 text-[#D6AD69]" />
@@ -165,7 +165,7 @@ function LoadingState() {
         </div>
         <div className="absolute -inset-2 rounded-3xl border border-[#D6AD69]/10 animate-ping" style={{ animationDuration: "2s" }} />
       </div>
-      <p className="mb-6 text-sm font-bold text-[#F0F1F3]">Researching Architecture Patterns</p>
+      <p className="mb-6 text-sm font-bold text-[var(--text-primary)]">Researching Architecture Patterns</p>
       <div className="w-full max-w-xs space-y-2.5">
         {LOADING_STEPS.map((s, i) => (
           <div
@@ -185,7 +185,7 @@ function LoadingState() {
                   : "bg-[#4A5060]"
               }`}
             />
-            <span className="font-mono text-[10px] text-[#A4AAB5]">{s}</span>
+            <span className="font-mono text-[10px] text-[var(--text-muted)]">{s}</span>
           </div>
         ))}
       </div>
@@ -198,12 +198,12 @@ function LoadingState() {
 
 function EmptyState({ onSelect }: { onSelect: (q: string) => void }) {
   return (
-    <div className="flex min-h-[500px] flex-col items-center justify-center rounded-2xl border border-dashed border-[#A4AAB5]/15 bg-[#101216]/60 p-10 text-center backdrop-blur-2xl">
+    <div className="flex min-h-[500px] flex-col items-center justify-center rounded-2xl border border-dashed border-[#A4AAB5]/15 bg-[var(--background)]/60 p-10 text-center backdrop-blur-2xl">
       <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl border border-[#D6AD69]/20 bg-[#D6AD69]/10 text-[#D6AD69]">
         <BookOpen className="h-8 w-8" />
       </div>
-      <h3 className="text-lg font-bold text-[#F0F1F3]">Ask an Architecture Question</h3>
-      <p className="mt-2 max-w-sm text-xs leading-relaxed text-[#A4AAB5]">
+      <h3 className="text-lg font-bold text-[var(--text-primary)]">Ask an Architecture Question</h3>
+      <p className="mt-2 max-w-sm text-xs leading-relaxed text-[var(--text-muted)]">
         Get expert analysis on architecture patterns, technology trade-offs, scalability strategies, and engineering recommendations.
       </p>
       <div className="mt-6 w-full max-w-sm space-y-2 text-left">
@@ -213,10 +213,10 @@ function EmptyState({ onSelect }: { onSelect: (q: string) => void }) {
             key={q}
             type="button"
             onClick={() => onSelect(q)}
-            className="group flex w-full items-start gap-3 rounded-xl border border-[#A4AAB5]/12 bg-[#0C0E12]/80 p-3 text-left text-xs transition-all hover:border-[#D6AD69]/40 hover:bg-[#171A20]"
+            className="group flex w-full items-start gap-3 rounded-xl border border-[#A4AAB5]/12 bg-[var(--background-2)]/80 p-3 text-left text-xs transition-all hover:border-[#D6AD69]/40 hover:bg-[var(--surface)]"
           >
-            <ArrowRight className="mt-0.5 h-3 w-3 shrink-0 text-[#D6AD69] group-hover:text-[#F0F1F3] transition-colors" />
-            <span className="text-[#A4AAB5] group-hover:text-[#F0F1F3] transition-colors leading-relaxed">{q}</span>
+            <ArrowRight className="mt-0.5 h-3 w-3 shrink-0 text-[#D6AD69] group-hover:text-[var(--text-primary)] transition-colors" />
+            <span className="text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition-colors leading-relaxed">{q}</span>
           </button>
         ))}
       </div>
@@ -293,10 +293,10 @@ export default function ResearchPage() {
             Architecture Research
           </span>
         </div>
-        <h1 className="text-3xl font-extrabold tracking-tight text-[#F0F1F3] sm:text-4xl">
+        <h1 className="text-3xl font-extrabold tracking-tight text-[var(--text-primary)] sm:text-4xl">
           AI Architecture Research
         </h1>
-        <p className="mt-2 max-w-2xl text-sm text-[#A4AAB5]">
+        <p className="mt-2 max-w-2xl text-sm text-[var(--text-muted)]">
           Ask architecture questions and receive structured expert analysis — patterns, technology choices, trade-offs, scalability strategies, and concrete recommendations.
         </p>
       </div>
@@ -320,19 +320,19 @@ export default function ResearchPage() {
                 placeholder="Describe your architecture challenge. For example: How should I design a real-time chat system that scales to 1 million concurrent users?"
                 aria-label="Architecture research question"
                 aria-describedby="char-count submit-hint"
-                className="mt-2 w-full resize-none rounded-xl border border-[#A4AAB5]/15 bg-[#101216] p-4 text-sm leading-relaxed text-[#F0F1F3] placeholder-[#A4AAB5]/40 outline-none transition-colors focus:border-[#D6AD69] focus:ring-0 disabled:opacity-50"
+                className="mt-2 w-full resize-none rounded-xl border border-[#A4AAB5]/15 bg-[var(--background)] p-4 text-sm leading-relaxed text-[var(--text-primary)] placeholder-[#A4AAB5]/40 outline-none transition-colors focus:border-[#D6AD69] focus:ring-0 disabled:opacity-50"
                 disabled={loading}
               />
               <div className="mt-2 flex items-center justify-between">
                 <span
                   id="char-count"
                   className={`font-mono text-[10px] ${
-                    isOverLimit ? "text-rose-400" : charCount > 1800 ? "text-[#F0F1F3]" : "text-[#D6AD69]"
+                    isOverLimit ? "text-rose-400" : charCount > 1800 ? "text-[var(--text-primary)]" : "text-[#D6AD69]"
                   }`}
                 >
                   {charCount}/{MAX_QUESTION_LENGTH}
                 </span>
-                <span id="submit-hint" className="font-mono text-[10px] text-[#A4AAB5]/40">
+                <span id="submit-hint" className="font-mono text-[10px] text-[var(--text-muted)]/40">
                   Ctrl+Enter to submit
                 </span>
               </div>
@@ -372,12 +372,12 @@ export default function ResearchPage() {
                   type="button"
                   onClick={() => handleSelectQuestion(q)}
                   aria-label={`Research: ${q}`}
-                  className="group flex w-full items-center gap-3 rounded-xl border border-[#A4AAB5]/12 bg-[#0C0E12]/80 p-3 text-left text-xs transition-all hover:border-[#D6AD69]/50 hover:bg-[#171A20]"
+                  className="group flex w-full items-center gap-3 rounded-xl border border-[#A4AAB5]/12 bg-[var(--background-2)]/80 p-3 text-left text-xs transition-all hover:border-[#D6AD69]/50 hover:bg-[var(--surface)]"
                 >
                   <span className="shrink-0 rounded-full border border-[#D6AD69]/30 bg-[#D6AD69]/10 px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider text-[#D6AD69]">
                     {tag}
                   </span>
-                  <span className="line-clamp-2 text-[#A4AAB5] transition-colors group-hover:text-[#F0F1F3] leading-relaxed">
+                  <span className="line-clamp-2 text-[var(--text-muted)] transition-colors group-hover:text-[var(--text-primary)] leading-relaxed">
                     {q}
                   </span>
                 </button>
@@ -412,24 +412,24 @@ export default function ResearchPage() {
               {isFallback && (
                 <div className="flex items-center gap-2 rounded-xl border border-[#D6AD69]/30 bg-[#D6AD69]/10 px-4 py-2.5">
                   <AlertTriangle className="h-3.5 w-3.5 shrink-0 text-[#D6AD69]" />
-                  <p className="text-[11px] text-[#F0F1F3]">
+                  <p className="text-[11px] text-[var(--text-primary)]">
                     Using built-in analysis — AI model unavailable
                   </p>
                 </div>
               )}
 
               <ResultCard title={result.title} icon={<BookOpen className="h-4 w-4" />} accent>
-                <p className="text-sm leading-relaxed text-[#A4AAB5]">{result.summary}</p>
+                <p className="text-sm leading-relaxed text-[var(--text-muted)]">{result.summary}</p>
                 <div className="mt-3 flex flex-wrap items-center gap-2">
                   <span className="font-mono text-[10px] text-[#D6AD69]">Pattern:</span>
-                  <span className="rounded-full border border-[#D6AD69]/40 bg-[#D6AD69]/15 px-3 py-0.5 font-mono text-[10px] font-bold text-[#F0F1F3]">
+                  <span className="rounded-full border border-[#D6AD69]/40 bg-[#D6AD69]/15 px-3 py-0.5 font-mono text-[10px] font-bold text-[var(--text-primary)]">
                     {result.architecturePattern}
                   </span>
                 </div>
               </ResultCard>
 
               <ResultCard title="Recommended Architecture" icon={<Layers className="h-4 w-4" />}>
-                <p className="text-sm leading-relaxed text-[#A4AAB5]">{result.recommendedArchitecture}</p>
+                <p className="text-sm leading-relaxed text-[var(--text-muted)]">{result.recommendedArchitecture}</p>
               </ResultCard>
 
               {result.technologyRecommendations.length > 0 && (
@@ -438,7 +438,7 @@ export default function ResearchPage() {
                     {result.technologyRecommendations.map((tech) => (
                       <div
                         key={tech.category + tech.name}
-                        className="rounded-xl border border-[#A4AAB5]/12 bg-[#101216]/80 p-3.5"
+                        className="rounded-xl border border-[#A4AAB5]/12 bg-[var(--background)]/80 p-3.5"
                       >
                         <div className="mb-1.5 flex items-center gap-2">
                           <span className="text-[#D6AD69]">{getTechIcon(tech.category)}</span>
@@ -446,8 +446,8 @@ export default function ResearchPage() {
                             {tech.category}
                           </span>
                         </div>
-                        <div className="mb-1.5 font-bold text-xs text-[#F0F1F3]">{tech.name}</div>
-                        <p className="text-[11px] leading-relaxed text-[#A4AAB5]">{tech.reason}</p>
+                        <div className="mb-1.5 font-bold text-xs text-[var(--text-primary)]">{tech.name}</div>
+                        <p className="text-[11px] leading-relaxed text-[var(--text-muted)]">{tech.reason}</p>
                       </div>
                     ))}
                   </div>
@@ -456,32 +456,32 @@ export default function ResearchPage() {
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <ResultCard title="Scalability" icon={<TrendingUp className="h-4 w-4" />}>
-                  <p className="text-xs leading-relaxed text-[#A4AAB5]">{result.scalability}</p>
+                  <p className="text-xs leading-relaxed text-[var(--text-muted)]">{result.scalability}</p>
                 </ResultCard>
                 <ResultCard title="Performance" icon={<Zap className="h-4 w-4" />}>
-                  <p className="text-xs leading-relaxed text-[#A4AAB5]">{result.performance}</p>
+                  <p className="text-xs leading-relaxed text-[var(--text-muted)]">{result.performance}</p>
                 </ResultCard>
                 <ResultCard title="Latency Profile" icon={<Activity className="h-4 w-4" />}>
-                  <p className="text-xs leading-relaxed text-[#A4AAB5]">{result.latency}</p>
+                  <p className="text-xs leading-relaxed text-[var(--text-muted)]">{result.latency}</p>
                 </ResultCard>
                 <ResultCard title="Reliability" icon={<Shield className="h-4 w-4" />}>
-                  <p className="text-xs leading-relaxed text-[#A4AAB5]">{result.reliability}</p>
+                  <p className="text-xs leading-relaxed text-[var(--text-muted)]">{result.reliability}</p>
                 </ResultCard>
               </div>
 
               <ResultCard title="Security" icon={<Shield className="h-4 w-4" />}>
-                <p className="text-xs leading-relaxed text-[#A4AAB5]">{result.security}</p>
+                <p className="text-xs leading-relaxed text-[var(--text-muted)]">{result.security}</p>
               </ResultCard>
 
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 <ResultCard title="Data Strategy" icon={<Database className="h-4 w-4" />}>
-                  <p className="text-xs leading-relaxed text-[#A4AAB5]">{result.dataStrategy}</p>
+                  <p className="text-xs leading-relaxed text-[var(--text-muted)]">{result.dataStrategy}</p>
                 </ResultCard>
                 <ResultCard title="Caching Strategy" icon={<Zap className="h-4 w-4" />}>
-                  <p className="text-xs leading-relaxed text-[#A4AAB5]">{result.cachingStrategy}</p>
+                  <p className="text-xs leading-relaxed text-[var(--text-muted)]">{result.cachingStrategy}</p>
                 </ResultCard>
                 <ResultCard title="Communication" icon={<Globe className="h-4 w-4" />}>
-                  <p className="text-xs leading-relaxed text-[#A4AAB5]">{result.communicationStrategy}</p>
+                  <p className="text-xs leading-relaxed text-[var(--text-muted)]">{result.communicationStrategy}</p>
                 </ResultCard>
               </div>
 
@@ -491,7 +491,7 @@ export default function ResearchPage() {
                     {result.tradeoffs.map((tradeoff, i) => (
                       <li key={i} className="flex items-start gap-3">
                         <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-[#D6AD69]" />
-                        <span className="text-xs leading-relaxed text-[#A4AAB5]">{tradeoff}</span>
+                        <span className="text-xs leading-relaxed text-[var(--text-muted)]">{tradeoff}</span>
                       </li>
                     ))}
                   </ul>
@@ -502,9 +502,9 @@ export default function ResearchPage() {
                 <CollapsibleSection title="Alternative Approaches" icon={<Layers className="h-4 w-4" />}>
                   <div className="space-y-4">
                     {result.alternatives.map((alt) => (
-                      <div key={alt.name} className="rounded-xl border border-[#A4AAB5]/12 bg-[#101216]/60 p-4">
-                        <h4 className="mb-1.5 font-bold text-xs text-[#F0F1F3]">{alt.name}</h4>
-                        <p className="mb-3 text-[11px] leading-relaxed text-[#A4AAB5]">{alt.description}</p>
+                      <div key={alt.name} className="rounded-xl border border-[#A4AAB5]/12 bg-[var(--background)]/60 p-4">
+                        <h4 className="mb-1.5 font-bold text-xs text-[var(--text-primary)]">{alt.name}</h4>
+                        <p className="mb-3 text-[11px] leading-relaxed text-[var(--text-muted)]">{alt.description}</p>
                         <div className="grid gap-3 sm:grid-cols-2">
                           <div>
                             <SectionLabel>Pros</SectionLabel>
@@ -512,7 +512,7 @@ export default function ResearchPage() {
                               {alt.pros.map((p, i) => (
                                 <li key={i} className="flex items-start gap-2">
                                   <CheckCircle2 className="mt-0.5 h-3 w-3 shrink-0 text-[#D6AD69]" />
-                                  <span className="text-[11px] text-[#A4AAB5]">{p}</span>
+                                  <span className="text-[11px] text-[var(--text-muted)]">{p}</span>
                                 </li>
                               ))}
                             </ul>
@@ -523,7 +523,7 @@ export default function ResearchPage() {
                               {alt.cons.map((c, i) => (
                                 <li key={i} className="flex items-start gap-2">
                                   <AlertCircle className="mt-0.5 h-3 w-3 shrink-0 text-[#D6AD69]" />
-                                  <span className="text-[11px] text-[#A4AAB5]">{c}</span>
+                                  <span className="text-[11px] text-[var(--text-muted)]">{c}</span>
                                 </li>
                               ))}
                             </ul>
@@ -541,7 +541,7 @@ export default function ResearchPage() {
                     {result.risks.map((risk, i) => (
                       <li key={i} className="flex items-start gap-3">
                         <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#D6AD69]" />
-                        <span className="text-xs leading-relaxed text-[#A4AAB5]">{risk}</span>
+                        <span className="text-xs leading-relaxed text-[var(--text-muted)]">{risk}</span>
                       </li>
                     ))}
                   </ul>
@@ -554,7 +554,7 @@ export default function ResearchPage() {
                     {result.recommendations.map((rec, i) => (
                       <li key={i} className="flex items-start gap-3">
                         <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#D6AD69]" />
-                        <span className="text-xs leading-relaxed text-[#A4AAB5]">{rec}</span>
+                        <span className="text-xs leading-relaxed text-[var(--text-muted)]">{rec}</span>
                       </li>
                     ))}
                   </ul>
@@ -573,7 +573,7 @@ export default function ResearchPage() {
                     const el = document.getElementById("research-question-input");
                     if (el) el.focus();
                   }}
-                  className="inline-flex items-center gap-2 rounded-xl border border-[#A4AAB5]/15 bg-[#0C0E12] px-4 py-2.5 text-xs font-bold text-[#A4AAB5] transition-all hover:border-[#D6AD69] hover:text-[#F0F1F3] focus:outline-none focus:ring-2 focus:ring-[#D6AD69]/30"
+                  className="inline-flex items-center gap-2 rounded-xl border border-[#A4AAB5]/15 bg-[var(--background-2)] px-4 py-2.5 text-xs font-bold text-[var(--text-muted)] transition-all hover:border-[#D6AD69] hover:text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[#D6AD69]/30"
                 >
                   <Search className="h-3.5 w-3.5" />
                   New Research Query

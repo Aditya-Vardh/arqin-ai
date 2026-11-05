@@ -657,14 +657,14 @@ export default function ArchitectureCanvas({
     Math.round(scale * 100);
 
   return (
-    <div className="relative flex h-full w-full flex-col overflow-hidden bg-[#101216]">
+    <div className="relative flex h-full w-full flex-col overflow-hidden bg-[var(--background)]">
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(214,173,105,0.04),transparent_50%)]" />
 
         <div className="absolute inset-0 opacity-70 [background-image:linear-gradient(rgba(48,54,64,0.55)_1px,transparent_1px),linear-gradient(90deg,rgba(48,54,64,0.55)_1px,transparent_1px)] [background-size:48px_48px]" />
       </div>
 
-      <div className="relative z-20 flex h-11 shrink-0 items-center justify-between border-b border-[#A4AAB5]/12 bg-[#0C0E12]/96 px-3 backdrop-blur-xl">
+      <div className="relative z-20 flex h-11 shrink-0 items-center justify-between border-b border-[#A4AAB5]/12 bg-[var(--background-2)]/96 px-3 backdrop-blur-xl">
         <div className="flex items-center gap-1">
           <button
             type="button"
@@ -672,8 +672,8 @@ export default function ArchitectureCanvas({
               setView("diagram")
             }
             className={`rounded-lg px-3 py-1.5 font-[var(--font-space-grotesk)] text-[10px] font-bold transition-colors ${view === "diagram"
-                ? "bg-[#1D222A] text-[#F0F1F3]"
-                : "text-[#A4AAB5]/60 hover:text-[#F0F1F3]"
+                ? "bg-[var(--surface-elevated)] text-[var(--text-primary)]"
+                : "text-[var(--text-muted)]/60 hover:text-[var(--text-primary)]"
               }`}
           >
             Diagram
@@ -685,8 +685,8 @@ export default function ArchitectureCanvas({
               setView("code")
             }
             className={`rounded-lg px-3 py-1.5 font-[var(--font-space-grotesk)] text-[10px] font-bold transition-colors ${view === "code"
-                ? "bg-[#1D222A] text-[#F0F1F3]"
-                : "text-[#A4AAB5]/60 hover:text-[#F0F1F3]"
+                ? "bg-[var(--surface-elevated)] text-[var(--text-primary)]"
+                : "text-[var(--text-muted)]/60 hover:text-[var(--text-primary)]"
               }`}
           >
             Source
@@ -694,7 +694,7 @@ export default function ArchitectureCanvas({
 
           {view === "diagram" &&
             diagramSize.x > 0 && (
-              <span className="ml-2 hidden font-[var(--font-geist-mono)] text-[9px] text-[#A4AAB5]/40 lg:inline">
+              <span className="ml-2 hidden font-[var(--font-geist-mono)] text-[9px] text-[var(--text-muted)]/40 lg:inline">
                 {Math.round(
                   diagramSize.x,
                 )}{" "}
@@ -712,7 +712,7 @@ export default function ArchitectureCanvas({
             onClick={() =>
               fitToViewport()
             }
-            className="mr-1 flex h-7 items-center gap-1.5 rounded-lg px-2.5 font-[var(--font-space-grotesk)] text-[10px] font-semibold text-[#A4AAB5] transition-colors hover:bg-[#1D222A] hover:text-[#F0F1F3]"
+            className="mr-1 flex h-7 items-center gap-1.5 rounded-lg px-2.5 font-[var(--font-space-grotesk)] text-[10px] font-semibold text-[var(--text-muted)] transition-colors hover:bg-[var(--surface-elevated)] hover:text-[var(--text-primary)]"
           >
             <Maximize2 className="h-3.5 w-3.5" />
             Fit
@@ -725,12 +725,12 @@ export default function ArchitectureCanvas({
             onClick={() =>
               zoom(0.1)
             }
-            className="flex h-7 w-7 items-center justify-center rounded-lg text-[#A4AAB5]/70 transition-colors hover:bg-[#1D222A] hover:text-[#F0F1F3]"
+            className="flex h-7 w-7 items-center justify-center rounded-lg text-[var(--text-muted)]/70 transition-colors hover:bg-[var(--surface-elevated)] hover:text-[var(--text-primary)]"
           >
             <Plus className="h-3.5 w-3.5" />
           </button>
 
-          <span className="w-10 text-center font-[var(--font-geist-mono)] text-[9px] text-[#A4AAB5]/70">
+          <span className="w-10 text-center font-[var(--font-geist-mono)] text-[9px] text-[var(--text-muted)]/70">
             {percentage}%
           </span>
 
@@ -739,7 +739,7 @@ export default function ArchitectureCanvas({
             onClick={() =>
               zoom(-0.1)
             }
-            className="flex h-7 w-7 items-center justify-center rounded-lg text-[#A4AAB5]/70 transition-colors hover:bg-[#1D222A] hover:text-[#F0F1F3]"
+            className="flex h-7 w-7 items-center justify-center rounded-lg text-[var(--text-muted)]/70 transition-colors hover:bg-[var(--surface-elevated)] hover:text-[var(--text-primary)]"
           >
             <Minus className="h-3.5 w-3.5" />
           </button>
@@ -753,7 +753,7 @@ export default function ArchitectureCanvas({
                 y: 0,
               });
             }}
-            className="ml-1 flex h-7 w-7 items-center justify-center rounded-lg text-[#A4AAB5]/70 transition-colors hover:bg-[#1D222A] hover:text-[#F0F1F3]"
+            className="ml-1 flex h-7 w-7 items-center justify-center rounded-lg text-[var(--text-muted)]/70 transition-colors hover:bg-[var(--surface-elevated)] hover:text-[var(--text-primary)]"
           >
             <RotateCcw className="h-3.5 w-3.5" />
           </button>
@@ -765,7 +765,7 @@ export default function ArchitectureCanvas({
             onClick={
               handleExportPng
             }
-            className="flex h-7 items-center gap-1.5 rounded-lg px-2.5 font-[var(--font-space-grotesk)] text-[10px] font-semibold text-[#A4AAB5]/70 transition-colors hover:bg-[#1D222A] hover:text-[#F0F1F3]"
+            className="flex h-7 items-center gap-1.5 rounded-lg px-2.5 font-[var(--font-space-grotesk)] text-[10px] font-semibold text-[var(--text-muted)]/70 transition-colors hover:bg-[var(--surface-elevated)] hover:text-[var(--text-primary)]"
           >
             <ImageIcon className="h-3.5 w-3.5" />
             PNG
@@ -776,7 +776,7 @@ export default function ArchitectureCanvas({
             onClick={
               handleExportPdf
             }
-            className="flex h-7 items-center gap-1.5 rounded-lg px-2.5 font-[var(--font-space-grotesk)] text-[10px] font-semibold text-[#A4AAB5]/70 transition-colors hover:bg-[#1D222A] hover:text-[#F0F1F3]"
+            className="flex h-7 items-center gap-1.5 rounded-lg px-2.5 font-[var(--font-space-grotesk)] text-[10px] font-semibold text-[var(--text-muted)]/70 transition-colors hover:bg-[var(--surface-elevated)] hover:text-[var(--text-primary)]"
           >
             <FileType className="h-3.5 w-3.5" />
             PDF
@@ -806,21 +806,21 @@ export default function ArchitectureCanvas({
           fitToViewport()
         }
       >
-        <div className="pointer-events-none absolute left-4 top-4 z-30 rounded-lg border border-[#A4AAB5]/12 bg-[#0C0E12]/88 px-2.5 py-1.5 backdrop-blur-xl">
+        <div className="pointer-events-none absolute left-4 top-4 z-30 rounded-lg border border-[#A4AAB5]/12 bg-[var(--background-2)]/88 px-2.5 py-1.5 backdrop-blur-xl">
           <span className="font-[var(--font-geist-mono)] text-[8px] font-bold uppercase tracking-[0.16em] text-[#D6AD69]">
             Studio Canvas
           </span>
         </div>
 
         {selectedComponent && (
-          <div className="absolute left-4 top-12 z-30 flex max-w-[360px] items-center gap-2 rounded-lg border border-[#A4AAB5]/15 bg-[#0C0E12]/95 px-3 py-1.5 backdrop-blur-xl">
+          <div className="absolute left-4 top-12 z-30 flex max-w-[360px] items-center gap-2 rounded-lg border border-[#A4AAB5]/15 bg-[var(--background-2)]/95 px-3 py-1.5 backdrop-blur-xl">
             <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#D6AD69]" />
 
             <span className="font-[var(--font-geist-mono)] text-[9px] font-bold uppercase tracking-wider text-[#D6AD69]">
               Selected
             </span>
 
-            <span className="truncate font-[var(--font-inter)] text-[10px] text-[#F0F1F3]">
+            <span className="truncate font-[var(--font-inter)] text-[10px] text-[var(--text-primary)]">
               {selectedComponent}
             </span>
 
@@ -831,7 +831,7 @@ export default function ArchitectureCanvas({
                   null,
                 )
               }
-              className="ml-1 text-[#A4AAB5]/60 hover:text-[#F0F1F3]"
+              className="ml-1 text-[var(--text-muted)]/60 hover:text-[var(--text-primary)]"
             >
               ×
             </button>
@@ -868,26 +868,26 @@ export default function ArchitectureCanvas({
               </button>
             </div>
 
-            <pre className="overflow-auto rounded-2xl border border-[#A4AAB5]/12 bg-[#0C0E12] p-6 font-[var(--font-geist-mono)] text-[11px] leading-6 text-[#A4AAB5]">
+            <pre className="overflow-auto rounded-2xl border border-[#A4AAB5]/12 bg-[var(--background-2)] p-6 font-[var(--font-geist-mono)] text-[11px] leading-6 text-[var(--text-muted)]">
               {repairedChart}
             </pre>
           </div>
         )}
 
         {view === "diagram" && (
-          <div className="pointer-events-none absolute bottom-4 left-1/2 z-20 -translate-x-1/2 rounded-full border border-[#A4AAB5]/12 bg-[#0C0E12]/90 px-3 py-1.5 font-[var(--font-geist-mono)] text-[8px] text-[#A4AAB5]/60 backdrop-blur-xl">
+          <div className="pointer-events-none absolute bottom-4 left-1/2 z-20 -translate-x-1/2 rounded-full border border-[#A4AAB5]/12 bg-[var(--background-2)]/90 px-3 py-1.5 font-[var(--font-geist-mono)] text-[8px] text-[var(--text-muted)]/60 backdrop-blur-xl">
             Drag to pan · Double-click to fit
           </div>
         )}
 
         {error && (
-          <div className="absolute inset-0 z-40 flex items-center justify-center bg-[#101216]/95">
+          <div className="absolute inset-0 z-40 flex items-center justify-center bg-[var(--background)]/95">
             <div className="text-center">
-              <p className="font-[var(--font-space-grotesk)] text-sm font-bold text-[#F0F1F3]">
+              <p className="font-[var(--font-space-grotesk)] text-sm font-bold text-[var(--text-primary)]">
                 Diagram rendering failed
               </p>
 
-              <p className="mt-2 font-[var(--font-inter)] text-xs text-[#A4AAB5]">
+              <p className="mt-2 font-[var(--font-inter)] text-xs text-[var(--text-muted)]">
                 {error}
               </p>
 

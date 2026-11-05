@@ -620,7 +620,7 @@ function GenerateContent() {
   }
 
   return (
-    <div className="flex h-screen w-full flex-col overflow-hidden bg-[#101216] text-[#F0F1F3]">
+    <div className="flex h-screen w-full flex-col overflow-hidden bg-[var(--background)] text-[var(--text-primary)]">
       <WorkspaceHeader
         title={title}
         onTitleChange={(value) => {
@@ -657,7 +657,7 @@ function GenerateContent() {
 
       <div className="flex min-h-0 min-w-0 flex-1 overflow-hidden">
         {!result ? (
-          <div className="relative flex flex-1 items-center justify-center overflow-y-auto bg-[#101216] p-6">
+          <div className="relative flex flex-1 items-center justify-center overflow-y-auto bg-[var(--background)] p-6">
             <div className="pointer-events-none absolute inset-0">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(214,173,105,0.07),transparent_38%)]" />
 
@@ -671,7 +671,7 @@ function GenerateContent() {
                   onClick={() =>
                     setShowJourney(true)
                   }
-                  className="inline-flex items-center gap-2 rounded-2xl border border-[#303640] bg-[#171A20] px-4 py-2.5 font-[var(--font-space-grotesk)] text-xs font-bold text-[#D6AD69] transition-all hover:bg-[#1D222A]"
+                  className="inline-flex items-center gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-4 py-2.5 font-[var(--font-space-grotesk)] text-xs font-bold text-[#D6AD69] transition-all hover:bg-[var(--surface-elevated)]"
                 >
                   <Sparkles className="h-4 w-4" />
                   Launch Guided Journey
@@ -710,8 +710,8 @@ function GenerateContent() {
             </div>
           </div>
         ) : (
-          <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-[#101216]">
-            <div className="relative z-30 shrink-0 border-b border-[#303640] bg-[#0C0E12]/96 px-5 py-2.5 backdrop-blur-2xl">
+          <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-[var(--background)]">
+            <div className="relative z-30 shrink-0 border-b border-[var(--border)] bg-[var(--background-2)]/96 px-5 py-2.5 backdrop-blur-2xl">
               <div className="flex min-h-9 items-center justify-between gap-4">
                 <button
                   type="button"
@@ -722,24 +722,24 @@ function GenerateContent() {
                   }
                   className="group flex min-w-0 items-center gap-2.5 text-left"
                 >
-                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[#303640] bg-[#171A20]">
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--surface)]">
                     <Wand2 className="h-3.5 w-3.5 text-[#D6AD69]" />
                   </div>
 
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="font-[var(--font-space-grotesk)] text-[10px] font-bold uppercase tracking-[0.14em] text-[#4A5060]">
+                      <span className="font-[var(--font-space-grotesk)] text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--text-faint)]">
                         Prompt
                       </span>
 
                       {editPromptOpen ? (
-                        <ChevronUp className="h-3.5 w-3.5 text-[#4A5060]" />
+                        <ChevronUp className="h-3.5 w-3.5 text-[var(--text-faint)]" />
                       ) : (
-                        <ChevronDown className="h-3.5 w-3.5 text-[#4A5060]" />
+                        <ChevronDown className="h-3.5 w-3.5 text-[var(--text-faint)]" />
                       )}
                     </div>
 
-                    <div className="mt-0.5 max-w-[560px] truncate font-[var(--font-inter)] text-[11px] text-[#A4AAB5]">
+                    <div className="mt-0.5 max-w-[560px] truncate font-[var(--font-inter)] text-[11px] text-[var(--text-muted)]">
                       {prompt}
                     </div>
                   </div>
@@ -753,7 +753,7 @@ function GenerateContent() {
                         true,
                       )
                     }
-                    className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-[#303640] bg-[#171A20] px-3 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[#A4AAB5] transition-all hover:border-[#D6AD69]/40 hover:bg-[#1D222A] hover:text-[#D6AD69]"
+                    className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[var(--text-muted)] transition-all hover:border-[#D6AD69]/40 hover:bg-[var(--surface-elevated)] hover:text-[#D6AD69]"
                   >
                     <Sparkles className="h-3.5 w-3.5 text-[#D6AD69]" />
                     Journey
@@ -764,7 +764,7 @@ function GenerateContent() {
                     onClick={
                       handleOptimize
                     }
-                    className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-[#303640] bg-[#171A20] px-3 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[#A4AAB5] transition-all hover:border-[#D6AD69]/40 hover:bg-[#1D222A] hover:text-[#D6AD69]"
+                    className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[var(--text-muted)] transition-all hover:border-[#D6AD69]/40 hover:bg-[var(--surface-elevated)] hover:text-[#D6AD69]"
                   >
                     <Zap className="h-3.5 w-3.5 text-[#D6AD69]" />
                     Optimize
@@ -777,7 +777,7 @@ function GenerateContent() {
                         true,
                       )
                     }
-                    className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-[#303640] bg-[#171A20] px-3 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[#A4AAB5] transition-all hover:border-[#D6AD69]/40 hover:bg-[#1D222A] hover:text-[#D6AD69]"
+                    className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[var(--text-muted)] transition-all hover:border-[#D6AD69]/40 hover:bg-[var(--surface-elevated)] hover:text-[#D6AD69]"
                   >
                     <Cpu className="h-3.5 w-3.5 text-[#D6AD69]" />
                     Simulate
@@ -790,7 +790,7 @@ function GenerateContent() {
                         true,
                       )
                     }
-                    className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-[#303640] bg-[#171A20] px-3 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[#A4AAB5] transition-all hover:border-[#D6AD69]/40 hover:bg-[#1D222A] hover:text-[#D6AD69]"
+                    className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[var(--text-muted)] transition-all hover:border-[#D6AD69]/40 hover:bg-[var(--surface-elevated)] hover:text-[#D6AD69]"
                   >
                     <Code2 className="h-3.5 w-3.5 text-[#D6AD69]" />
                     Artifacts
@@ -802,7 +802,7 @@ function GenerateContent() {
                       generate()
                     }
                     disabled={loading}
-                    className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-[#D6AD69]/40 bg-[#1D222A] px-3 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[#D6AD69] transition-all hover:border-[#D6AD69] hover:bg-[#1D222A] disabled:opacity-50"
+                    className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-[#D6AD69]/40 bg-[var(--surface-elevated)] px-3 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[#D6AD69] transition-all hover:border-[#D6AD69] hover:bg-[var(--surface-elevated)] disabled:opacity-50"
                   >
                     <RefreshCw
                       className={
@@ -824,8 +824,8 @@ function GenerateContent() {
                       )
                     }
                     className={`inline-flex h-8 items-center gap-1.5 rounded-lg border px-3 font-[var(--font-space-grotesk)] text-[10px] font-bold transition-all ${showInspector
-                      ? "border-[#303640] bg-[#1D222A] text-[#D6AD69]"
-                      : "border-[#303640] bg-[#171A20] text-[#4A5060] hover:text-[#D6AD69]"
+                      ? "border-[var(--border)] bg-[var(--surface-elevated)] text-[#D6AD69]"
+                      : "border-[var(--border)] bg-[var(--surface)] text-[var(--text-faint)] hover:text-[#D6AD69]"
                       }`}
                   >
                     <PanelRight className="h-3.5 w-3.5" />
@@ -835,7 +835,7 @@ function GenerateContent() {
               </div>
 
               {editPromptOpen && (
-                <div className="mt-3 border-t border-[#303640] pt-3">
+                <div className="mt-3 border-t border-[var(--border)] pt-3">
                   <div className="flex items-end gap-3">
                     <textarea
                       value={prompt}
@@ -846,7 +846,7 @@ function GenerateContent() {
                         )
                       }
                       rows={2}
-                      className="min-h-[56px] flex-1 resize-none rounded-xl border border-[#303640] bg-[#171A20] px-3.5 py-3 font-[var(--font-inter)] text-[11px] leading-relaxed text-[#F0F1F3] outline-none placeholder:text-[#4A5060] focus:border-[#303640]"
+                      className="min-h-[56px] flex-1 resize-none rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3.5 py-3 font-[var(--font-inter)] text-[11px] leading-relaxed text-[var(--text-primary)] outline-none placeholder:text-[var(--text-faint)] focus:border-[var(--border)]"
                       placeholder="Describe the architecture you want Arqin AI to synthesize..."
                     />
 
@@ -896,19 +896,19 @@ function GenerateContent() {
               </div>
 
               <div
-                className={`absolute inset-y-0 right-0 z-40 w-[min(390px,calc(100vw-40px))] transform border-l border-[#303640] bg-[#0C0E12]/96 shadow-[-24px_0_60px_rgba(0,0,0,0.45)] backdrop-blur-2xl transition-transform duration-300 ease-out ${showInspector
+                className={`absolute inset-y-0 right-0 z-40 w-[min(390px,calc(100vw-40px))] transform border-l border-[var(--border)] bg-[var(--background-2)]/96 shadow-[-24px_0_60px_rgba(0,0,0,0.45)] backdrop-blur-2xl transition-transform duration-300 ease-out ${showInspector
                   ? "translate-x-0"
                   : "translate-x-full"
                   }`}
               >
                 <div className="flex h-full flex-col">
-                  <div className="flex h-11 shrink-0 items-center justify-between border-b border-[#303640] px-4">
+                  <div className="flex h-11 shrink-0 items-center justify-between border-b border-[var(--border)] px-4">
                     <div>
-                      <div className="font-[var(--font-space-grotesk)] text-[9px] font-bold uppercase tracking-[0.16em] text-[#4A5060]">
+                      <div className="font-[var(--font-space-grotesk)] text-[9px] font-bold uppercase tracking-[0.16em] text-[var(--text-faint)]">
                         Intelligence
                       </div>
 
-                      <div className="mt-0.5 font-[var(--font-space-grotesk)] text-[12px] font-bold text-[#F0F1F3]">
+                      <div className="mt-0.5 font-[var(--font-space-grotesk)] text-[12px] font-bold text-[var(--text-primary)]">
                         Architecture Inspector
                       </div>
                     </div>
@@ -920,7 +920,7 @@ function GenerateContent() {
                           false,
                         )
                       }
-                      className="flex h-7 w-7 items-center justify-center rounded-lg text-[#4A5060] transition-colors hover:bg-[#1D222A] hover:text-[#D6AD69]"
+                      className="flex h-7 w-7 items-center justify-center rounded-lg text-[var(--text-faint)] transition-colors hover:bg-[var(--surface-elevated)] hover:text-[#D6AD69]"
                       aria-label="Close inspector"
                     >
                       <ChevronDown className="h-4 w-4 rotate-90" />
@@ -1023,7 +1023,7 @@ function GenerateContent() {
 
       {pendingMutation && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-xl">
-          <div className="w-full max-w-md space-y-4 rounded-3xl border border-[#303640] bg-[#101216] p-6 text-[#F0F1F3] shadow-2xl">
+          <div className="w-full max-w-md space-y-4 rounded-3xl border border-[var(--border)] bg-[var(--background)] p-6 text-[var(--text-primary)] shadow-2xl">
             <div className="flex items-center gap-3">
               <AlertTriangle className="h-6 w-6 shrink-0 text-[#D6AD69]" />
 
@@ -1034,7 +1034,7 @@ function GenerateContent() {
               </h3>
             </div>
 
-            <p className="text-xs leading-relaxed text-[#A4AAB5]">
+            <p className="text-xs leading-relaxed text-[var(--text-muted)]">
               {
                 pendingMutation.desc
               }
@@ -1048,7 +1048,7 @@ function GenerateContent() {
                     null,
                   )
                 }
-                className="rounded-xl border border-[#303640] bg-[#171A20] px-4 py-2 text-xs font-bold text-[#A4AAB5] transition-colors hover:text-[#F0F1F3]"
+                className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-xs font-bold text-[var(--text-muted)] transition-colors hover:text-[var(--text-primary)]"
               >
                 Cancel
               </button>
@@ -1212,7 +1212,7 @@ export default function GeneratePage() {
   return (
     <Suspense
       fallback={
-        <div className="flex h-screen items-center justify-center bg-[#101216] font-[var(--font-inter)] text-sm text-[#A4AAB5]">
+        <div className="flex h-screen items-center justify-center bg-[var(--background)] font-[var(--font-inter)] text-sm text-[var(--text-muted)]">
           Loading Arqin AI Studio...
         </div>
       }

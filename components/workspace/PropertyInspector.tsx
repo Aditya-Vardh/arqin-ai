@@ -142,10 +142,10 @@ function ScoreRing({ score }: { score: number }) {
       </svg>
 
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-[31px] font-bold leading-none text-[#F0F1F3]">
+        <span className="text-[31px] font-bold leading-none text-[var(--text-primary)]">
           {safeScore}
         </span>
-        <span className="mt-1 text-[8px] font-semibold uppercase tracking-[0.18em] text-[#A4AAB5]/70">
+        <span className="mt-1 text-[8px] font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]/70">
           health
         </span>
       </div>
@@ -165,7 +165,7 @@ function Metric({
   return (
     <div className="space-y-1.5">
       <div className="flex items-center justify-between gap-3">
-        <span className="text-[10px] text-[#A4AAB5]">
+        <span className="text-[10px] text-[var(--text-muted)]">
           {label}
         </span>
         <span className="font-mono text-[10px] font-bold text-[#D6AD69]">
@@ -173,7 +173,7 @@ function Metric({
         </span>
       </div>
 
-      <div className="h-1 overflow-hidden rounded-full bg-[#101216]">
+      <div className="h-1 overflow-hidden rounded-full bg-[var(--background)]">
         <div
           className="h-full rounded-full bg-[#D6AD69] transition-[width] duration-700 ease-out"
           style={{ width: `${safeValue}%` }}
@@ -200,14 +200,14 @@ function FindingCard({
     <button
       type="button"
       onClick={onClick}
-      className="group w-full rounded-2xl border border-[#A4AAB5]/12 bg-[#171A20] p-4 text-left transition-all duration-200 hover:border-[#D6AD69]/40 hover:bg-[#1D222A]"
+      className="group w-full rounded-2xl border border-[#A4AAB5]/12 bg-[var(--surface)] p-4 text-left transition-all duration-200 hover:border-[#D6AD69]/40 hover:bg-[var(--surface-elevated)]"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex min-w-0 items-start gap-2.5">
-          <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-[#D6AD69]/30 bg-[#1D222A]">
+          <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-[#D6AD69]/30 bg-[var(--surface-elevated)]">
             <CircleAlert className="h-3.5 w-3.5 text-[#D6AD69]" />
           </span>
-          <span className="text-[11px] font-bold leading-snug text-[#F0F1F3]">
+          <span className="text-[11px] font-bold leading-snug text-[var(--text-primary)]">
             {title}
           </span>
         </div>
@@ -227,13 +227,13 @@ function FindingCard({
         )}
       </div>
 
-      <p className="mt-3 text-[10px] leading-relaxed text-[#A4AAB5]">
+      <p className="mt-3 text-[10px] leading-relaxed text-[var(--text-muted)]">
         {description}
       </p>
 
       <div className="mt-3 flex items-start gap-2 border-t border-[#A4AAB5]/10 pt-3">
         <Sparkles className="mt-0.5 h-3 w-3 shrink-0 text-[#D6AD69]" />
-        <span className="text-[9px] leading-relaxed text-[#A4AAB5]">
+        <span className="text-[9px] leading-relaxed text-[var(--text-muted)]">
           {recommendation}
         </span>
       </div>
@@ -263,10 +263,10 @@ export default function PropertyInspector({
   if (!result || !graph) {
     return (
       <aside
-        className={`flex h-full w-full flex-col bg-[#101216] ${className}`}
+        className={`flex h-full w-full flex-col bg-[var(--background)] ${className}`}
       >
         <div className="flex h-full flex-col items-center justify-center px-7 text-center">
-          <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-[#A4AAB5]/12 bg-[#171A20]">
+          <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-[#A4AAB5]/12 bg-[var(--surface)]">
             <Boxes className="h-6 w-6 text-[#D6AD69]" />
           </div>
 
@@ -274,11 +274,11 @@ export default function PropertyInspector({
             Arqin Intelligence
           </p>
 
-          <h3 className="mt-2 font-[var(--font-space-grotesk)] text-sm font-bold text-[#F0F1F3]">
+          <h3 className="mt-2 font-[var(--font-space-grotesk)] text-sm font-bold text-[var(--text-primary)]">
             Architecture Inspector
           </h3>
 
-          <p className="mt-2 max-w-[230px] font-[var(--font-inter)] text-[10px] leading-relaxed text-[#A4AAB5]/70">
+          <p className="mt-2 max-w-[230px] font-[var(--font-inter)] text-[10px] leading-relaxed text-[var(--text-muted)]/70">
             Generate an architecture graph to inspect security, reliability,
             failure paths, patterns, and cost intelligence.
           </p>
@@ -315,13 +315,13 @@ export default function PropertyInspector({
 
   return (
     <aside
-      className={`flex h-full w-full min-w-0 flex-col overflow-hidden bg-[#101216] text-[#F0F1F3] ${className}`}
+      className={`flex h-full w-full min-w-0 flex-col overflow-hidden bg-[var(--background)] text-[var(--text-primary)] ${className}`}
     >
-      <div className="shrink-0 border-b border-[#A4AAB5]/12 bg-[#101216]">
+      <div className="shrink-0 border-b border-[#A4AAB5]/12 bg-[var(--background)]">
         <div className="flex min-h-[82px] items-center justify-between gap-3 px-4">
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[#A4AAB5]/12 bg-[#171A20]">
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[#A4AAB5]/12 bg-[var(--surface)]">
                 <Network className="h-3.5 w-3.5 text-[#D6AD69]" />
               </span>
 
@@ -330,13 +330,13 @@ export default function PropertyInspector({
                   Intelligence
                 </p>
 
-                <h2 className="mt-0.5 truncate font-[var(--font-space-grotesk)] text-[13px] font-bold text-[#F0F1F3]">
+                <h2 className="mt-0.5 truncate font-[var(--font-space-grotesk)] text-[13px] font-bold text-[var(--text-primary)]">
                   Architecture Inspector
                 </h2>
               </div>
             </div>
 
-            <p className="mt-2 truncate pl-9 font-[var(--font-inter)] text-[9px] text-[#A4AAB5]/70">
+            <p className="mt-2 truncate pl-9 font-[var(--font-inter)] text-[9px] text-[var(--text-muted)]/70">
               {graph.title}
             </p>
           </div>
@@ -346,7 +346,7 @@ export default function PropertyInspector({
             onClick={() =>
               setMobileOpen(!mobileOpen)
             }
-            className="flex h-8 shrink-0 items-center gap-2 rounded-xl border border-[#A4AAB5]/15 bg-[#171A20] px-2.5 font-[var(--font-space-grotesk)] text-[9px] font-bold text-[#F0F1F3] transition-colors hover:border-[#D6AD69]"
+            className="flex h-8 shrink-0 items-center gap-2 rounded-xl border border-[#A4AAB5]/15 bg-[var(--surface)] px-2.5 font-[var(--font-space-grotesk)] text-[9px] font-bold text-[var(--text-primary)] transition-colors hover:border-[#D6AD69]"
           >
             <activeTab.icon className="h-3.5 w-3.5 text-[#D6AD69]" />
             <span className="hidden sm:inline">
@@ -364,7 +364,7 @@ export default function PropertyInspector({
 
       <div className="flex min-h-0 flex-1 overflow-hidden">
         <nav
-          className={`flex w-[48px] shrink-0 flex-col items-center gap-1 border-r border-[#A4AAB5]/12 bg-[#0C0E12] py-2 ${mobileOpen
+          className={`flex w-[48px] shrink-0 flex-col items-center gap-1 border-r border-[#A4AAB5]/12 bg-[var(--background-2)] py-2 ${mobileOpen
             ? "absolute left-0 right-0 z-50 w-full flex-row overflow-x-auto border-b"
             : ""
             }`}
@@ -380,8 +380,8 @@ export default function PropertyInspector({
               title={item.label}
               aria-label={item.label}
               className={`group relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl transition-all ${tab === item.id
-                ? "border border-[#D6AD69]/40 bg-[#1D222A] text-[#F0F1F3]"
-                : "text-[#A4AAB5]/50 hover:bg-[#171A20] hover:text-[#F0F1F3]"
+                ? "border border-[#D6AD69]/40 bg-[var(--surface-elevated)] text-[var(--text-primary)]"
+                : "text-[var(--text-muted)]/50 hover:bg-[var(--surface)] hover:text-[var(--text-primary)]"
                 }`}
             >
               <item.icon className="h-3.5 w-3.5" />
@@ -403,7 +403,7 @@ export default function PropertyInspector({
                       Selected Component
                     </p>
 
-                    <p className="mt-1 truncate font-[var(--font-space-grotesk)] text-[12px] font-bold text-[#F0F1F3]">
+                    <p className="mt-1 truncate font-[var(--font-space-grotesk)] text-[12px] font-bold text-[var(--text-primary)]">
                       {component.name}
                     </p>
                   </div>
@@ -411,7 +411,7 @@ export default function PropertyInspector({
                   <CircleCheck className="h-4 w-4 shrink-0 text-[#D6AD69]" />
                 </div>
 
-                <p className="mt-2 font-[var(--font-inter)] text-[9px] leading-relaxed text-[#A4AAB5]">
+                <p className="mt-2 font-[var(--font-inter)] text-[9px] leading-relaxed text-[var(--text-muted)]">
                   {component.description}
                 </p>
 
@@ -433,7 +433,7 @@ export default function PropertyInspector({
                       );
                       setTab("failure");
                     }}
-                    className="flex-1 rounded-lg border border-[#A4AAB5]/15 bg-[#1D222A] px-2 py-2 font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.08em] text-[#F0F1F3] transition-colors hover:border-[#D6AD69]/50"
+                    className="flex-1 rounded-lg border border-[#A4AAB5]/15 bg-[var(--surface-elevated)] px-2 py-2 font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.08em] text-[var(--text-primary)] transition-colors hover:border-[#D6AD69]/50"
                   >
                     Failure Path
                   </button>
@@ -446,7 +446,7 @@ export default function PropertyInspector({
                         component.name,
                       )
                     }
-                    className="flex-1 rounded-lg border border-[#D6AD69]/30 bg-[#171A20] px-2 py-2 font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.08em] text-[#D6AD69] transition-colors hover:border-[#D6AD69]"
+                    className="flex-1 rounded-lg border border-[#D6AD69]/30 bg-[var(--surface)] px-2 py-2 font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.08em] text-[#D6AD69] transition-colors hover:border-[#D6AD69]"
                   >
                     + Cache
                   </button>
@@ -465,7 +465,7 @@ export default function PropertyInspector({
                         Unified Architecture
                       </p>
 
-                      <p className="mt-1 font-[var(--font-space-grotesk)] text-sm font-bold text-[#F0F1F3]">
+                      <p className="mt-1 font-[var(--font-space-grotesk)] text-sm font-bold text-[var(--text-primary)]">
                         {score >= 80
                           ? "Healthy foundation"
                           : score >= 60
@@ -473,7 +473,7 @@ export default function PropertyInspector({
                             : "Requires review"}
                       </p>
 
-                      <p className="mt-1 font-[var(--font-inter)] text-[9px] leading-relaxed text-[#A4AAB5]/70">
+                      <p className="mt-1 font-[var(--font-inter)] text-[9px] leading-relaxed text-[var(--text-muted)]/70">
                         Deterministic analysis across the generated system.
                       </p>
                     </div>
@@ -511,23 +511,23 @@ export default function PropertyInspector({
                   </div>
                 </div>
 
-                <div className="rounded-2xl border border-[#A4AAB5]/12 bg-[#0C0E12] p-4">
+                <div className="rounded-2xl border border-[#A4AAB5]/12 bg-[var(--background-2)] p-4">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.16em] text-[#D6AD69]">
                         Findings Inventory
                       </p>
-                      <p className="mt-1 font-[var(--font-space-grotesk)] text-lg font-bold text-[#F0F1F3]">
+                      <p className="mt-1 font-[var(--font-space-grotesk)] text-lg font-bold text-[var(--text-primary)]">
                         {unifiedIntel.findings.length}
                       </p>
                     </div>
 
-                    <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#A4AAB5]/15 bg-[#1D222A]">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#A4AAB5]/15 bg-[var(--surface-elevated)]">
                       <CircleAlert className="h-4 w-4 text-[#D6AD69]" />
                     </div>
                   </div>
 
-                  <p className="mt-2 font-[var(--font-inter)] text-[9px] leading-relaxed text-[#A4AAB5]/70">
+                  <p className="mt-2 font-[var(--font-inter)] text-[9px] leading-relaxed text-[var(--text-muted)]/70">
                     Deterministic findings across security,
                     reliability, and observability.
                   </p>
@@ -538,10 +538,10 @@ export default function PropertyInspector({
                     type="button"
                     onClick={onOptimize}
                     disabled={loading}
-                    className="rounded-xl border border-[#A4AAB5]/15 bg-[#171A20] px-3 py-2.5 text-left transition-colors hover:border-[#D6AD69] hover:bg-[#1D222A] disabled:opacity-50"
+                    className="rounded-xl border border-[#A4AAB5]/15 bg-[var(--surface)] px-3 py-2.5 text-left transition-colors hover:border-[#D6AD69] hover:bg-[var(--surface-elevated)] disabled:opacity-50"
                   >
                     <Zap className="h-3.5 w-3.5 text-[#D6AD69]" />
-                    <span className="mt-1.5 block font-[var(--font-space-grotesk)] text-[9px] font-bold text-[#F0F1F3]">
+                    <span className="mt-1.5 block font-[var(--font-space-grotesk)] text-[9px] font-bold text-[var(--text-primary)]">
                       Optimize
                     </span>
                   </button>
@@ -549,10 +549,10 @@ export default function PropertyInspector({
                   <button
                     type="button"
                     onClick={onSimulate}
-                    className="rounded-xl border border-[#A4AAB5]/15 bg-[#171A20] px-3 py-2.5 text-left transition-colors hover:border-[#D6AD69] hover:bg-[#1D222A]"
+                    className="rounded-xl border border-[#A4AAB5]/15 bg-[var(--surface)] px-3 py-2.5 text-left transition-colors hover:border-[#D6AD69] hover:bg-[var(--surface-elevated)]"
                   >
                     <Activity className="h-3.5 w-3.5 text-[#D6AD69]" />
-                    <span className="mt-1.5 block font-[var(--font-space-grotesk)] text-[9px] font-bold text-[#F0F1F3]">
+                    <span className="mt-1.5 block font-[var(--font-space-grotesk)] text-[9px] font-bold text-[var(--text-primary)]">
                       Simulate
                     </span>
                   </button>
@@ -673,7 +673,7 @@ export default function PropertyInspector({
                         ...failure.directlyAffectedNodeIds,
                       ]);
                     }}
-                    className="w-full rounded-xl border border-[#A4AAB5]/15 bg-[#171A20] px-3 py-2.5 font-[var(--font-inter)] text-[10px] text-[#F0F1F3] outline-none focus:border-[#D6AD69]"
+                    className="w-full rounded-xl border border-[#A4AAB5]/15 bg-[var(--surface)] px-3 py-2.5 font-[var(--font-inter)] text-[10px] text-[var(--text-primary)] outline-none focus:border-[#D6AD69]"
                   >
                     {graph.nodes.map((node) => (
                       <option
@@ -687,33 +687,33 @@ export default function PropertyInspector({
                 </div>
 
                 {failurePathResult && (
-                  <div className="rounded-2xl border border-[#A4AAB5]/15 bg-[#171A20] p-4">
+                  <div className="rounded-2xl border border-[#A4AAB5]/15 bg-[var(--surface)] p-4">
                     <div className="flex items-center gap-2">
                       <Server className="h-4 w-4 text-[#D6AD69]" />
-                      <span className="font-[var(--font-space-grotesk)] text-[10px] font-bold text-[#F0F1F3]">
+                      <span className="font-[var(--font-space-grotesk)] text-[10px] font-bold text-[var(--text-primary)]">
                         {failurePathResult.sourceNodeName}
                       </span>
                     </div>
 
                     {failurePathResult.cascadingChain
                       .length > 0 ? (
-                      <div className="mt-3 rounded-xl border border-[#A4AAB5]/12 bg-[#101216] p-3">
+                      <div className="mt-3 rounded-xl border border-[#A4AAB5]/12 bg-[var(--background)] p-3">
                         <p className="font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.14em] text-[#D6AD69]">
                           Cascading Path
                         </p>
-                        <p className="mt-2 font-[var(--font-inter)] text-[9px] leading-relaxed text-[#A4AAB5]">
+                        <p className="mt-2 font-[var(--font-inter)] text-[9px] leading-relaxed text-[var(--text-muted)]">
                           {failurePathResult.cascadingChain.join(
                             "  →  ",
                           )}
                         </p>
                       </div>
                     ) : (
-                      <p className="mt-3 font-[var(--font-inter)] text-[9px] text-[#A4AAB5]/70">
+                      <p className="mt-3 font-[var(--font-inter)] text-[9px] text-[var(--text-muted)]/70">
                         No dependent path detected.
                       </p>
                     )}
 
-                    <p className="mt-3 font-[var(--font-inter)] text-[9px] leading-relaxed text-[#A4AAB5]/80">
+                    <p className="mt-3 font-[var(--font-inter)] text-[9px] leading-relaxed text-[var(--text-muted)]/80">
                       {failurePathResult.explanation}
                     </p>
 
@@ -774,14 +774,14 @@ export default function PropertyInspector({
                   (pattern) => (
                     <div
                       key={pattern.id}
-                      className="rounded-2xl border border-[#A4AAB5]/12 bg-[#0C0E12] p-4"
+                      className="rounded-2xl border border-[#A4AAB5]/12 bg-[var(--background-2)] p-4"
                     >
                       <div className="flex items-start justify-between gap-3">
-                        <span className="font-[var(--font-space-grotesk)] text-[11px] font-bold text-[#F0F1F3]">
+                        <span className="font-[var(--font-space-grotesk)] text-[11px] font-bold text-[var(--text-primary)]">
                           {pattern.name}
                         </span>
 
-                        <span className="rounded-full border border-[#D6AD69]/30 bg-[#1D222A] px-2 py-1 font-[var(--font-inter)] text-[8px] font-bold text-[#D6AD69]">
+                        <span className="rounded-full border border-[#D6AD69]/30 bg-[var(--surface-elevated)] px-2 py-1 font-[var(--font-inter)] text-[8px] font-bold text-[#D6AD69]">
                           {pattern.confidence}
                         </span>
                       </div>
@@ -791,7 +791,7 @@ export default function PropertyInspector({
                           (evidence, index) => (
                             <p
                               key={index}
-                              className="font-[var(--font-inter)] text-[9px] leading-relaxed text-[#A4AAB5]"
+                              className="font-[var(--font-inter)] text-[9px] leading-relaxed text-[var(--text-muted)]"
                             >
                               <span className="mr-1 text-[#D6AD69]">
                                 •
@@ -818,19 +818,19 @@ export default function PropertyInspector({
                   (cost, index) => (
                     <div
                       key={index}
-                      className="rounded-2xl border border-[#A4AAB5]/12 bg-[#0C0E12] p-4"
+                      className="rounded-2xl border border-[#A4AAB5]/12 bg-[var(--background-2)] p-4"
                     >
                       <div className="flex items-center justify-between gap-3">
-                        <span className="font-[var(--font-inter)] text-[9px] text-[#A4AAB5]/70">
+                        <span className="font-[var(--font-inter)] text-[9px] text-[var(--text-muted)]/70">
                           Infrastructure tier
                         </span>
 
-                        <span className="font-[var(--font-space-grotesk)] text-sm font-bold text-[#F0F1F3]">
+                        <span className="font-[var(--font-space-grotesk)] text-sm font-bold text-[var(--text-primary)]">
                           {cost.costTier}
                         </span>
                       </div>
 
-                      <p className="mt-3 font-[var(--font-inter)] text-[9px] leading-relaxed text-[#A4AAB5]">
+                      <p className="mt-3 font-[var(--font-inter)] text-[9px] leading-relaxed text-[var(--text-muted)]">
                         {cost.tradeoffExplanation}
                       </p>
 
@@ -844,7 +844,7 @@ export default function PropertyInspector({
                             (driver, driverIndex) => (
                               <p
                                 key={driverIndex}
-                                className="font-[var(--font-inter)] text-[9px] text-[#A4AAB5]"
+                                className="font-[var(--font-inter)] text-[9px] text-[var(--text-muted)]"
                               >
                                 • {driver}
                               </p>
@@ -877,18 +877,18 @@ export default function PropertyInspector({
                       className="rounded-2xl border border-[#D6AD69]/30 bg-gradient-to-br from-[#171A20] to-[#0C0E12] p-4"
                     >
                       <div className="flex items-start gap-3">
-                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[#D6AD69]/40 bg-[#1D222A]">
+                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[#D6AD69]/40 bg-[var(--surface-elevated)]">
                           <Sparkles className="h-3.5 w-3.5 text-[#D6AD69]" />
                         </span>
 
-                        <p className="font-[var(--font-space-grotesk)] text-[11px] font-bold leading-snug text-[#F0F1F3]">
+                        <p className="font-[var(--font-space-grotesk)] text-[11px] font-bold leading-snug text-[var(--text-primary)]">
                           {recommendation.title}
                         </p>
                       </div>
 
-                      <div className="mt-4 space-y-2 font-[var(--font-inter)] text-[9px] leading-relaxed text-[#A4AAB5]">
+                      <div className="mt-4 space-y-2 font-[var(--font-inter)] text-[9px] leading-relaxed text-[var(--text-muted)]">
                         <p>
-                          <span className="font-semibold text-[#F0F1F3]">
+                          <span className="font-semibold text-[var(--text-primary)]">
                             Problem:
                           </span>{" "}
                           {recommendation.decision.problem}
@@ -902,14 +902,14 @@ export default function PropertyInspector({
                         </p>
 
                         <p>
-                          <span className="font-semibold text-[#F0F1F3]">
+                          <span className="font-semibold text-[var(--text-primary)]">
                             Benefit:
                           </span>{" "}
                           {recommendation.decision.benefit}
                         </p>
 
                         <p>
-                          <span className="font-semibold text-[#A4AAB5]">
+                          <span className="font-semibold text-[var(--text-muted)]">
                             Trade-off:
                           </span>{" "}
                           {recommendation.decision.tradeoff}
@@ -953,13 +953,13 @@ function SectionHeading({
   suffix?: string;
 }) {
   return (
-    <div className="flex items-center justify-between rounded-2xl border border-[#A4AAB5]/12 bg-[#171A20] px-3.5 py-3">
+    <div className="flex items-center justify-between rounded-2xl border border-[#A4AAB5]/12 bg-[var(--surface)] px-3.5 py-3">
       <div className="flex min-w-0 items-center gap-2.5">
-        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[#A4AAB5]/12 bg-[#1D222A]">
+        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[#A4AAB5]/12 bg-[var(--surface-elevated)]">
           <Icon className="h-3.5 w-3.5 text-[#D6AD69]" />
         </span>
 
-        <span className="truncate text-[10px] font-bold text-[#F0F1F3]">
+        <span className="truncate text-[10px] font-bold text-[var(--text-primary)]">
           {title}
         </span>
       </div>

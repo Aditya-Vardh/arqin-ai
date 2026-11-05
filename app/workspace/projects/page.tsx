@@ -130,7 +130,7 @@ export default function ProjectsPage() {
   }
 
   return (
-    <div className="relative min-h-full overflow-hidden bg-[#101216]">
+    <div className="relative min-h-full overflow-hidden bg-[var(--background)]">
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute left-[10%] top-[-180px] h-[500px] w-[500px] rounded-full bg-[#D6AD69]/[0.025] blur-[130px]" />
 
@@ -154,13 +154,13 @@ export default function ProjectsPage() {
               </span>
             </div>
 
-            <h1 className="max-w-3xl text-4xl font-bold tracking-[-0.04em] text-[#F0F1F3] sm:text-5xl lg:text-[56px] lg:leading-[1.02]">
+            <h1 className="max-w-3xl text-4xl font-bold tracking-[-0.04em] text-[var(--text-primary)] sm:text-5xl lg:text-[56px] lg:leading-[1.02]">
               Software Architecture
               <br />
               <span className="text-[#D6AD69]">Projects</span>
             </h1>
 
-            <p className="mt-4 max-w-2xl text-sm leading-7 text-[#A4AAB5] sm:text-base">
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-[var(--text-muted)] sm:text-base">
               Manage your saved system diagrams, microservice maps, and
               architecture specifications.
             </p>
@@ -177,17 +177,17 @@ export default function ProjectsPage() {
 
         <div className="flex items-center justify-between">
           <div>
-            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-[#4A5060]">
+            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--text-faint)]">
               Repository
             </p>
 
-            <p className="mt-1 text-sm font-semibold text-[#A4AAB5]">
+            <p className="mt-1 text-sm font-semibold text-[var(--text-muted)]">
               {projects.length}{" "}
               {projects.length === 1 ? "architecture" : "architectures"} saved
             </p>
           </div>
 
-          <div className="hidden items-center gap-2 rounded-full border border-[#A4AAB5]/12 bg-[#171A20] px-3 py-1.5 sm:flex">
+          <div className="hidden items-center gap-2 rounded-full border border-[#A4AAB5]/12 bg-[var(--surface)] px-3 py-1.5 sm:flex">
             <span className="h-1.5 w-1.5 rounded-full bg-[#D6AD69]" />
 
             <span className="font-mono text-[9px] font-bold uppercase tracking-wider text-[#D6AD69]">
@@ -197,16 +197,16 @@ export default function ProjectsPage() {
         </div>
 
         {projects.length === 0 ? (
-          <div className="flex min-h-[420px] flex-col items-center justify-center rounded-[28px] border border-dashed border-[#4A5060] bg-[#171A20]/80 p-10 text-center">
+          <div className="flex min-h-[420px] flex-col items-center justify-center rounded-[28px] border border-dashed border-[#4A5060] bg-[var(--surface)]/80 p-10 text-center">
             <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl border border-[#D6AD69]/30 bg-[#D6AD69]/10 text-[#D6AD69]">
               <FolderOpen className="h-7 w-7" />
             </div>
 
-            <h3 className="text-xl font-bold text-[#F0F1F3]">
+            <h3 className="text-xl font-bold text-[var(--text-primary)]">
               No Projects Saved Yet
             </h3>
 
-            <p className="mt-2 max-w-sm text-sm leading-6 text-[#A4AAB5]">
+            <p className="mt-2 max-w-sm text-sm leading-6 text-[var(--text-muted)]">
               Generate your first architecture in Studio Canvas to save and
               manage it here.
             </p>
@@ -229,7 +229,7 @@ export default function ProjectsPage() {
               return (
                 <div
                   key={project.id}
-                  className="group relative flex min-h-[310px] flex-col justify-between overflow-hidden rounded-[24px] border border-[#A4AAB5]/12 bg-[#171A20] p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)]/30 hover:shadow-lg active:scale-[0.98]"
+                  className="group relative flex min-h-[310px] flex-col justify-between overflow-hidden rounded-[24px] border border-[#A4AAB5]/12 bg-[var(--surface)] p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)]/30 hover:shadow-lg active:scale-[0.98]"
                 >
                   <div className="pointer-events-none absolute inset-0 opacity-20">
                     <div className="absolute inset-0 bg-[radial-gradient(rgba(48,54,64,0.6)_1px,transparent_1px)] [background-size:22px_22px]" />
@@ -241,7 +241,7 @@ export default function ProjectsPage() {
                         {DIAGRAM_TYPE_LABELS[project.diagramType]}
                       </span>
 
-                      <span className="font-mono text-[9px] text-[#A4AAB5]/60">
+                      <span className="font-mono text-[9px] text-[var(--text-muted)]/60">
                         {new Date(project.updatedAt).toLocaleDateString()}
                       </span>
                     </div>
@@ -254,7 +254,7 @@ export default function ProjectsPage() {
                         <input
                           value={editTitle}
                           onChange={(e) => setEditTitle(e.target.value)}
-                          className="min-w-0 flex-1 rounded-xl border border-[#D6AD69]/40 bg-[#101216] px-3 py-2 text-xs text-[#F0F1F3] outline-none focus:border-[#D6AD69]"
+                          className="min-w-0 flex-1 rounded-xl border border-[#D6AD69]/40 bg-[var(--background)] px-3 py-2 text-xs text-[var(--text-primary)] outline-none focus:border-[#D6AD69]"
                           autoFocus
                         />
 
@@ -269,7 +269,7 @@ export default function ProjectsPage() {
                         <button
                           type="button"
                           onClick={() => setEditingId(null)}
-                          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-[#303640] bg-[#171A20] text-[#A4AAB5]"
+                          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-muted)]"
                         >
                           <X className="h-4 w-4" />
                         </button>
@@ -280,11 +280,11 @@ export default function ProjectsPage() {
                         onClick={() => store?.setActiveProjectId(project.id)}
                         className="block"
                       >
-                        <h3 className="truncate font-[var(--font-space-grotesk)] text-lg font-bold tracking-tight text-[#F0F1F3] transition-colors group-hover:text-[#D6AD69]">
+                        <h3 className="truncate font-[var(--font-space-grotesk)] text-lg font-bold tracking-tight text-[var(--text-primary)] transition-colors group-hover:text-[#D6AD69]">
                           {project.title}
                         </h3>
 
-                        <p className="mt-2 line-clamp-2 font-[var(--font-inter)] text-xs leading-5 text-[#A4AAB5]">
+                        <p className="mt-2 line-clamp-2 font-[var(--font-inter)] text-xs leading-5 text-[var(--text-muted)]">
                           {project.prompt ||
                             "Custom architecture specification."}
                         </p>
@@ -299,16 +299,16 @@ export default function ProjectsPage() {
                           Health {health.health}/100
                         </span>
 
-                        <span className="text-[#4A5060]">·</span>
+                        <span className="text-[var(--text-faint)]">·</span>
 
-                        <span className="font-[var(--font-inter)] text-[10px] text-[#A4AAB5]">
+                        <span className="font-[var(--font-inter)] text-[10px] text-[var(--text-muted)]">
                           {health.healthLabel}
                         </span>
                       </div>
                     )}
                   </div>
 
-                  <div className="relative z-10 mt-7 flex items-center justify-between border-t border-[#303640] pt-4">
+                  <div className="relative z-10 mt-7 flex items-center justify-between border-t border-[var(--border)] pt-4">
                     <div className="flex items-center gap-2">
                       <Link
                         href={`/workspace/generate?project=${project.id}`}
@@ -325,7 +325,7 @@ export default function ProjectsPage() {
                         <button
                           type="button"
                           onClick={() => setPreviewProject(project)}
-                          className="inline-flex items-center gap-1 rounded-lg border border-[#303640] bg-[#171A20] px-2 py-1 font-[var(--font-inter)] text-[10px] font-semibold text-[#A4AAB5] transition-all hover:border-[#D6AD69]/30 hover:text-[#D6AD69]"
+                          className="inline-flex items-center gap-1 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2 py-1 font-[var(--font-inter)] text-[10px] font-semibold text-[var(--text-muted)] transition-all hover:border-[#D6AD69]/30 hover:text-[#D6AD69]"
                         >
                           <Eye className="h-3 w-3" />
                           Quick View
@@ -342,18 +342,18 @@ export default function ProjectsPage() {
                             menuOpen === project.id ? null : project.id,
                           );
                         }}
-                        className="flex h-8 w-8 items-center justify-center rounded-xl border border-[#303640] bg-[#171A20] text-[#4A5060] transition-all hover:border-[#D6AD69]/25 hover:text-[#F0F1F3]"
+                        className="flex h-8 w-8 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-faint)] transition-all hover:border-[#D6AD69]/25 hover:text-[var(--text-primary)]"
                         aria-label="Project actions"
                       >
                         <MoreHorizontal className="h-4 w-4" />
                       </button>
 
                       {menuOpen === project.id && (
-                        <div className="absolute bottom-full right-0 z-20 mb-2 w-44 rounded-2xl border border-[#303640] bg-[#101216]/98 p-1.5 text-xs shadow-[0_20px_50px_rgba(0,0,0,0.65)] backdrop-blur-2xl">
+                        <div className="absolute bottom-full right-0 z-20 mb-2 w-44 rounded-2xl border border-[var(--border)] bg-[var(--background)]/98 p-1.5 text-xs shadow-[0_20px_50px_rgba(0,0,0,0.65)] backdrop-blur-2xl">
                           <button
                             type="button"
                             onClick={() => startRename(project)}
-                            className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 font-[var(--font-inter)] text-[#A4AAB5] transition-colors hover:bg-[#1D222A] hover:text-[#F0F1F3]"
+                            className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 font-[var(--font-inter)] text-[var(--text-muted)] transition-colors hover:bg-[var(--surface-elevated)] hover:text-[var(--text-primary)]"
                           >
                             <Edit3 className="h-3.5 w-3.5 text-[#D6AD69]" />
                             Rename
@@ -362,7 +362,7 @@ export default function ProjectsPage() {
                           <button
                             type="button"
                             onClick={() => handleDuplicate(project.id)}
-                            className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 font-[var(--font-inter)] text-[#A4AAB5] transition-colors hover:bg-[#1D222A] hover:text-[#F0F1F3]"
+                            className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 font-[var(--font-inter)] text-[var(--text-muted)] transition-colors hover:bg-[var(--surface-elevated)] hover:text-[var(--text-primary)]"
                           >
                             <Copy className="h-3.5 w-3.5 text-[#D6AD69]" />
                             Duplicate
@@ -372,14 +372,14 @@ export default function ProjectsPage() {
                             <button
                               type="button"
                               onClick={() => handleExport(project)}
-                              className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 font-[var(--font-inter)] text-[#A4AAB5] transition-colors hover:bg-[#1D222A] hover:text-[#F0F1F3]"
+                              className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 font-[var(--font-inter)] text-[var(--text-muted)] transition-colors hover:bg-[var(--surface-elevated)] hover:text-[var(--text-primary)]"
                             >
                               <Download className="h-3.5 w-3.5 text-[#D6AD69]" />
                               Export MD
                             </button>
                           )}
 
-                          <div className="my-1 border-t border-[#303640]" />
+                          <div className="my-1 border-t border-[var(--border)]" />
 
                           <button
                             type="button"
@@ -402,15 +402,15 @@ export default function ProjectsPage() {
 
       {previewProject && previewProject.result && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 backdrop-blur-md">
-          <div className="relative flex h-[85vh] w-full max-w-6xl flex-col overflow-hidden rounded-[28px] border border-[#303640] bg-[#101216] shadow-[0_30px_100px_rgba(0,0,0,0.8)]">
-            <div className="flex items-center justify-between border-b border-[#303640] bg-[#171A20]/95 px-5 py-4 backdrop-blur-xl sm:px-6">
+          <div className="relative flex h-[85vh] w-full max-w-6xl flex-col overflow-hidden rounded-[28px] border border-[var(--border)] bg-[var(--background)] shadow-[0_30px_100px_rgba(0,0,0,0.8)]">
+            <div className="flex items-center justify-between border-b border-[var(--border)] bg-[var(--surface)]/95 px-5 py-4 backdrop-blur-xl sm:px-6">
               <div className="flex min-w-0 items-center gap-3">
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[#D6AD69]/20 bg-[#D6AD69]/[0.05] text-[#D6AD69]">
                   <Layers className="h-4 w-4" />
                 </div>
 
                 <div className="min-w-0">
-                  <h2 className="truncate font-[var(--font-space-grotesk)] text-sm font-bold text-[#F0F1F3] sm:text-base">
+                  <h2 className="truncate font-[var(--font-space-grotesk)] text-sm font-bold text-[var(--text-primary)] sm:text-base">
                     {previewProject.title}
                   </h2>
 
@@ -436,7 +436,7 @@ export default function ProjectsPage() {
                 <button
                   type="button"
                   onClick={() => setPreviewProject(null)}
-                  className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#303640] bg-[#171A20] text-[#4A5060] transition-all hover:border-[#D6AD69]/25 hover:text-[#F0F1F3]"
+                  className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-faint)] transition-all hover:border-[#D6AD69]/25 hover:text-[var(--text-primary)]"
                   aria-label="Close modal"
                 >
                   <X className="h-5 w-5" />
@@ -444,7 +444,7 @@ export default function ProjectsPage() {
               </div>
             </div>
 
-            <div className="relative flex-1 overflow-hidden bg-[#101216]">
+            <div className="relative flex-1 overflow-hidden bg-[var(--background)]">
               <ArchitectureCanvas
                 chart={previewProject.result.mermaidCode}
                 result={previewProject.result}

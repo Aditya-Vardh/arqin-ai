@@ -4,11 +4,16 @@ import { useEffect, useRef, useCallback } from "react";
 
 const TILE_DESKTOP = 80;
 const TILE_MOBILE = 56;
-const POINTER_RADIUS = 70;
-const INITIAL_ON_PROB = 0.045; // ~4.5% — restrained, not dominant
+const POINTER_RADIUS = 72;
+const INITIAL_ON_PROB = 0.05;
+// Glow at full proximity — clearly visible amber, not subtle
+const GLOW_COLOR = "214,173,105";
+const GLOW_MAX_ALPHA = 0.55;
+const GLOW_RADIUS_PX = 160;
 
 type TileEl = HTMLDivElement & {
   _offTimer?: ReturnType<typeof setTimeout>;
+  _front?: HTMLDivElement; // direct ref to front face for fast glow updates
 };
 
 export default function TileMosaic() {
@@ -25,18 +30,14 @@ export default function TileMosaic() {
   const shuffleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const reducedMotionRef = useRef(false);
   const isTouchRef = useRef(false);
-  // Stores the latest mouse position relative to the page for the glow rAF
   const glowMouseRef = useRef<{ x: number; y: number } | null>(null);
 
   const setTileOn = useCallback((tile: TileEl, on: boolean) => {
     const inner = tile.firstElementChild as HTMLElement | null;
     if (!inner) return;
     inner.style.transform = on ? "rotateX(180deg)" : "rotateX(0deg)";
-    if (on) {
-      tile.classList.add("is-on");
-    } else {
-      tile.classList.remove("is-on");
-    }
+    if (on) tile.classList.add("is-on");
+    else tile.classList.remove("is-on");
   }, []);
 
   const activateTileTemporarily = useCallback(
@@ -88,8 +89,6 @@ export default function TileMosaic() {
 
     const W = container.offsetWidth;
     const H = container.offsetHeight;
-
-    // Guard against zero dimensions (SSR or hidden elements)
     if (W === 0 || H === 0) return;
 
     const size = W >= 768 ? TILE_DESKTOP : TILE_MOBILE;
@@ -100,16 +99,12 @@ export default function TileMosaic() {
     colsRef.current = cols;
     rowsRef.current = rows;
 
-    // Wipe old tiles, clear any pending timers
     tilesRef.current.forEach((row) =>
-      row.forEach((t) => {
-        if (t._offTimer) clearTimeout(t._offTimer);
-      })
+      row.forEach((t) => { if (t._offTimer) clearTimeout(t._offTimer); })
     );
     grid.innerHTML = "";
     tilesRef.current = [];
 
-    // Size the grid to exactly cover the container
     grid.style.width = `${cols * size}px`;
     grid.style.height = `${rows * size}px`;
     grid.style.gridTemplateColumns = `repeat(${cols}, ${size}px)`;
@@ -128,26 +123,28 @@ export default function TileMosaic() {
         inner.style.cssText = `
           position:absolute;inset:0;
           transform-style:preserve-3d;
-          transition:transform 650ms cubic-bezier(0.2,0.7,0.2,1), box-shadow 0.15s ease;
+          transition:transform 620ms cubic-bezier(0.2,0.7,0.2,1);
           will-change:transform;
         `;
 
-        // Front face — dark graphite tile with subtle inset border + glow support
-        const front = document.createElement("div");
+        // Front face — store direct reference so glow can be set without CSS var inheritance
+        const front = document.createElement("div") as HTMLDivElement;
         front.style.cssText = `
           position:absolute;inset:0;
           backface-visibility:hidden;-webkit-backface-visibility:hidden;
           background:#161B22;
-          box-shadow:inset 0 0 0 1px rgba(255,255,255,0.035), 0 0 18px rgba(214,173,105,calc(var(--glow,0)*0.25));
+          box-shadow:inset 0 0 0 1px rgba(255,255,255,0.035);
+          transition:box-shadow 0.12s ease;
         `;
+        tile._front = front;
 
-        // Back face — very subtle amber tint, not solid gold
+        // Back face — muted amber tint (not solid gold)
         const back = document.createElement("div");
         back.style.cssText = `
           position:absolute;inset:0;
           backface-visibility:hidden;-webkit-backface-visibility:hidden;
-          background:rgba(214,173,105,0.18);
-          border:1px solid rgba(214,173,105,0.28);
+          background:rgba(214,173,105,0.20);
+          border:1px solid rgba(214,173,105,0.30);
           transform:rotateX(180deg);
         `;
 
@@ -158,13 +155,12 @@ export default function TileMosaic() {
         tilesRef.current[r][c] = tile;
 
         if (Math.random() < INITIAL_ON_PROB) {
-          selected.push({ r, c, delay: (c + r) * 38 });
+          selected.push({ r, c, delay: (c + r) * 35 });
         }
       }
     }
 
     if (reducedMotionRef.current) {
-      // Static — just flip selected tiles immediately
       for (const { r, c } of selected) {
         const t = tilesRef.current[r]?.[c];
         if (t) setTileOn(t, true);
@@ -172,7 +168,6 @@ export default function TileMosaic() {
       return;
     }
 
-    // Diagonal wave from top-left
     for (const { r, c, delay } of selected) {
       const t = tilesRef.current[r]?.[c];
       if (!t) continue;
@@ -180,7 +175,6 @@ export default function TileMosaic() {
     }
   }, [setTileOn]);
 
-  // Ambient shuffle — keep mosaic alive at rest
   const scheduleAmbientShuffle = useCallback(() => {
     if (reducedMotionRef.current) return;
     shuffleTimerRef.current = setTimeout(() => {
@@ -189,10 +183,9 @@ export default function TileMosaic() {
       const tile = tilesRef.current[r]?.[c];
       if (tile) setTileOn(tile, !tile.classList.contains("is-on"));
       scheduleAmbientShuffle();
-    }, 3500);
+    }, 3200);
   }, [setTileOn]);
 
-  // Idle probe — virtual pointer sweeps when user is not interacting
   const startProbeLoop = useCallback(() => {
     if (reducedMotionRef.current) return;
     const loop = () => {
@@ -205,7 +198,6 @@ export default function TileMosaic() {
         const W = container.offsetWidth;
         const H = container.offsetHeight;
         const rect = container.getBoundingClientRect();
-        // Lissajous-like path
         const px = rect.left + W * (0.5 + 0.38 * Math.sin(t * 0.55));
         const py = rect.top + H * (0.5 + 0.22 * Math.sin(t * 1.0));
         pointerEffect(px, py);
@@ -215,11 +207,12 @@ export default function TileMosaic() {
     rafRef.current = requestAnimationFrame(loop);
   }, [pointerEffect]);
 
-  // Reset all tile glow values to 0
   const resetAllGlow = useCallback(() => {
     tilesRef.current.forEach((row) => {
       row.forEach((tile) => {
-        tile.style.setProperty("--glow", "0");
+        if (tile._front) {
+          tile._front.style.boxShadow = "inset 0 0 0 1px rgba(255,255,255,0.035)";
+        }
       });
     });
   }, []);
@@ -253,12 +246,10 @@ export default function TileMosaic() {
     container.addEventListener("pointermove", onPointer);
     container.addEventListener("touchmove", onTouch, { passive: true });
 
-    // ── Glow effect — skip on touch devices and reduced motion ──────────────
+    // ── Glow: set box-shadow directly on front face element (bypasses CSS var inheritance issues) ──
     if (!isTouchRef.current && !reducedMotionRef.current) {
       const onMouseMove = (e: MouseEvent) => {
         glowMouseRef.current = { x: e.clientX, y: e.clientY };
-
-        // Cancel any pending glow frame and schedule a fresh one
         if (glowRafRef.current) cancelAnimationFrame(glowRafRef.current);
         glowRafRef.current = requestAnimationFrame(() => {
           const pos = glowMouseRef.current;
@@ -272,11 +263,19 @@ export default function TileMosaic() {
 
           tilesRef.current.forEach((row, r) => {
             row.forEach((tile, c) => {
+              if (!tile._front) return;
               const cx = c * size + size / 2;
               const cy = r * size + size / 2;
               const dist = Math.hypot(cx - lx, cy - ly);
-              const glow = Math.max(0, 1 - dist / 140); // 140px radius, restrained
-              tile.style.setProperty("--glow", glow.toFixed(3));
+              const t = Math.max(0, 1 - dist / GLOW_RADIUS_PX);
+              if (t > 0.005) {
+                const alpha = (t * GLOW_MAX_ALPHA).toFixed(3);
+                const spread = Math.round(t * 22);
+                tile._front.style.boxShadow =
+                  `inset 0 0 0 1px rgba(255,255,255,0.035), 0 0 ${spread}px rgba(${GLOW_COLOR},${alpha})`;
+              } else {
+                tile._front.style.boxShadow = "inset 0 0 0 1px rgba(255,255,255,0.035)";
+              }
             });
           });
         });
@@ -288,16 +287,15 @@ export default function TileMosaic() {
         resetAllGlow();
       };
 
-      window.addEventListener("mousemove", onMouseMove);
-      window.addEventListener("mouseleave", onMouseLeave);
-      container.addEventListener("mouseleave", onMouseLeave);
-
-      // Resize: debounced rebuild
       let resizeTimer: ReturnType<typeof setTimeout>;
       const onResize = () => {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(buildGrid, 200);
       };
+
+      window.addEventListener("mousemove", onMouseMove);
+      window.addEventListener("mouseleave", onMouseLeave);
+      container.addEventListener("mouseleave", onMouseLeave);
       window.addEventListener("resize", onResize);
 
       return () => {
@@ -311,14 +309,11 @@ export default function TileMosaic() {
         if (glowRafRef.current) cancelAnimationFrame(glowRafRef.current);
         if (shuffleTimerRef.current) clearTimeout(shuffleTimerRef.current);
         tilesRef.current.forEach((row) =>
-          row.forEach((t) => {
-            if (t._offTimer) clearTimeout(t._offTimer);
-          })
+          row.forEach((t) => { if (t._offTimer) clearTimeout(t._offTimer); })
         );
       };
     }
 
-    // No glow (touch or reduced motion) — still need resize and cleanup
     let resizeTimer: ReturnType<typeof setTimeout>;
     const onResize = () => {
       clearTimeout(resizeTimer);
@@ -334,19 +329,12 @@ export default function TileMosaic() {
       if (glowRafRef.current) cancelAnimationFrame(glowRafRef.current);
       if (shuffleTimerRef.current) clearTimeout(shuffleTimerRef.current);
       tilesRef.current.forEach((row) =>
-        row.forEach((t) => {
-          if (t._offTimer) clearTimeout(t._offTimer);
-        })
+        row.forEach((t) => { if (t._offTimer) clearTimeout(t._offTimer); })
       );
     };
   }, [buildGrid, scheduleAmbientShuffle, startProbeLoop, pointerEffect, resetAllGlow]);
 
   return (
-    /*
-      This div fills the hero section absolutely (z-0).
-      overflow:hidden clips tiles that would extend beyond the container.
-      pointer-events:none ensures tiles never block headline/CTA interaction.
-    */
     <div
       ref={containerRef}
       className="absolute inset-0 overflow-hidden"
@@ -355,13 +343,7 @@ export default function TileMosaic() {
     >
       <div
         ref={gridRef}
-        style={{
-          display: "grid",
-          position: "absolute",
-          top: 0,
-          left: 0,
-          /* tiles that extend past container edges are clipped by parent overflow:hidden */
-        }}
+        style={{ display: "grid", position: "absolute", top: 0, left: 0 }}
       />
     </div>
   );

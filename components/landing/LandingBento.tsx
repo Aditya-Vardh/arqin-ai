@@ -159,11 +159,19 @@ export default function LandingBento() {
           }
         });
       },
-      { threshold: 0.15 }
+      { threshold: 0.08, rootMargin: "0px 0px -40px 0px" }
     );
 
     cardRefs.current.forEach((el) => {
-      if (el) observer.observe(el);
+      if (el) {
+        // If already in viewport on mount, reveal immediately
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 40) {
+          el.classList.add("is-in");
+        } else {
+          observer.observe(el);
+        }
+      }
     });
 
     return () => observer.disconnect();
@@ -201,7 +209,7 @@ export default function LandingBento() {
               }}
             >
               {/* Illustration in upper area */}
-              <div className="absolute right-4 top-4 pointer-events-none opacity-70 transition-opacity duration-300 group-hover:opacity-90">
+              <div className="absolute right-3 top-3 pointer-events-none opacity-90 transition-opacity duration-300 group-hover:opacity-100">
                 {card.illustration}
               </div>
 
