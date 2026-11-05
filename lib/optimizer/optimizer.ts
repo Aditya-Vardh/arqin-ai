@@ -122,6 +122,164 @@ export function optimizeArchitecture(graph: ArchitectureGraph): OptimizationResu
     });
   }
 
+  // 4. Add Load Balancer if missing and 2+ services exist
+  const hasLoadBalancer = newNodes.some(n =>
+    n.name.toLowerCase().includes("load") || n.name.toLowerCase().includes("balancer") || n.name.toLowerCase().includes("lb")
+  );
+  if (!hasLoadBalancer && serviceNodes.length >= 2) {
+    const lbId = "LoadBalancer";
+    const lbNode: ArchNode = {
+      id: lbId,
+      name: "Load Balancer (NGINX / AWS ALB)",
+      type: "gateway",
+      layer: "Ingress Layer",
+      technology: "NGINX / AWS ALB",
+      description: "Distributes incoming traffic across multiple service instances using round-robin and health-check routing.",
+      scalingStrategy: "Active-Passive or Active-Active HA pair",
+      failureModes: ["Single point of failure if not HA-paired"],
+      riskLevel: "LOW",
+    };
+    newNodes.unshift(lbNode);
+    changes.push({
+      id: "change-add-lb",
+      type: "ADD_NODE",
+      title: "Added Load Balancer for Multi-Service Traffic Distribution",
+      description: "Deployed NGINX/ALB load balancer distributing traffic across multiple microservice replicas.",
+      why: "With 2+ microservices and no load balancer, a single instance failure takes down that service entirely, and traffic cannot be distributed across horizontal replicas.",
+      expectedBenefit: "Enables zero-downtime rolling deployments, increases throughput by up to 3x via horizontal scaling, and eliminates single-instance failure risk.",
+      tradeoff: "Adds a network hop (~1ms); requires health check configuration and HA pair for the LB itself.",
+      nodeIds: [lbId],
+    });
+  }
+
+  // 5. Add Distributed Tracing if missing and 4+ services
+  const hasMonitoring = newNodes.some(n =>
+    n.name.toLowerCase().includes("monitor") || n.name.toLowerCase().includes("tracing") ||
+    n.name.toLowerCase().includes("jaeger") || n.name.toLowerCase().includes("observ") ||
+    n.name.toLowerCase().includes("prometheus") || n.name.toLowerCase().includes("grafana")
+  );
+  if (!hasMonitoring && serviceNodes.length >= 4) {
+    const tracingId = "DistributedTracing";
+    const tracingNode: ArchNode = {
+      id: tracingId,
+      name: "Distributed Tracing (Jaeger + OpenTelemetry)",
+      type: "external",
+      layer: "Observability Layer",
+      technology: "Jaeger / OpenTelemetry",
+      description: "Captures end-to-end request traces across all microservices to identify latency bottlenecks and failure paths.",
+      scalingStrategy: "Jaeger Collector horizontal scaling with Cassandra/Elasticsearch backend",
+      failureModes: ["Sampling rate too low misses intermittent issues"],
+      riskLevel: "LOW",
+    };
+    newNodes.push(tracingNode);
+    changes.push({
+      id: "change-add-tracing",
+      type: "ADD_NODE",
+      title: "Added Distributed Tracing (Jaeger + OpenTelemetry)",
+      description: "Introduced distributed tracing across all microservices for end-to-end request visibility.",
+      why: "With 4+ microservices and no observability layer, debugging production latency issues and cascading failures becomes exponentially harder. Mean time to detect (MTTD) and mean time to recover (MTTR) increase significantly.",
+      expectedBenefit: "Reduces MTTD from hours to minutes. Provides P99 latency breakdowns per service hop. Identifies slow database queries and cascade failures in real time.",
+      tradeoff: "Adds ~2-5% CPU overhead per service for trace collection. Requires Jaeger infrastructure (Collector + backend storage).",
+      nodeIds: [tracingId],
+    });
+  }
+
+  // 6. Add Database Read Replicas if a DB has 3+ service connections
+  const dbServiceConnections = new Map<string, Set<string>>();
+  newEdges.forEach(e => {
+    const targetIsDb = newNodes.find(n => n.id === e.targetId && n.type === "database");
+    if (targetIsDb) {
+      const existing = dbServiceConnections.get(e.targetId) || new Set<string>();
+      existing.add(e.sourceId);
+      dbServiceConnections.set(e.targetId, existing);
+    }
+  });
+  dbNodes.forEach(db => {
+    const connectedServices = dbServiceConnections.get(db.id)?.size ?? 0;
+    const alreadyHasReplica = newNodes.some(n =>
+      n.name.toLowerCase().includes("replica") || n.name.toLowerCase().includes("read replica")
+    );
+    if (connectedServices >= 3 && !alreadyHasReplica) {
+      const replicaId = `${db.id}ReadReplica`;
+      const replicaNode: ArchNode = {
+        id: replicaId,
+        name: `${db.name} Read Replica`,
+        type: "database",
+        layer: db.layer,
+        technology: `${db.technology} Read Replica`,
+        description: `Synchronous streaming replica of ${db.name} serving read-heavy queries from ${connectedServices} services, offloading the primary write node.`,
+        scalingStrategy: "PostgreSQL streaming replication / AWS RDS Multi-AZ",
+        failureModes: ["Replica lag under write spikes"],
+        riskLevel: "LOW",
+      };
+      newNodes.push(replicaNode);
+      changes.push({
+        id: `change-add-replica-${db.id}`,
+        type: "ADD_NODE",
+        title: `Added Read Replica for ${db.name}`,
+        description: `Introduced a read replica to offload ${connectedServices} services reading from the primary database.`,
+        why: `${db.name} is serving ${connectedServices}+ microservices. Without read replicas, all read traffic hits the primary write node, causing write latency spikes during read bursts and creating a single point of failure.`,
+        expectedBenefit: "Reduces primary DB CPU by 40-70% under read-heavy load. Enables zero-downtime failover. Supports up to 5x read throughput via replica scaling.",
+        tradeoff: "Read replicas have eventual consistency lag (typically <100ms). Write operations must always go to primary.",
+        nodeIds: [replicaId, db.id],
+      });
+    }
+  });
+
+  // 7. Add CDN if frontend present and no CDN
+  const hasFrontend = newNodes.some(n => n.type === "frontend");
+  const hasCDN = newNodes.some(n =>
+    n.name.toLowerCase().includes("cdn") || n.name.toLowerCase().includes("cloudfront") ||
+    n.name.toLowerCase().includes("cloudflare") || n.name.toLowerCase().includes("edge")
+  );
+  if (hasFrontend && !hasCDN) {
+    const cdnId = "CDNEdge";
+    const cdnNode: ArchNode = {
+      id: cdnId,
+      name: "CDN Edge Layer (Cloudflare / CloudFront)",
+      type: "external",
+      layer: "Edge Layer",
+      technology: "Cloudflare / AWS CloudFront",
+      description: "Globally distributed edge cache serving static assets, pre-rendered pages, and API responses from 200+ PoPs worldwide.",
+      scalingStrategy: "Automatic edge PoP scaling",
+      failureModes: ["Cache poisoning if cache keys misconfigured"],
+      riskLevel: "LOW",
+    };
+    newNodes.unshift(cdnNode);
+    changes.push({
+      id: "change-add-cdn",
+      type: "ADD_NODE",
+      title: "Added CDN Edge Layer (Cloudflare / CloudFront)",
+      description: "Introduced a CDN edge layer in front of the frontend to serve static assets and cached responses globally.",
+      why: "The frontend is serving assets directly from the origin server. Without a CDN, users far from the origin experience 200-500ms+ TTFB for static assets, and the origin bears full load for every asset request.",
+      expectedBenefit: "Reduces static asset TTFB to under 20ms globally. Offloads 80-95% of static traffic from origin. DDoS mitigation at the edge. Dramatically improves Core Web Vitals (LCP).",
+      tradeoff: "Cache invalidation delays (typically 1-60 seconds). Requires cache-control headers to be correctly configured. Additional monthly cost.",
+      nodeIds: [cdnId],
+    });
+  }
+
+  // 8. Circuit Breaker recommendation for direct service-to-service calls
+  const hasCircuitBreaker = newNodes.some(n =>
+    n.name.toLowerCase().includes("circuit") || n.name.toLowerCase().includes("breaker") || n.name.toLowerCase().includes("resilience")
+  );
+  const hasDirectServiceToService = newEdges.some(e => {
+    const src = newNodes.find(n => n.id === e.sourceId);
+    const tgt = newNodes.find(n => n.id === e.targetId);
+    return src?.type === "microservice" && tgt?.type === "microservice";
+  });
+  if (!hasCircuitBreaker && hasDirectServiceToService) {
+    changes.push({
+      id: "change-add-circuit-breaker",
+      type: "MODIFY_EDGE",
+      title: "Implement Circuit Breaker Pattern on Service-to-Service Calls",
+      description: "Wrap all direct microservice-to-microservice synchronous calls with a circuit breaker (Resilience4j or Polly).",
+      why: "Direct service-to-service connections without a circuit breaker create cascading failure risk: if Service B slows down, Service A accumulates waiting threads, exhausting its connection pool and failing too. This cascade can take down the entire system.",
+      expectedBenefit: "Prevents cascading failures by failing fast when a downstream service is unhealthy. Reduces blast radius of individual service failures by 90%. Enables graceful degradation with fallback responses.",
+      tradeoff: "Circuit breaker state (closed/open/half-open) adds complexity. False-positive trips under momentary latency spikes require careful threshold tuning.",
+      nodeIds: serviceNodes.map(s => s.id),
+    });
+  }
+
   // Re-generate Mermaid code for optimized graph
   const mermaidLines = ["flowchart TB"];
   const subgraphs = new Map<string, ArchNode[]>();
@@ -157,6 +315,12 @@ export function optimizeArchitecture(graph: ArchitectureGraph): OptimizationResu
 
   const optimizedScore = evaluateArchitectureScore(optimizedGraph);
 
+  // Generate AI suggestions when already optimized
+  let aiSuggestions: string[] | undefined;
+  if (changes.length === 0) {
+    aiSuggestions = generateArchitectureSuggestions(graph);
+  }
+
   return {
     originalGraph: graph,
     optimizedGraph,
@@ -165,6 +329,48 @@ export function optimizeArchitecture(graph: ArchitectureGraph): OptimizationResu
     changes,
     explanation: changes.length > 0
       ? `Arqin AI optimized ${graph.title} by applying ${changes.length} structural change(s): ${changes.map((c) => c.title).join("; ")}.`
-      : `${graph.title} is already well-optimized. No additional structural changes were identified.`,
+      : `${graph.title} is already well-optimized. Here are AI-generated suggestions to further improve it.`,
+    aiSuggestions,
   };
+}
+
+function generateArchitectureSuggestions(graph: ArchitectureGraph): string[] {
+  const nodeTypes = new Set(graph.nodes.map(n => n.type));
+  const nodeNames = graph.nodes.map(n => n.name.toLowerCase()).join(" ");
+  const suggestions: string[] = [];
+
+  // Suggestion 1: Based on node types present
+  if (nodeTypes.has("database") && !nodeNames.includes("backup")) {
+    suggestions.push(
+      `Implement automated database backups with point-in-time recovery for ${graph.nodes.find(n => n.type === "database")?.name ?? "your database"}. Use pg_dump schedules or managed backup services (AWS RDS automated backups) with a minimum 7-day retention window to meet RPO requirements.`
+    );
+  } else {
+    suggestions.push(
+      `Consider implementing a Blue-Green deployment strategy for ${graph.title}. Maintain two identical production environments and switch traffic instantly, reducing deployment risk and enabling zero-downtime releases with one-click rollback.`
+    );
+  }
+
+  // Suggestion 2: Observability
+  if (!nodeNames.includes("log") && !nodeNames.includes("monitor")) {
+    suggestions.push(
+      `Add centralized structured logging (ELK Stack or Grafana Loki) with correlation IDs propagated across all ${graph.nodes.length} components in ${graph.title}. JSON-structured logs with request IDs reduce mean-time-to-debug from hours to minutes during production incidents.`
+    );
+  } else {
+    suggestions.push(
+      `Implement SLO (Service Level Objective) dashboards for ${graph.title}. Define P95/P99 latency targets, error rate budgets, and availability targets per service. Alert on error budget burn rate rather than raw thresholds to reduce alert fatigue.`
+    );
+  }
+
+  // Suggestion 3: Security
+  if (!nodeNames.includes("waf") && !nodeNames.includes("firewall")) {
+    suggestions.push(
+      `Add a Web Application Firewall (WAF) in front of ${graph.title}'s public-facing endpoints. Configure OWASP Core Rule Set to block SQLi, XSS, and RCE attempts. AWS WAF or Cloudflare WAF integrate directly with ALB/API Gateway with minimal latency overhead (~1ms).`
+    );
+  } else {
+    suggestions.push(
+      `Conduct a threat model review for ${graph.title} using the STRIDE framework. Identify trust boundaries between ${graph.nodes.slice(0, 3).map(n => n.name).join(", ")} and document mitigation strategies for each identified threat vector.`
+    );
+  }
+
+  return suggestions.slice(0, 3);
 }

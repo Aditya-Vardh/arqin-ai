@@ -89,6 +89,7 @@ export type OptimizationResult = {
   optimizedHealth: number;
   changes: OptimizationChange[];
   explanation: string;
+  aiSuggestions?: string[];
 };
 
 export type SimulationScenario = {
