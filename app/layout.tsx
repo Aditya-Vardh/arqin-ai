@@ -98,6 +98,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
     >
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t='dark';var mq=window.matchMedia('(prefers-color-scheme: light)');var sys=mq.matches?'light':'dark';for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.startsWith('arqin_')&&k.endsWith('_settings')){try{var s=JSON.parse(localStorage.getItem(k)||'{}');if(s&&s.theme){if(s.theme==='system'){t=sys;}else{t=s.theme;}break;}}catch(e){}}}document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();`,
+          }}
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
