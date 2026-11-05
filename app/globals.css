@@ -3860,3 +3860,90 @@ input::placeholder {
     height: 100dvh;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ARQIN AI — FINAL TOKEN OVERRIDE
+   These rules appear AFTER @import "shadcn/tailwind.css" and must override
+   shadcn's :root block which resets --background, --accent, --border etc.
+   to oklch white/grey values. We restore the Arqin dark-graphite palette.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Default (dark) — override shadcn's white :root vars */
+:root {
+  --background:       #101216;
+  --background-2:     #0C0E12;
+  --foreground:       #F0F1F3;
+  --surface:          #171A20;
+  --surface-elevated: #1D222A;
+  --accent:           #D6AD69;
+  --accent-hover:     #E0BC7A;
+  --border:           rgba(48, 54, 64, 0.85);
+  --text-primary:     #F0F1F3;
+  --text-muted:       #B8C0CC;
+  --text-faint:       #6A7280;
+  --on-accent:        #0E1116;
+
+  /* shadcn compat aliases — map to Arqin palette */
+  --card:             #171A20;
+  --card-foreground:  #F0F1F3;
+  --primary:          #D6AD69;
+  --primary-foreground: #0E1116;
+  --muted:            #1D222A;
+  --muted-foreground: #B8C0CC;
+  --input:            rgba(48, 54, 64, 0.85);
+  --ring:             #D6AD69;
+}
+
+/* Explicit dark theme — same values, highest priority */
+[data-theme="dark"],
+:root[data-theme="dark"] {
+  --background:       #101216;
+  --background-2:     #0C0E12;
+  --foreground:       #F0F1F3;
+  --surface:          #171A20;
+  --surface-elevated: #1D222A;
+  --accent:           #D6AD69;
+  --accent-hover:     #E0BC7A;
+  --accent-soft:      rgba(214, 173, 105, 0.14);
+  --accent-subtle:    rgba(214, 173, 105, 0.10);
+  --border:           rgba(48, 54, 64, 0.85);
+  --text-primary:     #F0F1F3;
+  --text-muted:       #B8C0CC;
+  --text-faint:       #6A7280;
+  --on-accent:        #0E1116;
+
+  --card:             #171A20;
+  --card-foreground:  #F0F1F3;
+  --primary:          #D6AD69;
+  --primary-foreground: #0E1116;
+  --muted:            #1D222A;
+  --muted-foreground: #B8C0CC;
+  --input:            rgba(48, 54, 64, 0.85);
+  --ring:             #D6AD69;
+}
+
+/* Light theme */
+[data-theme="light"],
+:root[data-theme="light"] {
+  --background:       #F7F5F0;
+  --background-2:     #EDE9E0;
+  --foreground:       #1A1C22;
+  --surface:          #FFFFFF;
+  --surface-elevated: #F0EDE6;
+  --accent:           #B8922A;
+  --accent-hover:     #C9A040;
+  --border:           rgba(30, 35, 40, 0.12);
+  --text-primary:     #1A1C22;
+  --text-muted:       #4A5060;
+  --text-faint:       #8A9095;
+  --on-accent:        #0E1116;
+
+  --card:             #FFFFFF;
+  --card-foreground:  #1A1C22;
+  --primary:          #B8922A;
+  --primary-foreground: #0E1116;
+  --muted:            #F0EDE6;
+  --muted-foreground: #4A5060;
+  --input:            rgba(30, 35, 40, 0.12);
+  --ring:             #B8922A;
+}
