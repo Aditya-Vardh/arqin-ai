@@ -659,9 +659,9 @@ function GenerateContent() {
         {!result ? (
           <div className="relative flex flex-1 items-center justify-center overflow-y-auto bg-[var(--background)] p-6">
             <div className="pointer-events-none absolute inset-0">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(var(--accent-rgb,214,173,105),0.07),transparent_38%)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(214,173,105,0.07),transparent_38%)]" />
 
-              <div className="absolute inset-0 bg-[linear-gradient(rgba(var(--accent-rgb,214,173,105),0.018)_1px,transparent_1px),linear-gradient(90deg,rgba(var(--accent-rgb,214,173,105),0.018)_1px,transparent_1px)] [background-size:48px_48px]" />
+              <div className="absolute inset-0 bg-[linear-gradient(rgba(214,173,105,0.018)_1px,transparent_1px),linear-gradient(90deg,rgba(214,173,105,0.018)_1px,transparent_1px)] [background-size:48px_48px]" />
             </div>
 
             <div className="relative z-10 w-full max-w-6xl space-y-6">

@@ -29,7 +29,7 @@ export default function SignUpPage() {
         {/* Amber glow */}
         <div
           className="pointer-events-none absolute top-0 right-0 w-[500px] h-[500px] rounded-full blur-[180px]"
-          style={{ background: "rgba(var(--accent-rgb,214,173,105),0.07)" }}
+          style={{ background: "rgba(214,173,105,0.07)" }}
           aria-hidden="true"
         />
 
@@ -39,7 +39,7 @@ export default function SignUpPage() {
             <div
               className="flex h-9 w-9 items-center justify-center rounded-xl"
               style={{
-                border: "1px solid rgba(var(--accent-rgb,214,173,105),0.35)",
+                border: "1px solid rgba(214,173,105,0.35)",
                 background: "#171A20",
               }}
             >
@@ -62,8 +62,8 @@ export default function SignUpPage() {
             <div
               className="mb-5 inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold text-[var(--accent)]"
               style={{
-                background: "rgba(var(--accent-rgb,214,173,105),0.10)",
-                border: "1px solid rgba(var(--accent-rgb,214,173,105),0.25)",
+                background: "rgba(214,173,105,0.10)",
+                border: "1px solid rgba(214,173,105,0.25)",
               }}
             >
               Free to use &middot; No credit card required
@@ -151,7 +151,7 @@ export default function SignUpPage() {
           <div
             className="flex h-8 w-8 items-center justify-center rounded-lg"
             style={{
-              border: "1px solid rgba(var(--accent-rgb,214,173,105),0.35)",
+              border: "1px solid rgba(214,173,105,0.35)",
               background: "#171A20",
             }}
           >
@@ -193,7 +193,7 @@ export default function SignUpPage() {
                 headerTitle: "!text-[var(--text-primary)] !font-bold",
                 headerSubtitle: "!text-[rgba(242,239,232,0.55)]",
                 socialButtonsBlockButton:
-                  "!border-[rgba(242,239,232,0.12)] !bg-[var(--surface-elevated)] !text-[var(--text-primary)] hover:!bg-[#232830] hover:!border-[rgba(var(--accent-rgb,214,173,105),0.35)]",
+                  "!border-[rgba(242,239,232,0.12)] !bg-[var(--surface-elevated)] !text-[var(--text-primary)] hover:!bg-[#232830] hover:!border-[rgba(214,173,105,0.35)]",
                 socialButtonsBlockButtonText: "!text-[var(--text-primary)] !font-medium",
                 socialButtonsBlockButtonArrow: "!text-[var(--text-primary)]",
                 dividerLine: "!bg-[rgba(242,239,232,0.10)]",
@@ -211,7 +211,7 @@ export default function SignUpPage() {
                 identityPreviewEditButton: "!text-[var(--accent)]",
                 formFieldSuccessText: "!text-[#65A884]",
                 formFieldErrorText: "!text-[#E07070]",
-                formFieldWarningText: "!text-[rgba(var(--accent-rgb,214,173,105),0.90)]",
+                formFieldWarningText: "!text-[rgba(214,173,105,0.90)]",
                 alertText: "!text-[#E07070]",
                 alternativeMethodsBlockButton:
                   "!border-[rgba(242,239,232,0.12)] !text-[rgba(242,239,232,0.70)] hover:!text-[var(--text-primary)]",

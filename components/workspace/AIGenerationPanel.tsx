@@ -102,7 +102,7 @@ export default function AIGenerationPanel({
 
   if (collapsed) {
     return (
-      <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface)]/95 p-3 backdrop-blur-xl flex items-center justify-between">
+      <div className="rounded-2xl border border-white/[0.08] bg-[var(--surface)]/95 p-3 backdrop-blur-xl flex items-center justify-between">
         <span className="text-xs font-bold text-[var(--text-primary)]">
           Architecture Prompt Panel
         </span>
@@ -125,7 +125,7 @@ export default function AIGenerationPanel({
   }
 
   return (
-    <div className="group relative mx-auto w-full max-w-5xl overflow-hidden rounded-[28px] border border-[var(--border-subtle)] bg-[var(--surface)] p-7 shadow-[0_30px_80px_rgba(0,0,0,0.7),0_0_45px_rgba(0,0,0,0.12)] backdrop-blur-2xl sm:p-8">
+    <div className="group relative mx-auto w-full max-w-5xl overflow-hidden rounded-[28px] border border-white/[0.08] bg-[var(--surface)] p-7 shadow-[0_30px_80px_rgba(0,0,0,0.7),0_0_45px_rgba(0,0,0,0.12)] backdrop-blur-2xl sm:p-8">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(rgba(48,54,64,0.6)_1px,transparent_1px)] [background-size:24px_24px] opacity-40" />
 
       <div className="pointer-events-none absolute -right-32 -top-32 h-80 w-80 rounded-full bg-[var(--accent)]/10 blur-[90px]" />
@@ -183,7 +183,7 @@ export default function AIGenerationPanel({
                 key={ex.title}
                 type="button"
                 onClick={() => onPromptChange(ex.prompt)}
-                className="group/chip relative flex flex-col items-start gap-2.5 overflow-hidden rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-elevated)] p-4 text-left transition-all duration-300 hover:-translate-y-1 hover:border-[var(--accent)]/35 hover:bg-[var(--surface-elevated)]/90 shadow-sm"
+                className="group/chip relative flex flex-col items-start gap-2.5 overflow-hidden rounded-2xl border border-white/[0.08] bg-[var(--surface-elevated)] p-4 text-left transition-all duration-300 hover:-translate-y-1 hover:border-[var(--accent)]/35 hover:bg-[var(--surface-elevated)]/90 shadow-sm"
               >
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--accent)]/30 bg-[var(--surface)] text-[var(--accent)] transition-all duration-300 group-hover/chip:scale-110">
                   <Icon className="h-4 w-4" />
@@ -234,7 +234,7 @@ export default function AIGenerationPanel({
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-between gap-4 border-t border-[var(--border-subtle)] pt-6 sm:flex-row">
+        <div className="flex flex-col items-center justify-between gap-4 border-t border-white/[0.08] pt-6 sm:flex-row">
           <p className="text-xs text-[var(--text-muted)]">
             {prompt.length > 0 && prompt.length < MIN_CHARS ? (
               <span className="font-bold text-amber-400">
@@ -249,7 +249,7 @@ export default function AIGenerationPanel({
             type="button"
             onClick={onGenerate}
             disabled={!canGenerate || loading}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-[var(--accent)]/30 bg-[var(--text-primary)] px-8 py-4 text-xs font-bold text-[var(--on-accent)] shadow-[0_12px_35px_rgba(var(--accent-rgb,214,173,105),0.10)] transition-all hover:-translate-y-0.5 hover:bg-[var(--accent-hover)] disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-[var(--accent)]/30 bg-[var(--text-primary)] px-8 py-4 text-xs font-bold text-[var(--on-accent)] shadow-[0_12px_35px_rgba(214,173,105,0.10)] transition-all hover:-translate-y-0.5 hover:bg-[var(--accent-hover)] disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto"
           >
             {loading ? (
               <>

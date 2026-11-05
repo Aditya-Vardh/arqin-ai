@@ -52,7 +52,7 @@ export default function HistoryPage() {
 
         <div className="absolute right-[8%] top-[20%] h-[350px] w-[350px] rounded-full bg-[var(--accent)]/[0.018] blur-[120px]" />
 
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(var(--accent-rgb,214,173,105),0.012)_1px,transparent_1px),linear-gradient(90deg,rgba(var(--accent-rgb,214,173,105),0.012)_1px,transparent_1px)] [background-size:48px_48px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(214,173,105,0.012)_1px,transparent_1px),linear-gradient(90deg,rgba(214,173,105,0.012)_1px,transparent_1px)] [background-size:48px_48px]" />
       </div>
 
       <div className="relative mx-auto max-w-6xl space-y-8 p-6 pb-16 pt-8 sm:p-10 sm:pt-12">
@@ -106,7 +106,7 @@ export default function HistoryPage() {
           </div>
 
           <div className="hidden items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 sm:flex">
-            <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent)] shadow-[0_0_8px_rgba(var(--accent-rgb,214,173,105),0.65)]" />
+            <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent)] shadow-[0_0_8px_rgba(214,173,105,0.65)]" />
 
             <span className="font-[var(--font-geist-mono)] text-[9px] font-bold uppercase tracking-wider text-[var(--text-faint)]">
               Version Tracking Active
@@ -153,7 +153,7 @@ export default function HistoryPage() {
                     <div className="absolute left-[11px] top-8 hidden h-4 w-4 items-center justify-center rounded-full border border-[var(--accent)]/30 bg-[var(--background)] sm:flex">
                       <span
                         className={`h-1.5 w-1.5 rounded-full ${isSuccess
-                            ? "bg-[var(--accent)] shadow-[0_0_8px_rgba(var(--accent-rgb,214,173,105),0.7)]"
+                            ? "bg-[var(--accent)] shadow-[0_0_8px_rgba(214,173,105,0.7)]"
                             : "bg-rose-400 shadow-[0_0_8px_rgba(251,113,133,0.4)]"
                           }`}
                       />

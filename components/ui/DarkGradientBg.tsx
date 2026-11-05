@@ -17,7 +17,7 @@ export function DarkGradientBg({
 }: DarkGradientBgProps) {
   return (
     <div
-      className={`relative overflow-hidden rounded-3xl border border-[#D6AD69]/15 bg-gradient-to-b from-[var(--background)]/90 via-[var(--background-2)]/95 to-[var(--background)] p-6 sm:p-8 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(var(--accent-rgb,214,173,105),0.1)] transition-all duration-300 ${className}`}
+      className={`relative overflow-hidden rounded-3xl border border-[#D6AD69]/15 bg-gradient-to-b from-[var(--background)]/90 via-[var(--background-2)]/95 to-[var(--background)] p-6 sm:p-8 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(214,173,105,0.1)] transition-all duration-300 ${className}`}
     >
       {/* Subtle Dot Grid Pattern */}
       <div

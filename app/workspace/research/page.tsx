@@ -83,7 +83,7 @@ function ResultCard({
       className={`relative overflow-hidden rounded-2xl border p-5 backdrop-blur-xl transition-all ${
         accent
           ? "border-[var(--accent)]/30 bg-gradient-to-b from-[var(--surface)]/90 to-[var(--background-2)]/95"
-          : "border-[var(--border-subtle)] bg-gradient-to-b from-[var(--background-2)]/90 to-[var(--background)]/95"
+          : "border-white/[0.08] bg-gradient-to-b from-[var(--background-2)]/90 to-[var(--background)]/95"
       }`}
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(#D6AD69_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.03]" />
@@ -108,7 +108,7 @@ function QualitativeBadge({ label }: { label: string }) {
     ? "border-[var(--accent)]/40 bg-[var(--accent)]/10 text-[var(--accent)]"
     : isLow
     ? "border-[var(--text-primary)]/40 bg-[var(--text-primary)]/10 text-[var(--text-primary)]"
-    : "border-[var(--border-subtle)] bg-[var(--border-subtle)] text-[var(--text-muted)]";
+    : "border-white/[0.08] bg-[var(--border-subtle)] text-[var(--text-muted)]";
 
   return (
     <span
@@ -132,7 +132,7 @@ function CollapsibleSection({
 }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-[var(--border-subtle)] bg-gradient-to-b from-[var(--background-2)]/90 to-[var(--background)]/95 backdrop-blur-xl">
+    <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-b from-[var(--background-2)]/90 to-[var(--background)]/95 backdrop-blur-xl">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(#D6AD69_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.025]" />
       <button
         type="button"
@@ -150,7 +150,7 @@ function CollapsibleSection({
           <ChevronDown className="h-4 w-4 text-[var(--accent)]" />
         )}
       </button>
-      {open && <div className="relative z-10 border-t border-[var(--border-subtle)] px-5 pb-5 pt-4">{children}</div>}
+      {open && <div className="relative z-10 border-t border-white/[0.08] px-5 pb-5 pt-4">{children}</div>}
     </div>
   );
 }
@@ -158,7 +158,7 @@ function CollapsibleSection({
 function LoadingState() {
   const [step] = useState(0);
   return (
-    <div className="flex min-h-[500px] flex-col items-center justify-center rounded-2xl border border-[var(--border-subtle)] bg-gradient-to-b from-[var(--background-2)]/90 to-[var(--background)] p-10 text-center backdrop-blur-2xl">
+    <div className="flex min-h-[500px] flex-col items-center justify-center rounded-2xl border border-white/[0.08] bg-gradient-to-b from-[var(--background-2)]/90 to-[var(--background)] p-10 text-center backdrop-blur-2xl">
       <div className="mb-8 relative">
         <div className="h-14 w-14 rounded-2xl border border-[var(--accent)]/30 bg-[var(--accent)]/10 flex items-center justify-center">
           <Search className="h-7 w-7 text-[var(--accent)] animate-pulse" />
@@ -173,7 +173,7 @@ function LoadingState() {
             className={`flex items-center gap-3 rounded-xl border px-4 py-2.5 text-left transition-all ${
               i <= step
                 ? "border-[var(--accent)]/30 bg-[var(--accent)]/10"
-                : "border-[var(--border-subtle)] bg-transparent opacity-40"
+                : "border-white/[0.08] bg-transparent opacity-40"
             }`}
           >
             <div
@@ -198,7 +198,7 @@ function LoadingState() {
 
 function EmptyState({ onSelect }: { onSelect: (q: string) => void }) {
   return (
-    <div className="flex min-h-[500px] flex-col items-center justify-center rounded-2xl border border-dashed border-[var(--border-subtle)] bg-[var(--background)]/60 p-10 text-center backdrop-blur-2xl">
+    <div className="flex min-h-[500px] flex-col items-center justify-center rounded-2xl border border-dashed border-white/[0.08] bg-[var(--background)]/60 p-10 text-center backdrop-blur-2xl">
       <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl border border-[var(--accent)]/20 bg-[var(--accent)]/10 text-[var(--accent)]">
         <BookOpen className="h-8 w-8" />
       </div>
@@ -213,7 +213,7 @@ function EmptyState({ onSelect }: { onSelect: (q: string) => void }) {
             key={q}
             type="button"
             onClick={() => onSelect(q)}
-            className="group flex w-full items-start gap-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--background-2)]/80 p-3 text-left text-xs transition-all hover:border-[var(--accent)]/40 hover:bg-[var(--surface)]"
+            className="group flex w-full items-start gap-3 rounded-xl border border-white/[0.08] bg-[var(--background-2)]/80 p-3 text-left text-xs transition-all hover:border-[var(--accent)]/40 hover:bg-[var(--surface)]"
           >
             <ArrowRight className="mt-0.5 h-3 w-3 shrink-0 text-[var(--accent)] group-hover:text-[var(--text-primary)] transition-colors" />
             <span className="text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition-colors leading-relaxed">{q}</span>
@@ -286,7 +286,7 @@ export default function ResearchPage() {
 
   return (
     <div className="mx-auto max-w-6xl p-6 pb-20 pt-8 lg:p-10 lg:pt-10">
-      <div className="mb-8 border-b border-[var(--border-subtle)] pb-6">
+      <div className="mb-8 border-b border-white/[0.08] pb-6">
         <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/25 bg-[var(--accent)]/10 px-3.5 py-1 backdrop-blur-md">
           <BookOpen className="h-3.5 w-3.5 text-[var(--accent)]" />
           <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[var(--accent)]">
@@ -303,7 +303,7 @@ export default function ResearchPage() {
 
       <div className="grid gap-8 lg:grid-cols-[400px_1fr]">
         <div className="space-y-5">
-          <div className="relative overflow-hidden rounded-2xl border border-[var(--border-subtle)] bg-gradient-to-b from-[var(--background-2)]/95 to-[var(--background)] p-5 backdrop-blur-2xl">
+          <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-b from-[var(--background-2)]/95 to-[var(--background)] p-5 backdrop-blur-2xl">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(#D6AD69_1px,transparent_1px)] [background-size:20px_20px] opacity-[0.04]" />
             <div className="relative z-10">
               <SectionLabel>Research Prompt</SectionLabel>
@@ -320,7 +320,7 @@ export default function ResearchPage() {
                 placeholder="Describe your architecture challenge. For example: How should I design a real-time chat system that scales to 1 million concurrent users?"
                 aria-label="Architecture research question"
                 aria-describedby="char-count submit-hint"
-                className="mt-2 w-full resize-none rounded-xl border border-[var(--border-subtle)] bg-[var(--background)] p-4 text-sm leading-relaxed text-[var(--text-primary)] placeholder-[var(--text-muted)]/40 outline-none transition-colors focus:border-[var(--accent)] focus:ring-0 disabled:opacity-50"
+                className="mt-2 w-full resize-none rounded-xl border border-white/[0.08] bg-[var(--background)] p-4 text-sm leading-relaxed text-[var(--text-primary)] placeholder-[var(--text-muted)]/40 outline-none transition-colors focus:border-[var(--accent)] focus:ring-0 disabled:opacity-50"
                 disabled={loading}
               />
               <div className="mt-2 flex items-center justify-between">
@@ -372,7 +372,7 @@ export default function ResearchPage() {
                   type="button"
                   onClick={() => handleSelectQuestion(q)}
                   aria-label={`Research: ${q}`}
-                  className="group flex w-full items-center gap-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--background-2)]/80 p-3 text-left text-xs transition-all hover:border-[var(--accent)]/50 hover:bg-[var(--surface)]"
+                  className="group flex w-full items-center gap-3 rounded-xl border border-white/[0.08] bg-[var(--background-2)]/80 p-3 text-left text-xs transition-all hover:border-[var(--accent)]/50 hover:bg-[var(--surface)]"
                 >
                   <span className="shrink-0 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider text-[var(--accent)]">
                     {tag}
@@ -438,7 +438,7 @@ export default function ResearchPage() {
                     {result.technologyRecommendations.map((tech) => (
                       <div
                         key={tech.category + tech.name}
-                        className="rounded-xl border border-[var(--border-subtle)] bg-[var(--background)]/80 p-3.5"
+                        className="rounded-xl border border-white/[0.08] bg-[var(--background)]/80 p-3.5"
                       >
                         <div className="mb-1.5 flex items-center gap-2">
                           <span className="text-[var(--accent)]">{getTechIcon(tech.category)}</span>
@@ -502,7 +502,7 @@ export default function ResearchPage() {
                 <CollapsibleSection title="Alternative Approaches" icon={<Layers className="h-4 w-4" />}>
                   <div className="space-y-4">
                     {result.alternatives.map((alt) => (
-                      <div key={alt.name} className="rounded-xl border border-[var(--border-subtle)] bg-[var(--background)]/60 p-4">
+                      <div key={alt.name} className="rounded-xl border border-white/[0.08] bg-[var(--background)]/60 p-4">
                         <h4 className="mb-1.5 font-bold text-xs text-[var(--text-primary)]">{alt.name}</h4>
                         <p className="mb-3 text-[11px] leading-relaxed text-[var(--text-muted)]">{alt.description}</p>
                         <div className="grid gap-3 sm:grid-cols-2">
@@ -573,7 +573,7 @@ export default function ResearchPage() {
                     const el = document.getElementById("research-question-input");
                     if (el) el.focus();
                   }}
-                  className="inline-flex items-center gap-2 rounded-xl border border-[var(--border-subtle)] bg-[var(--background-2)] px-4 py-2.5 text-xs font-bold text-[var(--text-muted)] transition-all hover:border-[var(--accent)] hover:text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30"
+                  className="inline-flex items-center gap-2 rounded-xl border border-white/[0.08] bg-[var(--background-2)] px-4 py-2.5 text-xs font-bold text-[var(--text-muted)] transition-all hover:border-[var(--accent)] hover:text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30"
                 >
                   <Search className="h-3.5 w-3.5" />
                   New Research Query

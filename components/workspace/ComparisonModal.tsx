@@ -179,7 +179,7 @@ export default function ComparisonModal({ result, onClose, onApplyOptimized }: P
               type="button"
               onClick={() => { onApplyOptimized(); onClose(); }}
               disabled={result.changes.length === 0}
-              className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-[var(--accent)] via-[var(--accent)] to-[#A08050] px-6 py-2.5 text-xs font-bold text-[var(--on-accent)] shadow-[0_0_25px_rgba(var(--accent-rgb,214,173,105),0.4)] hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+              className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-[var(--accent)] via-[var(--accent)] to-[#A08050] px-6 py-2.5 text-xs font-bold text-[var(--on-accent)] shadow-[0_0_25px_rgba(214,173,105,0.4)] hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             >
               <CheckCircle2 className="h-4 w-4" />
               <span>Apply Optimized Architecture ({result.optimizedHealth}/100)</span>

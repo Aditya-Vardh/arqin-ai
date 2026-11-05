@@ -200,7 +200,7 @@ function FindingCard({
     <button
       type="button"
       onClick={onClick}
-      className="group w-full rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface)] p-4 text-left transition-all duration-200 hover:border-[var(--accent)]/40 hover:bg-[var(--surface-elevated)]"
+      className="group w-full rounded-2xl border border-white/[0.08] bg-[var(--surface)] p-4 text-left transition-all duration-200 hover:border-[var(--accent)]/40 hover:bg-[var(--surface-elevated)]"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex min-w-0 items-start gap-2.5">
@@ -231,7 +231,7 @@ function FindingCard({
         {description}
       </p>
 
-      <div className="mt-3 flex items-start gap-2 border-t border-[var(--border-subtle)] pt-3">
+      <div className="mt-3 flex items-start gap-2 border-t border-white/[0.08] pt-3">
         <Sparkles className="mt-0.5 h-3 w-3 shrink-0 text-[var(--accent)]" />
         <span className="text-[9px] leading-relaxed text-[var(--text-muted)]">
           {recommendation}
@@ -266,7 +266,7 @@ export default function PropertyInspector({
         className={`flex h-full w-full flex-col bg-[var(--background)] ${className}`}
       >
         <div className="flex h-full flex-col items-center justify-center px-7 text-center">
-          <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface)]">
+          <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/[0.08] bg-[var(--surface)]">
             <Boxes className="h-6 w-6 text-[var(--accent)]" />
           </div>
 
@@ -317,11 +317,11 @@ export default function PropertyInspector({
     <aside
       className={`flex h-full w-full min-w-0 flex-col overflow-hidden bg-[var(--background)] text-[var(--text-primary)] ${className}`}
     >
-      <div className="shrink-0 border-b border-[var(--border-subtle)] bg-[var(--background)]">
+      <div className="shrink-0 border-b border-white/[0.08] bg-[var(--background)]">
         <div className="flex min-h-[82px] items-center justify-between gap-3 px-4">
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[var(--border-subtle)] bg-[var(--surface)]">
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-white/[0.08] bg-[var(--surface)]">
                 <Network className="h-3.5 w-3.5 text-[var(--accent)]" />
               </span>
 
@@ -346,7 +346,7 @@ export default function PropertyInspector({
             onClick={() =>
               setMobileOpen(!mobileOpen)
             }
-            className="flex h-8 shrink-0 items-center gap-2 rounded-xl border border-[var(--border-subtle)] bg-[var(--surface)] px-2.5 font-[var(--font-space-grotesk)] text-[9px] font-bold text-[var(--text-primary)] transition-colors hover:border-[var(--accent)]"
+            className="flex h-8 shrink-0 items-center gap-2 rounded-xl border border-white/[0.08] bg-[var(--surface)] px-2.5 font-[var(--font-space-grotesk)] text-[9px] font-bold text-[var(--text-primary)] transition-colors hover:border-[var(--accent)]"
           >
             <activeTab.icon className="h-3.5 w-3.5 text-[var(--accent)]" />
             <span className="hidden sm:inline">
@@ -364,7 +364,7 @@ export default function PropertyInspector({
 
       <div className="flex min-h-0 flex-1 overflow-hidden">
         <nav
-          className={`flex w-[48px] shrink-0 flex-col items-center gap-1 border-r border-[var(--border-subtle)] bg-[var(--background-2)] py-2 ${mobileOpen
+          className={`flex w-[48px] shrink-0 flex-col items-center gap-1 border-r border-white/[0.08] bg-[var(--background-2)] py-2 ${mobileOpen
             ? "absolute left-0 right-0 z-50 w-full flex-row overflow-x-auto border-b"
             : ""
             }`}
@@ -433,7 +433,7 @@ export default function PropertyInspector({
                       );
                       setTab("failure");
                     }}
-                    className="flex-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-elevated)] px-2 py-2 font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.08em] text-[var(--text-primary)] transition-colors hover:border-[var(--accent)]/50"
+                    className="flex-1 rounded-lg border border-white/[0.08] bg-[var(--surface-elevated)] px-2 py-2 font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.08em] text-[var(--text-primary)] transition-colors hover:border-[var(--accent)]/50"
                   >
                     Failure Path
                   </button>
@@ -456,7 +456,7 @@ export default function PropertyInspector({
 
             {tab === "overview" && (
               <div className="space-y-4">
-                <div className="rounded-2xl border border-[var(--border-subtle)] bg-gradient-to-br from-[var(--surface)] via-[var(--background-2)] to-[var(--background)] p-4">
+                <div className="rounded-2xl border border-white/[0.08] bg-gradient-to-br from-[var(--surface)] via-[var(--background-2)] to-[var(--background)] p-4">
                   <div className="flex items-center gap-4">
                     <ScoreRing score={score} />
 
@@ -479,7 +479,7 @@ export default function PropertyInspector({
                     </div>
                   </div>
 
-                  <div className="mt-5 grid grid-cols-2 gap-x-4 gap-y-3 border-t border-[var(--border-subtle)] pt-4">
+                  <div className="mt-5 grid grid-cols-2 gap-x-4 gap-y-3 border-t border-white/[0.08] pt-4">
                     <Metric
                       label="Scalability"
                       value={
@@ -511,7 +511,7 @@ export default function PropertyInspector({
                   </div>
                 </div>
 
-                <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--background-2)] p-4">
+                <div className="rounded-2xl border border-white/[0.08] bg-[var(--background-2)] p-4">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.16em] text-[var(--accent)]">
@@ -522,7 +522,7 @@ export default function PropertyInspector({
                       </p>
                     </div>
 
-                    <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-elevated)]">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/[0.08] bg-[var(--surface-elevated)]">
                       <CircleAlert className="h-4 w-4 text-[var(--accent)]" />
                     </div>
                   </div>
@@ -538,7 +538,7 @@ export default function PropertyInspector({
                     type="button"
                     onClick={onOptimize}
                     disabled={loading}
-                    className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface)] px-3 py-2.5 text-left transition-colors hover:border-[var(--accent)] hover:bg-[var(--surface-elevated)] disabled:opacity-50"
+                    className="rounded-xl border border-white/[0.08] bg-[var(--surface)] px-3 py-2.5 text-left transition-colors hover:border-[var(--accent)] hover:bg-[var(--surface-elevated)] disabled:opacity-50"
                   >
                     <Zap className="h-3.5 w-3.5 text-[var(--accent)]" />
                     <span className="mt-1.5 block font-[var(--font-space-grotesk)] text-[9px] font-bold text-[var(--text-primary)]">
@@ -549,7 +549,7 @@ export default function PropertyInspector({
                   <button
                     type="button"
                     onClick={onSimulate}
-                    className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface)] px-3 py-2.5 text-left transition-colors hover:border-[var(--accent)] hover:bg-[var(--surface-elevated)]"
+                    className="rounded-xl border border-white/[0.08] bg-[var(--surface)] px-3 py-2.5 text-left transition-colors hover:border-[var(--accent)] hover:bg-[var(--surface-elevated)]"
                   >
                     <Activity className="h-3.5 w-3.5 text-[var(--accent)]" />
                     <span className="mt-1.5 block font-[var(--font-space-grotesk)] text-[9px] font-bold text-[var(--text-primary)]">
@@ -673,7 +673,7 @@ export default function PropertyInspector({
                         ...failure.directlyAffectedNodeIds,
                       ]);
                     }}
-                    className="w-full rounded-xl border border-[var(--border-subtle)] bg-[var(--surface)] px-3 py-2.5 font-[var(--font-inter)] text-[10px] text-[var(--text-primary)] outline-none focus:border-[var(--accent)]"
+                    className="w-full rounded-xl border border-white/[0.08] bg-[var(--surface)] px-3 py-2.5 font-[var(--font-inter)] text-[10px] text-[var(--text-primary)] outline-none focus:border-[var(--accent)]"
                   >
                     {graph.nodes.map((node) => (
                       <option
@@ -687,7 +687,7 @@ export default function PropertyInspector({
                 </div>
 
                 {failurePathResult && (
-                  <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface)] p-4">
+                  <div className="rounded-2xl border border-white/[0.08] bg-[var(--surface)] p-4">
                     <div className="flex items-center gap-2">
                       <Server className="h-4 w-4 text-[var(--accent)]" />
                       <span className="font-[var(--font-space-grotesk)] text-[10px] font-bold text-[var(--text-primary)]">
@@ -697,7 +697,7 @@ export default function PropertyInspector({
 
                     {failurePathResult.cascadingChain
                       .length > 0 ? (
-                      <div className="mt-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--background)] p-3">
+                      <div className="mt-3 rounded-xl border border-white/[0.08] bg-[var(--background)] p-3">
                         <p className="font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.14em] text-[var(--accent)]">
                           Cascading Path
                         </p>
@@ -717,7 +717,7 @@ export default function PropertyInspector({
                       {failurePathResult.explanation}
                     </p>
 
-                    <div className="mt-3 border-t border-[var(--border-subtle)] pt-3">
+                    <div className="mt-3 border-t border-white/[0.08] pt-3">
                       <p className="font-[var(--font-inter)] text-[9px] leading-relaxed text-[var(--accent)]">
                         {failurePathResult.resilienceRecommendation}
                       </p>
@@ -774,7 +774,7 @@ export default function PropertyInspector({
                   (pattern) => (
                     <div
                       key={pattern.id}
-                      className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--background-2)] p-4"
+                      className="rounded-2xl border border-white/[0.08] bg-[var(--background-2)] p-4"
                     >
                       <div className="flex items-start justify-between gap-3">
                         <span className="font-[var(--font-space-grotesk)] text-[11px] font-bold text-[var(--text-primary)]">
@@ -818,7 +818,7 @@ export default function PropertyInspector({
                   (cost, index) => (
                     <div
                       key={index}
-                      className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--background-2)] p-4"
+                      className="rounded-2xl border border-white/[0.08] bg-[var(--background-2)] p-4"
                     >
                       <div className="flex items-center justify-between gap-3">
                         <span className="font-[var(--font-inter)] text-[9px] text-[var(--text-muted)]/70">
@@ -834,7 +834,7 @@ export default function PropertyInspector({
                         {cost.tradeoffExplanation}
                       </p>
 
-                      <div className="mt-4 border-t border-[var(--border-subtle)] pt-3">
+                      <div className="mt-4 border-t border-white/[0.08] pt-3">
                         <p className="font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.14em] text-[var(--accent)]">
                           Primary Drivers
                         </p>
@@ -953,9 +953,9 @@ function SectionHeading({
   suffix?: string;
 }) {
   return (
-    <div className="flex items-center justify-between rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface)] px-3.5 py-3">
+    <div className="flex items-center justify-between rounded-2xl border border-white/[0.08] bg-[var(--surface)] px-3.5 py-3">
       <div className="flex min-w-0 items-center gap-2.5">
-        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-elevated)]">
+        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-white/[0.08] bg-[var(--surface-elevated)]">
           <Icon className="h-3.5 w-3.5 text-[var(--accent)]" />
         </span>
 

@@ -164,9 +164,9 @@ export default function AIAssistantDock({
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex h-[520px] w-[380px] flex-col overflow-hidden rounded-[26px] border border-[var(--border-subtle)] bg-[var(--background-2)]/96 text-[var(--text-primary)] shadow-[0_0_70px_rgba(0,0,0,0.9),0_0_35px_rgba(0,0,0,0.12)] backdrop-blur-2xl">
+    <div className="fixed bottom-6 right-6 z-50 flex h-[520px] w-[380px] flex-col overflow-hidden rounded-[26px] border border-white/[0.08] bg-[var(--background-2)]/96 text-[var(--text-primary)] shadow-[0_0_70px_rgba(0,0,0,0.9),0_0_35px_rgba(0,0,0,0.12)] backdrop-blur-2xl">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--surface)]/90 px-4 py-3.5 shrink-0">
+      <div className="flex items-center justify-between border-b border-white/[0.08] bg-[var(--surface)]/90 px-4 py-3.5 shrink-0">
         <div className="flex items-center gap-3">
           <div className="flex h-8 w-8 items-center justify-center rounded-xl border border-[var(--accent)]/30 bg-[var(--accent)]/10 text-[var(--accent)]">
             <Sparkles className="h-4 w-4" />
@@ -197,7 +197,7 @@ export default function AIAssistantDock({
 
       {/* Quick actions bar */}
       {(onOptimize || onSimulate || onArtifacts) && (
-        <div className="grid grid-cols-3 gap-1.5 border-b border-[var(--border-subtle)] bg-[var(--background)] p-2 shrink-0">
+        <div className="grid grid-cols-3 gap-1.5 border-b border-white/[0.08] bg-[var(--background)] p-2 shrink-0">
           {onOptimize && (
             <button
               type="button"
@@ -276,7 +276,7 @@ export default function AIAssistantDock({
                   className={`max-w-[85%] rounded-2xl p-3 text-xs leading-relaxed ${
                     msg.role === "user"
                       ? "bg-[var(--text-primary)] font-medium text-[var(--on-accent)]"
-                      : "border border-[var(--border-subtle)] bg-[var(--surface)] text-[var(--text-muted)]"
+                      : "border border-white/[0.08] bg-[var(--surface)] text-[var(--text-muted)]"
                   }`}
                 >
                   {/* Render basic markdown-like bold */}
@@ -340,7 +340,7 @@ export default function AIAssistantDock({
       {/* Input */}
       <form
         onSubmit={(e) => { e.preventDefault(); send(input); }}
-        className="flex items-center gap-2 border-t border-[var(--border-subtle)] bg-[var(--surface)]/95 p-3 shrink-0"
+        className="flex items-center gap-2 border-t border-white/[0.08] bg-[var(--surface)]/95 p-3 shrink-0"
       >
         <input
           type="text"

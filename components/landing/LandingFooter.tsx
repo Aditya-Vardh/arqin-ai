@@ -51,7 +51,7 @@ export default function LandingFooter() {
               className="inline-flex items-center gap-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D6AD69]"
             >
               <div className="flex h-9 w-9 items-center justify-center rounded-lg border"
-                style={{ borderColor: "rgba(var(--accent-rgb,214,173,105),0.30)", background: "#101216" }}>
+                style={{ borderColor: "rgba(214,173,105,0.30)", background: "#101216" }}>
                 <Image
                   src="/icon.svg"
                   alt="Arqin AI"

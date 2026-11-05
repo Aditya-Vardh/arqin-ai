@@ -166,7 +166,7 @@ export default function ArchitectureSimulator({ graph, onClose, onHighlightBottl
             <button
               type="button"
               onClick={runSimulation}
-              className="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[var(--accent)] via-[var(--accent)] to-[#A08050] px-4 py-3 text-xs font-bold text-[var(--on-accent)] shadow-[0_0_25px_rgba(var(--accent-rgb,214,173,105),0.3)] hover:scale-[1.02] transition-all"
+              className="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[var(--accent)] via-[var(--accent)] to-[#A08050] px-4 py-3 text-xs font-bold text-[var(--on-accent)] shadow-[0_0_25px_rgba(214,173,105,0.3)] hover:scale-[1.02] transition-all"
             >
               <Play className="h-4 w-4 fill-current" />
               <span>Run Stress Simulation</span>

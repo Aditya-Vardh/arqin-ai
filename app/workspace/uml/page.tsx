@@ -89,7 +89,7 @@ function UmlContent() {
               onClick={() => { setType(t.id); setResult(null); }}
               className={`group relative overflow-hidden flex flex-col justify-between rounded-3xl border p-6 text-left transition-all duration-300 ${
                 active 
-                  ? "bg-gradient-to-b from-[var(--background)] to-[var(--background)] border-[var(--accent)] shadow-[0_0_35px_rgba(var(--accent-rgb,214,173,105),0.25)]" 
+                  ? "bg-gradient-to-b from-[var(--background)] to-[var(--background)] border-[var(--accent)] shadow-[0_0_35px_rgba(214,173,105,0.25)]" 
                   : "bg-gradient-to-b from-[var(--background)]/90 to-[var(--background)] border-[var(--accent)]/15 hover:border-[var(--accent)]/35 hover:-translate-y-1"
               }`}
             >
@@ -131,7 +131,7 @@ function UmlContent() {
         
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--accent)]/20 border border-[var(--accent)]/30 text-[var(--accent)] shadow-[0_0_20px_rgba(var(--accent-rgb,214,173,105),0.3)]">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--accent)]/20 border border-[var(--accent)]/30 text-[var(--accent)] shadow-[0_0_20px_rgba(214,173,105,0.3)]">
               <Sparkles className="h-6 w-6" />
             </div>
             <div>
@@ -147,7 +147,7 @@ function UmlContent() {
               type="button"
               onClick={handleSynthesize}
               disabled={loading}
-              className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-[var(--accent)] via-[var(--accent)] to-[#A08050] px-6 py-3.5 text-xs font-bold text-[var(--on-accent)] shadow-[0_0_30px_rgba(var(--accent-rgb,214,173,105),0.3)] transition-all hover:scale-[1.02] disabled:opacity-50"
+              className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-[var(--accent)] via-[var(--accent)] to-[#A08050] px-6 py-3.5 text-xs font-bold text-[var(--on-accent)] shadow-[0_0_30px_rgba(214,173,105,0.3)] transition-all hover:scale-[1.02] disabled:opacity-50"
             >
               {loading ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Wand2 className="h-4 w-4" />}
               <span>Synthesize {activeItem.label}</span>

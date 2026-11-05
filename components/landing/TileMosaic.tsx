@@ -2,149 +2,156 @@
 
 import { useEffect, useRef, useCallback } from "react";
 
-const TILE_DESKTOP = 80;
-const TILE_MOBILE = 56;
-const POINTER_RADIUS = 72;
-const INITIAL_ON_PROB = 0.05;
-// Glow at full proximity — clearly visible amber, not subtle
-const GLOW_COLOR = "214,173,105";
-const GLOW_MAX_ALPHA = 0.55;
-const GLOW_RADIUS_PX = 160;
+// ─── Tuning constants ────────────────────────────────────────────────────────
+const TILE_SIZE_DESKTOP = 72;
+const TILE_SIZE_MOBILE  = 52;
+const FLIP_RADIUS       = 80;   // px — tiles within this radius of cursor flip
+const GLOW_RADIUS       = 180;  // px — glow falloff distance
+const GLOW_MAX_ALPHA    = 0.60; // max amber glow opacity on front face
+const FLIP_DURATION     = "600ms";
+const INITIAL_ON_PROB   = 0.055; // ~5.5% of tiles start flipped
+const AMBIENT_INTERVAL  = 2800; // ms between ambient random flips
+const FLIP_AUTO_OFF_MS  = 950;  // ms before pointer-triggered tile flips back
+
+// Amber RGB for glow (hardcoded — not via CSS var to avoid inheritance issues)
+const AMBER_R = 214, AMBER_G = 173, AMBER_B = 105;
 
 type TileEl = HTMLDivElement & {
-  _offTimer?: ReturnType<typeof setTimeout>;
-  _front?: HTMLDivElement; // direct ref to front face for fast glow updates
+  _timer?: ReturnType<typeof setTimeout>;
+  _face?: HTMLDivElement; // direct ref to front face
 };
 
 export default function TileMosaic() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
-  const tilesRef = useRef<TileEl[][]>([]);
-  const colsRef = useRef(0);
-  const rowsRef = useRef(0);
-  const tileSizeRef = useRef(TILE_DESKTOP);
-  const rafRef = useRef<number>(0);
-  const glowRafRef = useRef<number>(0);
-  const mountTimeRef = useRef(Date.now());
-  const lastPointerRef = useRef<{ x: number; y: number; t: number } | null>(null);
-  const shuffleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const reducedMotionRef = useRef(false);
-  const isTouchRef = useRef(false);
-  const glowMouseRef = useRef<{ x: number; y: number } | null>(null);
+  const wrapRef      = useRef<HTMLDivElement>(null);
+  const gridRef      = useRef<HTMLDivElement>(null);
+  const tiles        = useRef<TileEl[][]>([]);
+  const cols         = useRef(0);
+  const rows         = useRef(0);
+  const tileSize     = useRef(TILE_SIZE_DESKTOP);
+  const probeRaf     = useRef(0);
+  const glowRaf      = useRef(0);
+  const mountTime    = useRef(Date.now());
+  const lastMouse    = useRef<{ x: number; y: number; t: number } | null>(null);
+  const ambientTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const noMotion     = useRef(false);
+  const isTouch      = useRef(false);
+  const mousePos     = useRef<{ x: number; y: number } | null>(null);
 
-  const setTileOn = useCallback((tile: TileEl, on: boolean) => {
+  // ── Flip a tile on/off ─────────────────────────────────────────────────────
+  const flipTile = useCallback((tile: TileEl, on: boolean) => {
     const inner = tile.firstElementChild as HTMLElement | null;
     if (!inner) return;
     inner.style.transform = on ? "rotateX(180deg)" : "rotateX(0deg)";
-    if (on) tile.classList.add("is-on");
-    else tile.classList.remove("is-on");
+    tile.dataset.on = on ? "1" : "0";
   }, []);
 
-  const activateTileTemporarily = useCallback(
-    (tile: TileEl) => {
-      if (tile._offTimer) return;
-      setTileOn(tile, true);
-      tile._offTimer = setTimeout(() => {
-        setTileOn(tile, false);
-        tile._offTimer = undefined;
-      }, 900);
-    },
-    [setTileOn]
-  );
+  // ── Flip tile then auto-restore after delay ────────────────────────────────
+  const flipTemp = useCallback((tile: TileEl) => {
+    if (tile._timer) return; // already in a flip cycle
+    flipTile(tile, true);
+    tile._timer = setTimeout(() => {
+      flipTile(tile, false);
+      tile._timer = undefined;
+    }, FLIP_AUTO_OFF_MS);
+  }, [flipTile]);
 
-  const pointerEffect = useCallback(
-    (clientX: number, clientY: number) => {
-      const grid = gridRef.current;
-      if (!grid) return;
-      const rect = grid.getBoundingClientRect();
-      const lx = clientX - rect.left;
-      const ly = clientY - rect.top;
-      const size = tileSizeRef.current;
-      const radius = POINTER_RADIUS;
+  // ── Flip tiles near a screen coordinate ───────────────────────────────────
+  const flipNear = useCallback((clientX: number, clientY: number) => {
+    const grid = gridRef.current;
+    if (!grid) return;
+    const rect = grid.getBoundingClientRect();
+    const lx = clientX - rect.left;
+    const ly = clientY - rect.top;
+    const sz = tileSize.current;
 
-      const c0 = Math.max(0, Math.floor((lx - radius) / size));
-      const c1 = Math.min(colsRef.current - 1, Math.floor((lx + radius) / size));
-      const r0 = Math.max(0, Math.floor((ly - radius) / size));
-      const r1 = Math.min(rowsRef.current - 1, Math.floor((ly + radius) / size));
+    const c0 = Math.max(0, Math.floor((lx - FLIP_RADIUS) / sz));
+    const c1 = Math.min(cols.current - 1, Math.floor((lx + FLIP_RADIUS) / sz));
+    const r0 = Math.max(0, Math.floor((ly - FLIP_RADIUS) / sz));
+    const r1 = Math.min(rows.current - 1, Math.floor((ly + FLIP_RADIUS) / sz));
 
-      for (let r = r0; r <= r1; r++) {
-        for (let c = c0; c <= c1; c++) {
-          const tile = tilesRef.current[r]?.[c];
-          if (!tile) continue;
-          const cx = c * size + size / 2;
-          const cy = r * size + size / 2;
-          if (Math.hypot(cx - lx, cy - ly) <= radius) {
-            activateTileTemporarily(tile);
-          }
+    for (let r = r0; r <= r1; r++) {
+      for (let c = c0; c <= c1; c++) {
+        const t = tiles.current[r]?.[c];
+        if (!t) continue;
+        if (Math.hypot(c * sz + sz / 2 - lx, r * sz + sz / 2 - ly) <= FLIP_RADIUS) {
+          flipTemp(t);
         }
       }
-    },
-    [activateTileTemporarily]
-  );
+    }
+  }, [flipTemp]);
 
+  // ── Build the tile grid ────────────────────────────────────────────────────
   const buildGrid = useCallback(() => {
-    const container = containerRef.current;
+    const wrap = wrapRef.current;
     const grid = gridRef.current;
-    if (!container || !grid) return;
+    if (!wrap || !grid) return;
 
-    const W = container.offsetWidth;
-    const H = container.offsetHeight;
+    const W = wrap.offsetWidth;
+    const H = wrap.offsetHeight;
     if (W === 0 || H === 0) return;
 
-    const size = W >= 768 ? TILE_DESKTOP : TILE_MOBILE;
-    tileSizeRef.current = size;
+    const sz = W >= 768 ? TILE_SIZE_DESKTOP : TILE_SIZE_MOBILE;
+    tileSize.current = sz;
 
-    const cols = Math.ceil(W / size);
-    const rows = Math.ceil(H / size);
-    colsRef.current = cols;
-    rowsRef.current = rows;
+    const nc = Math.ceil(W / sz);
+    const nr = Math.ceil(H / sz);
+    cols.current = nc;
+    rows.current = nr;
 
-    tilesRef.current.forEach((row) =>
-      row.forEach((t) => { if (t._offTimer) clearTimeout(t._offTimer); })
-    );
+    // Clear old tiles
+    tiles.current.forEach(row => row.forEach(t => { if (t._timer) clearTimeout(t._timer); }));
     grid.innerHTML = "";
-    tilesRef.current = [];
+    tiles.current = [];
 
-    grid.style.width = `${cols * size}px`;
-    grid.style.height = `${rows * size}px`;
-    grid.style.gridTemplateColumns = `repeat(${cols}, ${size}px)`;
-    grid.style.gridTemplateRows = `repeat(${rows}, ${size}px)`;
+    grid.style.cssText = `
+      display:grid;
+      position:absolute;top:0;left:0;
+      width:${nc * sz}px;height:${nr * sz}px;
+      grid-template-columns:repeat(${nc},${sz}px);
+      grid-template-rows:repeat(${nr},${sz}px);
+    `;
 
-    const selected: { r: number; c: number; delay: number }[] = [];
+    const toFlip: { r: number; c: number; delay: number }[] = [];
 
-    for (let r = 0; r < rows; r++) {
-      tilesRef.current[r] = [];
-      for (let c = 0; c < cols; c++) {
+    for (let r = 0; r < nr; r++) {
+      tiles.current[r] = [];
+      for (let c = 0; c < nc; c++) {
         const tile = document.createElement("div") as TileEl;
+        tile.style.cssText = `
+          width:${sz}px;height:${sz}px;
+          position:relative;overflow:hidden;
+          perspective:900px;
+        `;
         tile.setAttribute("aria-hidden", "true");
-        tile.style.cssText = `width:${size}px;height:${size}px;perspective:800px;position:relative;overflow:hidden;`;
+        tile.dataset.on = "0";
 
+        // Inner flipper
         const inner = document.createElement("div");
         inner.style.cssText = `
           position:absolute;inset:0;
           transform-style:preserve-3d;
-          transition:transform 620ms cubic-bezier(0.2,0.7,0.2,1);
+          transition:transform ${FLIP_DURATION} cubic-bezier(0.2,0.8,0.2,1);
           will-change:transform;
         `;
 
-        // Front face — store direct reference so glow can be set without CSS var inheritance
+        // Front face — dark graphite with glow
         const front = document.createElement("div") as HTMLDivElement;
         front.style.cssText = `
           position:absolute;inset:0;
           backface-visibility:hidden;-webkit-backface-visibility:hidden;
-          background:#161B22;
-          box-shadow:inset 0 0 0 1px rgba(255,255,255,0.035);
-          transition:box-shadow 0.12s ease;
+          background:#141820;
+          box-shadow:inset 0 0 0 0.5px rgba(255,255,255,0.04);
+          transition:box-shadow 0.1s linear;
         `;
-        tile._front = front;
+        tile._face = front;
 
-        // Back face — muted amber tint (not solid gold)
+        // Back face — warm amber tint
         const back = document.createElement("div");
         back.style.cssText = `
           position:absolute;inset:0;
           backface-visibility:hidden;-webkit-backface-visibility:hidden;
-          background:rgba(var(--accent-rgb,214,173,105),0.20);
-          border:1px solid rgba(var(--accent-rgb,214,173,105),0.30);
+          background:rgba(214,173,105,0.22);
+          box-shadow:inset 0 0 0 0.5px rgba(214,173,105,0.35);
           transform:rotateX(180deg);
         `;
 
@@ -152,199 +159,173 @@ export default function TileMosaic() {
         inner.appendChild(back);
         tile.appendChild(inner);
         grid.appendChild(tile);
-        tilesRef.current[r][c] = tile;
+        tiles.current[r][c] = tile;
 
         if (Math.random() < INITIAL_ON_PROB) {
-          selected.push({ r, c, delay: (c + r) * 35 });
+          toFlip.push({ r, c, delay: (c + r) * 32 });
         }
       }
     }
 
-    if (reducedMotionRef.current) {
-      for (const { r, c } of selected) {
-        const t = tilesRef.current[r]?.[c];
-        if (t) setTileOn(t, true);
-      }
+    if (noMotion.current) {
+      toFlip.forEach(({ r, c }) => {
+        const t = tiles.current[r]?.[c];
+        if (t) flipTile(t, true);
+      });
       return;
     }
 
-    for (const { r, c, delay } of selected) {
-      const t = tilesRef.current[r]?.[c];
-      if (!t) continue;
-      setTimeout(() => setTileOn(t, true), delay);
-    }
-  }, [setTileOn]);
+    // Diagonal wave entrance
+    toFlip.forEach(({ r, c, delay }) => {
+      const t = tiles.current[r]?.[c];
+      if (!t) return;
+      setTimeout(() => flipTile(t, true), delay);
+    });
+  }, [flipTile]);
 
-  const scheduleAmbientShuffle = useCallback(() => {
-    if (reducedMotionRef.current) return;
-    shuffleTimerRef.current = setTimeout(() => {
-      const r = Math.floor(Math.random() * rowsRef.current);
-      const c = Math.floor(Math.random() * colsRef.current);
-      const tile = tilesRef.current[r]?.[c];
-      if (tile) setTileOn(tile, !tile.classList.contains("is-on"));
-      scheduleAmbientShuffle();
-    }, 3200);
-  }, [setTileOn]);
+  // ── Ambient random flip ────────────────────────────────────────────────────
+  const scheduleAmbient = useCallback(() => {
+    if (noMotion.current) return;
+    ambientTimer.current = setTimeout(() => {
+      const r = Math.floor(Math.random() * rows.current);
+      const c = Math.floor(Math.random() * cols.current);
+      const t = tiles.current[r]?.[c];
+      if (t && !t._timer) flipTemp(t);
+      scheduleAmbient();
+    }, AMBIENT_INTERVAL + Math.random() * 800);
+  }, [flipTemp]);
 
-  const startProbeLoop = useCallback(() => {
-    if (reducedMotionRef.current) return;
+  // ── Idle probe — slow Lissajous sweep when mouse is away ──────────────────
+  const startProbe = useCallback(() => {
+    if (noMotion.current) return;
     const loop = () => {
-      const container = containerRef.current;
-      if (!container) return;
+      const wrap = wrapRef.current;
+      if (!wrap) return;
       const now = Date.now();
-      const last = lastPointerRef.current;
-      if (!last || now - last.t > 1500) {
-        const t = (now - mountTimeRef.current) / 1000;
-        const W = container.offsetWidth;
-        const H = container.offsetHeight;
-        const rect = container.getBoundingClientRect();
-        const px = rect.left + W * (0.5 + 0.38 * Math.sin(t * 0.55));
-        const py = rect.top + H * (0.5 + 0.22 * Math.sin(t * 1.0));
-        pointerEffect(px, py);
+      const last = lastMouse.current;
+      if (!last || now - last.t > 2000) {
+        const t  = (now - mountTime.current) / 1000;
+        const W  = wrap.offsetWidth;
+        const H  = wrap.offsetHeight;
+        const rc = wrap.getBoundingClientRect();
+        flipNear(
+          rc.left + W * (0.5 + 0.40 * Math.sin(t * 0.45)),
+          rc.top  + H * (0.5 + 0.20 * Math.sin(t * 0.90))
+        );
       }
-      rafRef.current = requestAnimationFrame(loop);
+      probeRaf.current = requestAnimationFrame(loop);
     };
-    rafRef.current = requestAnimationFrame(loop);
-  }, [pointerEffect]);
+    probeRaf.current = requestAnimationFrame(loop);
+  }, [flipNear]);
 
-  const resetAllGlow = useCallback(() => {
-    tilesRef.current.forEach((row) => {
-      row.forEach((tile) => {
-        if (tile._front) {
-          tile._front.style.boxShadow = "inset 0 0 0 1px rgba(255,255,255,0.035)";
+  // ── Update per-tile glow from current mouse position ──────────────────────
+  const updateGlow = useCallback(() => {
+    const pos  = mousePos.current;
+    const grid = gridRef.current;
+    if (!grid) return;
+
+    if (!pos) {
+      // Reset all glows
+      tiles.current.forEach(row =>
+        row.forEach(t => {
+          if (t._face) t._face.style.boxShadow = "inset 0 0 0 0.5px rgba(255,255,255,0.04)";
+        })
+      );
+      return;
+    }
+
+    const rect = grid.getBoundingClientRect();
+    const sz   = tileSize.current;
+    const lx   = pos.x - rect.left;
+    const ly   = pos.y - rect.top;
+
+    tiles.current.forEach((row, r) => {
+      row.forEach((tile, c) => {
+        if (!tile._face) return;
+        const dist = Math.hypot(c * sz + sz / 2 - lx, r * sz + sz / 2 - ly);
+        const t    = Math.max(0, 1 - dist / GLOW_RADIUS);
+        if (t < 0.006) {
+          tile._face.style.boxShadow = "inset 0 0 0 0.5px rgba(255,255,255,0.04)";
+        } else {
+          const a  = (t * GLOW_MAX_ALPHA).toFixed(3);
+          const sp = Math.round(t * 24);
+          tile._face.style.boxShadow =
+            `inset 0 0 0 0.5px rgba(255,255,255,0.04), 0 0 ${sp}px rgba(${AMBER_R},${AMBER_G},${AMBER_B},${a})`;
         }
       });
     });
   }, []);
 
+  // ── Main effect ────────────────────────────────────────────────────────────
   useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    reducedMotionRef.current = mq.matches;
-    isTouchRef.current = "ontouchstart" in window;
+    noMotion.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    isTouch.current  = "ontouchstart" in window;
 
     buildGrid();
-
-    if (!reducedMotionRef.current) {
-      scheduleAmbientShuffle();
-      startProbeLoop();
+    if (!noMotion.current) {
+      scheduleAmbient();
+      startProbe();
     }
 
-    const container = containerRef.current;
-    if (!container) return;
+    // Mouse events on window — works even though container has pointer-events:none
+    const onMouseMove = (e: MouseEvent) => {
+      lastMouse.current  = { x: e.clientX, y: e.clientY, t: Date.now() };
+      mousePos.current   = { x: e.clientX, y: e.clientY };
 
-    const onPointer = (e: PointerEvent) => {
-      lastPointerRef.current = { x: e.clientX, y: e.clientY, t: Date.now() };
-      pointerEffect(e.clientX, e.clientY);
+      // Flip tiles near cursor
+      flipNear(e.clientX, e.clientY);
+
+      // Schedule glow update
+      if (glowRaf.current) cancelAnimationFrame(glowRaf.current);
+      glowRaf.current = requestAnimationFrame(updateGlow);
     };
-    const onTouch = (e: TouchEvent) => {
+
+    const onMouseLeave = () => {
+      mousePos.current = null;
+      if (glowRaf.current) cancelAnimationFrame(glowRaf.current);
+      glowRaf.current = requestAnimationFrame(updateGlow);
+    };
+
+    // Touch — flip only, no glow
+    const onTouchMove = (e: TouchEvent) => {
       const touch = e.touches[0];
       if (!touch) return;
-      lastPointerRef.current = { x: touch.clientX, y: touch.clientY, t: Date.now() };
-      pointerEffect(touch.clientX, touch.clientY);
+      lastMouse.current = { x: touch.clientX, y: touch.clientY, t: Date.now() };
+      flipNear(touch.clientX, touch.clientY);
     };
-
-    container.addEventListener("pointermove", onPointer);
-    container.addEventListener("touchmove", onTouch, { passive: true });
-
-    // ── Glow: set box-shadow directly on front face element (bypasses CSS var inheritance issues) ──
-    if (!isTouchRef.current && !reducedMotionRef.current) {
-      const onMouseMove = (e: MouseEvent) => {
-        glowMouseRef.current = { x: e.clientX, y: e.clientY };
-        if (glowRafRef.current) cancelAnimationFrame(glowRafRef.current);
-        glowRafRef.current = requestAnimationFrame(() => {
-          const pos = glowMouseRef.current;
-          if (!pos) return;
-          const grid = gridRef.current;
-          if (!grid) return;
-          const rect = grid.getBoundingClientRect();
-          const size = tileSizeRef.current;
-          const lx = pos.x - rect.left;
-          const ly = pos.y - rect.top;
-
-          tilesRef.current.forEach((row, r) => {
-            row.forEach((tile, c) => {
-              if (!tile._front) return;
-              const cx = c * size + size / 2;
-              const cy = r * size + size / 2;
-              const dist = Math.hypot(cx - lx, cy - ly);
-              const t = Math.max(0, 1 - dist / GLOW_RADIUS_PX);
-              if (t > 0.005) {
-                const alpha = (t * GLOW_MAX_ALPHA).toFixed(3);
-                const spread = Math.round(t * 22);
-                tile._front.style.boxShadow =
-                  `inset 0 0 0 1px rgba(255,255,255,0.035), 0 0 ${spread}px rgba(${GLOW_COLOR},${alpha})`;
-              } else {
-                tile._front.style.boxShadow = "inset 0 0 0 1px rgba(255,255,255,0.035)";
-              }
-            });
-          });
-        });
-      };
-
-      const onMouseLeave = () => {
-        glowMouseRef.current = null;
-        if (glowRafRef.current) cancelAnimationFrame(glowRafRef.current);
-        resetAllGlow();
-      };
-
-      let resizeTimer: ReturnType<typeof setTimeout>;
-      const onResize = () => {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(buildGrid, 200);
-      };
-
-      window.addEventListener("mousemove", onMouseMove);
-      window.addEventListener("mouseleave", onMouseLeave);
-      container.addEventListener("mouseleave", onMouseLeave);
-      window.addEventListener("resize", onResize);
-
-      return () => {
-        container.removeEventListener("pointermove", onPointer);
-        container.removeEventListener("touchmove", onTouch);
-        window.removeEventListener("mousemove", onMouseMove);
-        window.removeEventListener("mouseleave", onMouseLeave);
-        container.removeEventListener("mouseleave", onMouseLeave);
-        window.removeEventListener("resize", onResize);
-        if (rafRef.current) cancelAnimationFrame(rafRef.current);
-        if (glowRafRef.current) cancelAnimationFrame(glowRafRef.current);
-        if (shuffleTimerRef.current) clearTimeout(shuffleTimerRef.current);
-        tilesRef.current.forEach((row) =>
-          row.forEach((t) => { if (t._offTimer) clearTimeout(t._offTimer); })
-        );
-      };
-    }
 
     let resizeTimer: ReturnType<typeof setTimeout>;
-    const onResize = () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(buildGrid, 200);
-    };
-    window.addEventListener("resize", onResize);
+    const onResize = () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(buildGrid, 150); };
+
+    if (!isTouch.current && !noMotion.current) {
+      window.addEventListener("mousemove",  onMouseMove);
+      window.addEventListener("mouseleave", onMouseLeave);
+      document.addEventListener("mouseleave", onMouseLeave);
+    }
+    window.addEventListener("touchmove", onTouchMove, { passive: true } as AddEventListenerOptions);
+    window.addEventListener("resize",    onResize);
 
     return () => {
-      container.removeEventListener("pointermove", onPointer);
-      container.removeEventListener("touchmove", onTouch);
-      window.removeEventListener("resize", onResize);
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      if (glowRafRef.current) cancelAnimationFrame(glowRafRef.current);
-      if (shuffleTimerRef.current) clearTimeout(shuffleTimerRef.current);
-      tilesRef.current.forEach((row) =>
-        row.forEach((t) => { if (t._offTimer) clearTimeout(t._offTimer); })
-      );
+      window.removeEventListener("mousemove",    onMouseMove);
+      window.removeEventListener("mouseleave",   onMouseLeave);
+      document.removeEventListener("mouseleave", onMouseLeave);
+      window.removeEventListener("touchmove",    onTouchMove);
+      window.removeEventListener("resize",       onResize);
+      if (probeRaf.current)     cancelAnimationFrame(probeRaf.current);
+      if (glowRaf.current)      cancelAnimationFrame(glowRaf.current);
+      if (ambientTimer.current) clearTimeout(ambientTimer.current);
+      tiles.current.forEach(row => row.forEach(t => { if (t._timer) clearTimeout(t._timer); }));
     };
-  }, [buildGrid, scheduleAmbientShuffle, startProbeLoop, pointerEffect, resetAllGlow]);
+  }, [buildGrid, scheduleAmbient, startProbe, flipNear, updateGlow]);
 
   return (
     <div
-      ref={containerRef}
+      ref={wrapRef}
       className="absolute inset-0 overflow-hidden"
       style={{ zIndex: 0, pointerEvents: "none" }}
       aria-hidden="true"
     >
-      <div
-        ref={gridRef}
-        style={{ display: "grid", position: "absolute", top: 0, left: 0 }}
-      />
+      <div ref={gridRef} />
     </div>
   );
 }

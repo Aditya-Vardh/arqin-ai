@@ -43,7 +43,7 @@ export default function MagicBento({ items }: { items: BentoItem[] }) {
         );
 
         const cls = [
-          "group relative overflow-hidden rounded-3xl border border-[#D6AD69]/15 bg-gradient-to-b from-[var(--background)]/90 via-[var(--background-2)]/95 to-[var(--background)] p-7 backdrop-blur-2xl transition-all duration-300 hover:-translate-y-1 hover:border-[#D6AD69]/35 hover:shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(var(--accent-rgb,214,173,105),0.15)]",
+          "group relative overflow-hidden rounded-3xl border border-[#D6AD69]/15 bg-gradient-to-b from-[var(--background)]/90 via-[var(--background-2)]/95 to-[var(--background)] p-7 backdrop-blur-2xl transition-all duration-300 hover:-translate-y-1 hover:border-[#D6AD69]/35 hover:shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(214,173,105,0.15)]",
           item.span === "2" ? "sm:col-span-2" : "",
           item.span === "3" ? "sm:col-span-3" : "",
           item.tall ? "row-span-2" : "",

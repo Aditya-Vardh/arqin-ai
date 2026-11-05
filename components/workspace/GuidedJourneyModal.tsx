@@ -505,7 +505,7 @@ export default function GuidedJourneyModal({
               type="button"
               onClick={handleContinue}
               disabled={loading || needsGraph}
-              className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-[var(--accent)] via-[var(--accent)] to-[#A08050] px-6 py-2 text-xs font-bold text-[var(--on-accent)] shadow-[0_0_20px_rgba(var(--accent-rgb,214,173,105),0.3)] hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+              className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-[var(--accent)] via-[var(--accent)] to-[#A08050] px-6 py-2 text-xs font-bold text-[var(--on-accent)] shadow-[0_0_20px_rgba(214,173,105,0.3)] hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             >
               {loading ? (
                 <span className="animate-pulse">Synthesizing...</span>

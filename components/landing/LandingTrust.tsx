@@ -32,7 +32,7 @@ export default function LandingTrust() {
           className="border-l-4 p-8 md:p-10"
           style={{
             borderColor: "#D6AD69",
-            background: "rgba(var(--accent-rgb,214,173,105),0.04)",
+            background: "rgba(214,173,105,0.04)",
           }}
         >
           <p

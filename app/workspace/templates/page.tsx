@@ -255,7 +255,7 @@ export default function TemplatesPage() {
                   focus-visible:ring-offset-[#151515]
                   ${
                     selected
-                      ? "border-[var(--accent)] bg-[var(--accent)] text-[#171717] shadow-[0_0_15px_rgba(var(--accent-rgb,214,173,105),0.15)]"
+                      ? "border-[var(--accent)] bg-[var(--accent)] text-[#171717] shadow-[0_0_15px_rgba(214,173,105,0.15)]"
                       : "border-[#454545] bg-[#202020] text-[#D1D5DB] hover:border-[var(--accent)]/60 hover:bg-[#29251F] hover:text-white"
                   }
                 `}

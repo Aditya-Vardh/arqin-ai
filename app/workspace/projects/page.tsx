@@ -144,7 +144,7 @@ export default function ProjectsPage() {
       </div>
 
       <div className="relative mx-auto max-w-7xl space-y-10 p-6 pb-16 pt-8 sm:p-10 sm:pt-12">
-        <div className="flex flex-col gap-7 border-b border-[var(--border-subtle)] pb-8 lg:flex-row lg:items-end lg:justify-between">
+        <div className="flex flex-col gap-7 border-b border-white/[0.08] pb-8 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-3.5 py-1 backdrop-blur-md">
               <FolderOpen className="h-3.5 w-3.5 text-[var(--accent)]" />
@@ -187,7 +187,7 @@ export default function ProjectsPage() {
             </p>
           </div>
 
-          <div className="hidden items-center gap-2 rounded-full border border-[var(--border-subtle)] bg-[var(--surface)] px-3 py-1.5 sm:flex">
+          <div className="hidden items-center gap-2 rounded-full border border-white/[0.08] bg-[var(--surface)] px-3 py-1.5 sm:flex">
             <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
 
             <span className="font-mono text-[9px] font-bold uppercase tracking-wider text-[var(--accent)]">
@@ -229,7 +229,7 @@ export default function ProjectsPage() {
               return (
                 <div
                   key={project.id}
-                  className="group relative flex min-h-[310px] flex-col justify-between overflow-hidden rounded-[24px] border border-[var(--border-subtle)] bg-[var(--surface)] p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)]/30 hover:shadow-lg active:scale-[0.98]"
+                  className="group relative flex min-h-[310px] flex-col justify-between overflow-hidden rounded-[24px] border border-white/[0.08] bg-[var(--surface)] p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)]/30 hover:shadow-lg active:scale-[0.98]"
                 >
                   <div className="pointer-events-none absolute inset-0 opacity-20">
                     <div className="absolute inset-0 bg-[radial-gradient(rgba(48,54,64,0.6)_1px,transparent_1px)] [background-size:22px_22px]" />

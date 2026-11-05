@@ -23,9 +23,9 @@ export default function WorkspaceHeader({
   onFullscreen,
 }: Props) {
   return (
-    <header className="z-20 flex h-14 shrink-0 items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--background-2)]/95 px-4 backdrop-blur-2xl sm:px-6">
+    <header className="z-20 flex h-14 shrink-0 items-center justify-between border-b border-white/[0.08] bg-[var(--background-2)]/95 px-4 backdrop-blur-2xl sm:px-6">
       <div className="flex min-w-0 items-center gap-3">
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-[var(--accent)]/30 bg-[var(--surface-elevated)] text-[var(--accent)] shadow-[0_0_18px_rgba(var(--accent-rgb,214,173,105),0.12)]">
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-[var(--accent)]/30 bg-[var(--surface-elevated)] text-[var(--accent)] shadow-[0_0_18px_rgba(214,173,105,0.12)]">
           <Layers className="h-4 w-4" />
         </div>
 
@@ -45,7 +45,7 @@ export default function WorkspaceHeader({
         )}
       </div>
 
-      <div className="hidden items-center gap-2 rounded-full border border-[var(--border-subtle)] bg-[var(--surface)] px-4 py-1.5 md:flex">
+      <div className="hidden items-center gap-2 rounded-full border border-white/[0.08] bg-[var(--surface)] px-4 py-1.5 md:flex">
         <Sparkles className="h-3.5 w-3.5 text-[var(--accent)]" />
 
         <span className="text-xs font-semibold text-[var(--text-muted)]">

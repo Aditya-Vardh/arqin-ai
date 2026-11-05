@@ -106,20 +106,20 @@ const CARDS: Card[] = [
     category: "States · Transitions · Guards",
     bg: "#2A2218",
     textPrimary: "#D6AD69",
-    textSecondary: "rgba(var(--accent-rgb,214,173,105),0.60)",
-    border: "1px solid rgba(var(--accent-rgb,214,173,105),0.25)",
+    textSecondary: "rgba(214,173,105,0.60)",
+    border: "1px solid rgba(214,173,105,0.25)",
     href: "/workspace/uml?type=state",
     illustration: (
       <svg viewBox="0 0 120 80" width="100" height="67" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="22" cy="40" r="12" stroke="rgba(var(--accent-rgb,214,173,105),0.5)" strokeWidth="1.2"/>
-        <circle cx="60" cy="20" r="12" stroke="rgba(var(--accent-rgb,214,173,105),0.6)" strokeWidth="1.2" fill="rgba(var(--accent-rgb,214,173,105),0.08)"/>
-        <circle cx="98" cy="40" r="12" stroke="rgba(var(--accent-rgb,214,173,105),0.5)" strokeWidth="1.2"/>
-        <circle cx="60" cy="62" r="12" stroke="rgba(var(--accent-rgb,214,173,105),0.35)" strokeWidth="1.2"/>
-        <line x1="34" y1="34" x2="48" y2="26" stroke="rgba(var(--accent-rgb,214,173,105),0.4)" strokeWidth="1"/>
-        <polygon points="46,22 50,28 44,28" fill="rgba(var(--accent-rgb,214,173,105),0.4)"/>
-        <line x1="72" y1="26" x2="86" y2="34" stroke="rgba(var(--accent-rgb,214,173,105),0.4)" strokeWidth="1"/>
-        <polygon points="88,36 84,30 90,30" fill="rgba(var(--accent-rgb,214,173,105),0.4)"/>
-        <line x1="60" y1="32" x2="60" y2="50" stroke="rgba(var(--accent-rgb,214,173,105),0.3)" strokeWidth="1"/>
+        <circle cx="22" cy="40" r="12" stroke="rgba(214,173,105,0.5)" strokeWidth="1.2"/>
+        <circle cx="60" cy="20" r="12" stroke="rgba(214,173,105,0.6)" strokeWidth="1.2" fill="rgba(214,173,105,0.08)"/>
+        <circle cx="98" cy="40" r="12" stroke="rgba(214,173,105,0.5)" strokeWidth="1.2"/>
+        <circle cx="60" cy="62" r="12" stroke="rgba(214,173,105,0.35)" strokeWidth="1.2"/>
+        <line x1="34" y1="34" x2="48" y2="26" stroke="rgba(214,173,105,0.4)" strokeWidth="1"/>
+        <polygon points="46,22 50,28 44,28" fill="rgba(214,173,105,0.4)"/>
+        <line x1="72" y1="26" x2="86" y2="34" stroke="rgba(214,173,105,0.4)" strokeWidth="1"/>
+        <polygon points="88,36 84,30 90,30" fill="rgba(214,173,105,0.4)"/>
+        <line x1="60" y1="32" x2="60" y2="50" stroke="rgba(214,173,105,0.3)" strokeWidth="1"/>
       </svg>
     ),
   },
@@ -134,13 +134,13 @@ const CARDS: Card[] = [
     illustration: (
       <svg viewBox="0 0 120 80" width="100" height="67" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle cx="60" cy="38" r="26" stroke="rgba(242,239,232,0.15)" strokeWidth="1"/>
-        <circle cx="60" cy="38" r="26" stroke="rgba(var(--accent-rgb,214,173,105),0.5)" strokeWidth="2" strokeDasharray="60 40" strokeLinecap="round"/>
+        <circle cx="60" cy="38" r="26" stroke="rgba(214,173,105,0.5)" strokeWidth="2" strokeDasharray="60 40" strokeLinecap="round"/>
         <text x="60" y="36" textAnchor="middle" fontSize="11" fill="rgba(242,239,232,0.8)" fontWeight="bold">82</text>
         <text x="60" y="46" textAnchor="middle" fontSize="5" fill="rgba(242,239,232,0.4)">health</text>
         <rect x="8" y="60" width="30" height="4" rx="2" fill="rgba(242,239,232,0.12)"/>
-        <rect x="8" y="60" width="22" height="4" rx="2" fill="rgba(var(--accent-rgb,214,173,105),0.5)"/>
+        <rect x="8" y="60" width="22" height="4" rx="2" fill="rgba(214,173,105,0.5)"/>
         <rect x="82" y="60" width="30" height="4" rx="2" fill="rgba(242,239,232,0.12)"/>
-        <rect x="82" y="60" width="18" height="4" rx="2" fill="rgba(var(--accent-rgb,214,173,105),0.35)"/>
+        <rect x="82" y="60" width="18" height="4" rx="2" fill="rgba(214,173,105,0.35)"/>
       </svg>
     ),
   },
