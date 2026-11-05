@@ -81,15 +81,14 @@ export function Hero({
         {subtitle}
       </p>
 
-      {/* CTA */}
       {ctaLabel && (
         <div className="flex justify-center">
-          <Button
-            asChild
-            className="mt-[-20px] w-fit md:w-52 z-20 font-geist tracking-tighter text-center text-lg"
+          <a
+            href={ctaHref}
+            className="mt-[-20px] inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 font-geist tracking-tighter text-center text-lg text-primary-foreground z-20 hover:bg-primary/90 transition-colors"
           >
-            <a href={ctaHref}>{ctaLabel}</a>
-          </Button>
+            {ctaLabel}
+          </a>
         </div>
       )}
 

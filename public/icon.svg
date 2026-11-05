@@ -1,53 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
-  <rect width="100" height="100" rx="22" fill="#070804"/>
-  <rect width="100" height="100" rx="22" fill="url(#arqen-bg)" fill-opacity="0.15"/>
-  <rect x="1" y="1" width="98" height="98" rx="21" stroke="url(#arqen-stroke)" stroke-width="1.5" stroke-opacity="0.3"/>
-  <path d="M48 18L24 72H36L48 44L60 72H72L48 18Z" fill="url(#arqen-metal-1)"/>
-  <path d="M48 18L60 72H72L48 18Z" fill="url(#arqen-metal-2)"/>
-  <path d="M34 50H62V58H34V50Z" fill="url(#arqen-metal-3)"/>
-  <path d="M58 24L65 72H71L63 24H58Z" fill="url(#arqen-purple-1)"/>
-  <path d="M66 32L72 72H77L71 32H66Z" fill="url(#arqen-purple-2)"/>
-  <path d="M36 62C48 54 68 52 82 56C72 52 50 51 36 62Z" fill="url(#arqen-ray)"/>
-  <path d="M34 62C50 51 72 50 84 55" stroke="url(#arqen-ray-stroke)" stroke-width="2.5" stroke-linecap="round"/>
+  <rect width="100" height="100" rx="18" fill="#101216"/>
+  <rect x="0.75" y="0.75" width="98.5" height="98.5" rx="17.25" stroke="#D6AD69" stroke-width="1.5" stroke-opacity="0.35"/>
+  <!-- A-mark: angular architecture symbol -->
+  <path d="M50 16L22 78H35L50 44L65 78H78L50 16Z" fill="url(#a-fill)"/>
+  <path d="M50 16L65 78H78L50 16Z" fill="#D6AD69" opacity="0.45"/>
+  <rect x="33" y="54" width="34" height="7" rx="1.5" fill="url(#bar-fill)"/>
   <defs>
-    <linearGradient id="arqen-bg" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#7bc963"/>
-      <stop offset="1" stop-color="#567f2b"/>
+    <linearGradient id="a-fill" x1="22" y1="16" x2="78" y2="78" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F0F1F3"/>
+      <stop offset="0.55" stop-color="#D6AD69"/>
+      <stop offset="1" stop-color="#A08050"/>
     </linearGradient>
-    <linearGradient id="arqen-stroke" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#dddb9d"/>
-      <stop offset="1" stop-color="#7bc963"/>
-    </linearGradient>
-    <linearGradient id="arqen-metal-1" x1="24" y1="18" x2="72" y2="72" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#f2f1da"/>
-      <stop offset="0.5" stop-color="#c8c69d"/>
-      <stop offset="1" stop-color="#7bc963"/>
-    </linearGradient>
-    <linearGradient id="arqen-metal-2" x1="48" y1="18" x2="72" y2="72" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#7bc963"/>
-      <stop offset="1" stop-color="#3d5a1f"/>
-    </linearGradient>
-    <linearGradient id="arqen-metal-3" x1="34" y1="50" x2="62" y2="58" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#dddb9d"/>
-      <stop offset="1" stop-color="#7bc963"/>
-    </linearGradient>
-    <linearGradient id="arqen-purple-1" x1="58" y1="24" x2="71" y2="72" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#818cf8"/>
-      <stop offset="1" stop-color="#567f2b"/>
-    </linearGradient>
-    <linearGradient id="arqen-purple-2" x1="66" y1="32" x2="77" y2="72" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#a855f7"/>
-      <stop offset="1" stop-color="#7bc963"/>
-    </linearGradient>
-    <linearGradient id="arqen-ray" x1="36" y1="52" x2="82" y2="62" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#dddb9d"/>
-      <stop offset="0.5" stop-color="#7bc963"/>
-      <stop offset="1" stop-color="#818cf8"/>
-    </linearGradient>
-    <linearGradient id="arqen-ray-stroke" x1="34" y1="50" x2="84" y2="62" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#dddb9d"/>
-      <stop offset="0.5" stop-color="#7bc963"/>
-      <stop offset="1" stop-color="#c084fc"/>
+    <linearGradient id="bar-fill" x1="33" y1="54" x2="67" y2="61" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D6AD69"/>
+      <stop offset="1" stop-color="#A08050"/>
     </linearGradient>
   </defs>
 </svg>

@@ -1,96 +1,142 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Sparkles, ShieldCheck, Zap, Layers } from "lucide-react";
-import ArchitectureDemo from "./ArchitectureDemo";
+import { ArrowRight } from "lucide-react";
+import TileMosaic from "./TileMosaic";
+import { useAuth } from "@clerk/nextjs";
 
 export default function LandingHero() {
+  const { isSignedIn } = useAuth();
+
+  const primaryHref = isSignedIn ? "/workspace" : "/sign-up";
+  const secondaryHref = "#capabilities";
+
   return (
-    <section className="relative overflow-hidden px-4 pb-24 pt-20 sm:px-8 sm:pb-32 sm:pt-28 lg:pb-36 lg:pt-32">
-      {/* Ambient glow orbs — brand palette */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-1/2 top-0 h-[650px] w-[1000px] -translate-x-1/2 -translate-y-1/3 rounded-full bg-gradient-to-tr from-[#7bc963]/20 via-[#dddb9d]/15 to-[#567f2b]/20 blur-[140px]" />
-        <div className="absolute right-[-10%] top-1/4 h-[450px] w-[550px] rounded-full bg-[#567f2b]/12 blur-[120px]" />
-        <div className="absolute bottom-[-10%] left-[-5%] h-[350px] w-[450px] rounded-full bg-[#7bc963]/12 blur-[100px]" />
-      </div>
+    <>
+      {/* ─── Hero section — fixed height, mosaic behind text ─── */}
+      <section
+        className="relative overflow-hidden bg-[#0E1116]"
+        style={{ minHeight: "min(100dvh, 800px)", height: "100dvh" }}
+      >
+        {/*
+          Layering (bottom → top):
+          z-0  TileMosaic tiles — decorative only, pointer-events none
+          z-[1] Gradient wash — ensures text legibility over tiles
+          z-10 Headline + CTAs — actual content
+          z-20 Stats strip — pinned to bottom
+        */}
 
-      {/* Dot grid */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(#dddb9d_1px,transparent_1px)] [background-size:28px_28px] opacity-[0.06]" />
+        {/* Layer 0: Tile mosaic */}
+        <TileMosaic />
 
-      <div className="relative mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[1fr_1.15fr] lg:gap-16">
-        {/* Left Column */}
-        <div className="animate-fade-in-up">
-          {/* Eyebrow Pill */}
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#7bc963]/35 bg-[#7bc963]/10 px-4 py-1.5 backdrop-blur-md shadow-[0_0_20px_rgba(123,201,99,0.15)]">
-            <Sparkles className="h-3.5 w-3.5 text-[#7bc963] animate-pulse" aria-hidden />
-            <span className="text-xs font-semibold uppercase tracking-widest text-[#7bc963]">
-              Next-Gen AI Architecture Engine
-            </span>
-          </div>
+        {/* Layer 1: Reading gradient — ensures headline is always legible over tiles */}
+        <div
+          className="pointer-events-none absolute inset-0 z-[1]"
+          style={{
+            background: [
+              // Strong left-side vignette for headline area
+              "linear-gradient(to right, rgba(14,17,22,0.97) 0%, rgba(14,17,22,0.88) 40%, rgba(14,17,22,0.30) 75%, rgba(14,17,22,0.08) 100%)",
+              // Top-to-bottom fade
+              "linear-gradient(to bottom, rgba(14,17,22,0.50) 0%, transparent 18%, transparent 70%, rgba(14,17,22,0.96) 100%)",
+            ].join(", "),
+          }}
+          aria-hidden="true"
+        />
 
-          {/* Main Headline */}
-          <h1 className="mb-6 text-5xl font-extrabold leading-[1.04] tracking-tight text-[#f2f1da] sm:text-6xl lg:text-7xl xl:text-[5rem]">
-            Describe it.{" "}
-            <br className="hidden sm:block" />
-            <span className="bg-gradient-to-r from-[#dddb9d] via-[#7bc963] to-[#567f2b] bg-clip-text text-transparent drop-shadow-[0_0_35px_rgba(123,201,99,0.3)]">
-              Architect it.
-            </span>
-          </h1>
+        {/* Layer 1b: Extra solid coverage on mobile for readability */}
+        <div
+          className="pointer-events-none absolute inset-0 z-[1] lg:hidden"
+          style={{ background: "rgba(14,17,22,0.78)" }}
+          aria-hidden="true"
+        />
 
-          {/* Sub-headline */}
-          <p className="mb-8 max-w-xl text-base leading-relaxed text-[#c8c69d] sm:text-lg">
-            Turn system descriptions into production-ready software architecture diagrams,
-            microservice maps, and UML specifications in seconds with AI.
-          </p>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-wrap items-center gap-4">
-            <Link
-              href="/workspace"
-              className="group relative inline-flex items-center justify-center gap-2.5 overflow-hidden rounded-full bg-gradient-to-r from-[#dddb9d] via-[#7bc963] to-[#567f2b] px-8 py-4 text-sm font-bold text-[#0a0b04] shadow-[0_0_35px_rgba(123,201,99,0.4)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_50px_rgba(123,201,99,0.6)]"
+        {/* Layer 10: Hero content — positioned in the upper-middle area, well above stats strip */}
+        <div className="absolute inset-x-0 z-10 flex flex-col items-start justify-center px-6 md:px-12 lg:px-16"
+          style={{ top: "20%", bottom: "96px" /* leave room for stats strip */ }}
+        >
+          <div className="max-w-[640px]">
+            {/* Eyebrow */}
+            <div
+              className="mb-5 inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#D6AD69]"
+              style={{
+                background: "rgba(214,173,105,0.10)",
+                border: "1px solid rgba(214,173,105,0.25)",
+              }}
             >
-              <Sparkles className="h-4 w-4 transition-transform group-hover:rotate-12" />
-              Generate Architecture Now
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Link>
+              <span className="h-1.5 w-1.5 rounded-full bg-[#D6AD69] animate-pulse" aria-hidden="true" />
+              Architectural Intelligence Platform
+            </div>
 
-            <Link
-              href="/workspace/templates"
-              className="inline-flex items-center gap-2 rounded-full border border-[#dddb9d]/20 bg-[#dddb9d]/05 px-7 py-4 text-sm font-semibold text-[#c8c69d] backdrop-blur-xl transition-all duration-200 hover:border-[#dddb9d]/40 hover:bg-[#dddb9d]/10 hover:text-[#f2f1da]"
+            {/* Headline */}
+            <h1
+              className="font-display font-semibold leading-[1.03] tracking-[-0.035em] text-[#F2EFE8]"
+              style={{ fontSize: "clamp(40px, 5.5vw, 80px)" }}
             >
-              <Layers className="h-4 w-4 text-[#8e8c6c]" />
-              Explore Templates
-            </Link>
-          </div>
+              Architecture systems,
+              <br />
+              <span className="text-[#D6AD69]">built in pieces.</span>
+            </h1>
 
-          {/* Trust Highlights */}
-          <div className="mt-10 flex flex-wrap items-center gap-6 border-t border-[#dddb9d]/12 pt-6">
-            <div className="flex items-center gap-2 text-xs font-medium text-[#c8c69d]">
-              <ShieldCheck className="h-4 w-4 text-[#7bc963]" />
-              <span>Production Ready</span>
-            </div>
-            <div className="flex items-center gap-2 text-xs font-medium text-[#c8c69d]">
-              <Zap className="h-4 w-4 text-[#dddb9d]" />
-              <span>Instant Mermaid Export</span>
-            </div>
-            <div className="flex items-center gap-2 text-xs font-medium text-[#c8c69d]">
-              <Sparkles className="h-4 w-4 text-[#7bc963]" />
-              <span>Adaptive AI Insights</span>
+            {/* Description */}
+            <p
+              className="mt-5 leading-[1.65] text-[#8B949E]"
+              style={{ fontSize: "clamp(15px, 1.5vw, 17px)", maxWidth: "460px" }}
+            >
+              Describe your software system and Arqin AI synthesizes
+              production-ready architecture diagrams, UML specifications,
+              and component maps in seconds.
+            </p>
+
+            {/* CTA row */}
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <Link
+                href={primaryHref}
+                className="inline-flex items-center gap-2 rounded-md bg-[#D6AD69] px-6 py-3 font-sans text-[15px] font-semibold text-[#0E1116] transition-all hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D6AD69]"
+              >
+                {isSignedIn ? "Open Workspace" : "Start a project"}
+                <ArrowRight className="h-4 w-4" aria-hidden />
+              </Link>
+
+              <Link
+                href={secondaryHref}
+                className="inline-flex items-center gap-2 rounded-md border border-[#F2EFE8]/20 px-6 py-3 font-sans text-[15px] font-medium text-[#F2EFE8] transition-colors hover:border-[#D6AD69]/50 hover:text-[#D6AD69] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D6AD69]"
+              >
+                See capabilities
+              </Link>
             </div>
           </div>
         </div>
 
-        {/* Right Column: Demo Visual */}
-        <div className="animate-fade-in-up animation-delay-200">
-          <div className="relative">
-            {/* Glow behind demo */}
-            <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-[#7bc963]/25 via-[#dddb9d]/20 to-[#567f2b]/25 blur-2xl opacity-70 animate-pulse" />
-            <div className="relative">
-              <ArchitectureDemo />
-            </div>
+        {/* Layer 20: Stats strip — pinned to bottom of hero, in normal document flow visually */}
+        <div
+          className="absolute inset-x-0 bottom-0 z-20 border-t"
+          style={{
+            borderColor: "rgba(242,239,232,0.08)",
+            background: "rgba(14,17,22,0.92)",
+            backdropFilter: "blur(8px)",
+          }}
+        >
+          <div className="mx-auto grid max-w-7xl grid-cols-3 px-6 py-4 md:px-12 lg:px-16">
+            {[
+              { num: "8+", label: "UML diagram types" },
+              { num: "AI", label: "Architecture analysis" },
+              { num: "1-click", label: "SVG · PNG · MD export" },
+            ].map(({ num, label }) => (
+              <div key={label} className="flex flex-col">
+                <span
+                  className="font-display font-bold leading-none tracking-[-0.03em] text-[#F2EFE8]"
+                  style={{ fontSize: "clamp(18px, 2vw, 26px)" }}
+                >
+                  {num}
+                </span>
+                <span className="mt-1 font-sans text-[12px] text-[#8B949E]">
+                  {label}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

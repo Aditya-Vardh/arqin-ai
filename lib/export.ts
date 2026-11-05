@@ -1,4 +1,4 @@
-import type { ArchitectureResult } from "@/lib/storage/types";
+﻿import type { ArchitectureResult } from "@/lib/storage/types";
 import { sanitizeMermaid } from "@/lib/mermaid-repair";
 
 export { sanitizeMermaid };
@@ -105,7 +105,7 @@ export async function svgToPng(svgContent: string, filename: string) {
         canvas.height = height * 2;
 
         if (ctx) {
-          ctx.fillStyle = "#0a0b04";
+          ctx.fillStyle = "#0a0a0c";
           ctx.fillRect(0, 0, canvas.width, canvas.height);
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
         }
@@ -154,7 +154,7 @@ export async function svgToPdf(svgContent: string, filename: string) {
       <head>
         <title>${filename}</title>
         <style>
-          body { margin: 0; padding: 2rem; background: #0a0b04; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+          body { margin: 0; padding: 2rem; background: #0a0a0c; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
           svg { max-width: 100%; height: auto; }
         </style>
       </head>

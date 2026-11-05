@@ -164,7 +164,7 @@ export function optimizeArchitecture(graph: ArchitectureGraph): OptimizationResu
     optimizedHealth: Math.min(100, optimizedScore.overall),
     changes,
     explanation: changes.length > 0
-      ? `Arqen AI optimized ${graph.title} by applying ${changes.length} structural change(s): ${changes.map((c) => c.title).join("; ")}.`
+      ? `Arqin AI optimized ${graph.title} by applying ${changes.length} structural change(s): ${changes.map((c) => c.title).join("; ")}.`
       : `${graph.title} is already well-optimized. No additional structural changes were identified.`,
   };
 }

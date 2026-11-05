@@ -50,21 +50,39 @@ export type ArchitectureResult = {
   adaptiveInsights?: AdaptiveInsights;
 };
 
-export type ResearchResult = {
-  question: string;
-  answer: string;
-  recommendations: string[];
-  alternatives: {
-    name: string;
-    description: string;
-    pros: string[];
-    cons: string[];
-  }[];
-  tradeoffs: string;
-  architectureImplications: string;
-  relevantTechnologies: string[];
-  risks: string[];
+export type TechnologyRecommendation = {
+  category: string;
+  name: string;
+  reason: string;
 };
+
+export type ResearchAlternative = {
+  name: string;
+  description: string;
+  pros: string[];
+  cons: string[];
+};
+
+export type ResearchResult = {
+  title: string;
+  summary: string;
+  recommendedArchitecture: string;
+  architecturePattern: string;
+  technologyRecommendations: TechnologyRecommendation[];
+  scalability: string;
+  performance: string;
+  latency: string;
+  reliability: string;
+  security: string;
+  dataStrategy: string;
+  cachingStrategy: string;
+  communicationStrategy: string;
+  tradeoffs: string[];
+  alternatives: ResearchAlternative[];
+  risks: string[];
+  recommendations: string[];
+};
+
 
 export type GenerationStatus = "success" | "error";
 

@@ -104,7 +104,7 @@ export async function renderMermaidSafe(
 
   for (const attempt of attempts) {
     try {
-      const id = `archigen-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
+      const id = `Arqin-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
       await mermaid.parse(attempt);
       const { svg } = await mermaid.render(id, attempt);
       return { svg, repaired: attempt };

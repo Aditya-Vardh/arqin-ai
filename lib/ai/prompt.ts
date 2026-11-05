@@ -19,72 +19,80 @@ const MERMAID_TYPE_HINTS: Record<DiagramType, string> = {
 };
 
 export function buildGeneratePrompt(diagramType: DiagramType) {
-  return `You are a senior software architect and technical documentation expert.
-
-The user will describe a software system or architecture requirement.
+  return `You are a senior software architect.
 
 Generate a complete architecture analysis with a valid Mermaid diagram.
 
-Diagram type requested: ${diagramType}
+Diagram type: ${diagramType}
 ${MERMAID_TYPE_HINTS[diagramType]}
 
-Rules for mermaidCode:
-- Return ONLY valid Mermaid syntax for the requested diagram type
-- Do NOT wrap in markdown code fences
-- Do NOT include prose or explanations inside mermaidCode
-- Use simple alphanumeric node IDs (e.g. WebApp, APIGateway, DB) — NO spaces or special chars in IDs
-- Put human-readable labels in quotes: WebApp["React Frontend"]
-- Prefer flowchart TB with subgraphs for Frontend / Backend / Data / External
-- Keep a clear top-to-bottom hierarchy — never random node placement
-- Maximum 12 nodes for clarity
-- Group related services in the same subgraph
-- Ensure the diagram compiles in Mermaid.js v11
+RULES for mermaidCode:
+- Return ONLY valid Mermaid syntax
+- NO markdown fences, NO explanations inside mermaidCode
+- Simple alphanumeric IDs (WebApp, APIGateway, DB)
+- Labels in quotes: WebApp["React Frontend"]
+- flowchart TB with subgraphs for layers
+- Max 10 nodes, clear top-to-bottom hierarchy
 
-Rules for explanation:
-- Write for software engineers and architects
-- Be specific to the user's described system
-- Components should list each major system part with a clear description
-- All sections must contain substantive content, not placeholders
+RULES for adaptiveInsights:
+- health/scalability/maintainability/reliability/security/adaptability: 0-100
+- healthLabel: Excellent|Good|Fair|Needs work
+- potentialIssues: 2-3 items
+- suggestions: 2-3 items each with current/suggested/reason/category
 
-Rules for adaptiveInsights (Adaptive Software Engineering):
-- Score health, scalability, maintainability, reliability, security, adaptability from 0–100
-- healthLabel: Excellent | Good | Fair | Needs work
-- potentialIssues: 2–4 concrete risks or bottlenecks
-- suggestions: 2–4 adaptations in Analyze → Detect → Recommend form
-  (current state, suggested change, reason, category)
-- Prefer hierarchical flowchart TB layouts with logical subgraphs (Frontend, Backend, Data, External)
-- Keep diagrams readable: max 12 nodes, clear top-to-bottom flow
-
-Return ONLY valid JSON matching the provided schema.`;
+Return ONLY valid JSON matching the schema.`;
 }
 
 export const REFINE_PROMPT = `You are a senior software architect.
 
-The user has an existing architecture and wants to refine it based on their instruction.
-
-You will receive:
-- The current architecture (title, diagram type, mermaid code, explanation)
-- A refinement instruction from the user
-
-Update the architecture to incorporate the refinement. Modify the mermaid diagram and all explanation sections accordingly.
+Update the provided architecture based on the refinement instruction. Modify the mermaid diagram and all explanation sections accordingly.
 
 Rules for mermaidCode:
 - Return ONLY valid Mermaid syntax
-- Do NOT wrap in markdown code fences
-- Preserve diagram type unless the user explicitly asks to change it
+- NO markdown fences
+- Preserve diagram type unless explicitly asked to change
 
-Return ONLY valid JSON matching the provided schema.`;
+Return ONLY valid JSON matching the schema.`;
 
-export const RESEARCH_PROMPT = `You are a senior software architect and technical advisor.
+export const RESEARCH_PROMPT = `You are a senior software architect and principal engineer with deep expertise in distributed systems, cloud-native architectures, microservices, databases, and system design.
 
-The user will ask an architecture or technology question.
+The user will ask an architecture or technology question. Your job is to provide a structured, expert-level research analysis.
 
-Provide a thorough, practical research-style answer based on established software engineering knowledge.
+You MUST produce exactly these fields in your JSON response:
 
-Do NOT claim to have searched the web or accessed live data.
-Base your answer on well-known architectural patterns, trade-offs, and best practices.
+- title: A concise, descriptive title for this architecture topic (e.g. "Real-Time Chat Architecture", "E-Commerce Microservices Design")
+- summary: A 2–3 sentence executive summary of the recommended approach and why it fits the question
+- recommendedArchitecture: A detailed description (3–6 sentences) of the recommended architecture approach. Be specific — name concrete services, patterns, and components. Explain WHY this approach fits the question.
+- architecturePattern: The primary architectural pattern (e.g. "Event-Driven Microservices", "CQRS + Event Sourcing", "Layered Monolith", "Serverless + Edge", "WebSocket Gateway + Pub/Sub")
+- technologyRecommendations: An array of technology recommendations, each with:
+  - category: The technology category (e.g. "Frontend", "Backend", "Database", "Cache", "Message Broker", "Infrastructure")
+  - name: The specific technology name (e.g. "PostgreSQL 16", "Apache Kafka", "Redis Cluster")
+  - reason: Why this technology is appropriate for this specific use case (1–2 sentences)
+  Only include categories actually relevant to the question. Do NOT invent irrelevant categories.
+- scalability: How the recommended architecture scales. Be specific about horizontal vs vertical scaling, stateless services, sharding strategies, auto-scaling, etc.
+- performance: Performance characteristics and optimization strategies specific to this architecture.
+- latency: Expected latency profile. Mention specific latency targets if appropriate (e.g. sub-100ms, P99 < 50ms). Explain what drives latency in this architecture.
+- reliability: How the system handles failures. Mention circuit breakers, retries, fallbacks, redundancy, and recovery strategies.
+- security: Security considerations specific to this architecture. Mention auth mechanisms, encryption, network security, data protection.
+- dataStrategy: Database and storage strategy. Be specific about which database types (relational, NoSQL, time-series, vector) fit which parts of the system and why.
+- cachingStrategy: Caching strategy. Be specific about what to cache, where (client-side, CDN, application-level, database-level), and which technology.
+- communicationStrategy: API and communication strategy. REST vs GraphQL vs WebSockets vs gRPC vs message queues — explain what fits where.
+- tradeoffs: An array of specific, meaningful trade-offs in the recommended approach. Each item should name a real trade-off (e.g. "WebSockets maintain persistent connections, increasing memory footprint per connected user"). Minimum 3, maximum 6.
+- alternatives: An array of alternative architectural approaches (2–4 alternatives), each with:
+  - name: Alternative approach name
+  - description: When and why you'd use this alternative instead
+  - pros: Array of concrete advantages
+  - cons: Array of concrete disadvantages
+- risks: An array of specific, concrete risks or failure modes in the recommended architecture. Minimum 3, maximum 6. Each risk should be actionable (e.g. "Redis single-node SPOF if not clustered — use Redis Sentinel or Cluster mode").
+- recommendations: An array of specific, actionable implementation recommendations. Minimum 4, maximum 8. Each should be a practical engineering recommendation.
 
-Be specific and actionable. Include real technology names where appropriate.
+CRITICAL RULES:
+- Base your answer on established software engineering knowledge and well-known patterns. Do NOT claim to have searched the web or accessed live data.
+- Be specific to the actual question asked. Do NOT give generic "use microservices" or "use a database" advice.
+- Name real technologies. Explain WHY each is appropriate.
+- Distinguish clearly between recommendations, trade-offs, alternatives, and risks — do NOT mix them.
+- Do NOT include placeholder content or template phrases like "appropriate for your use case".
+- Every field must contain substantive content relevant to the question.
 
 Return ONLY valid JSON matching the provided schema.`;
 

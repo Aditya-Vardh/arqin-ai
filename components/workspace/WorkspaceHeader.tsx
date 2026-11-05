@@ -1,6 +1,7 @@
 "use client";
 
 import { Check, Download, Maximize2, Sparkles, Layers } from "lucide-react";
+import { UserButton } from "@clerk/nextjs";
 import type { DiagramType } from "@/lib/storage/types";
 import { DIAGRAM_TYPE_LABELS } from "@/lib/storage/types";
 
@@ -14,63 +15,80 @@ type Props = {
 };
 
 export default function WorkspaceHeader({
-  title, onTitleChange, diagramType, saved, onExport, onFullscreen,
+  title,
+  onTitleChange,
+  diagramType,
+  saved,
+  onExport,
+  onFullscreen,
 }: Props) {
   return (
-    <header className="flex h-14 shrink-0 items-center justify-between border-b border-[#dddb9d]/15 bg-[#0a0b04]/90 px-4 sm:px-6 backdrop-blur-2xl z-20">
-      {/* Left Title Input */}
-      <div className="flex items-center gap-3">
-        <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#dddb9d]/10 border border-[#dddb9d]/30 text-[#7bc963]">
+    <header className="z-20 flex h-14 shrink-0 items-center justify-between border-b border-[#A4AAB5]/10 bg-[#0C0E12]/95 px-4 backdrop-blur-2xl sm:px-6">
+      <div className="flex min-w-0 items-center gap-3">
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-[#D6AD69]/30 bg-[#1D222A] text-[#D6AD69] shadow-[0_0_18px_rgba(214,173,105,0.12)]">
           <Layers className="h-4 w-4" />
         </div>
+
         <input
           type="text"
           value={title}
           onChange={(e) => onTitleChange(e.target.value)}
-          className="rounded-xl border border-transparent bg-transparent px-2.5 py-1 text-sm font-bold text-[#f2f1da] transition-colors hover:border-[#dddb9d]/20 focus:border-[#7bc963] focus:bg-[#12140a] outline-none"
+          className="min-w-0 max-w-[220px] rounded-xl border border-transparent bg-transparent px-2.5 py-1 text-sm font-bold tracking-tight text-[#F0F1F3] outline-none transition-all hover:border-[#4A5060] focus:border-[#D6AD69]/50 focus:bg-[#171A20] sm:max-w-[280px]"
           aria-label="Project name"
         />
+
         {saved && (
-          <span className="flex items-center gap-1 font-mono text-[10px] font-bold uppercase text-[#7bc963] bg-[#7bc963]/10 border border-[#7bc963]/30 px-2.5 py-0.5 rounded-full">
-            <Check className="h-3 w-3" /> Auto-Saved
+          <span className="hidden items-center gap-1 rounded-full border border-[#D6AD69]/30 bg-[#D6AD69]/10 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wide text-[#D6AD69] sm:flex">
+            <Check className="h-3 w-3" />
+            Auto-Saved
           </span>
         )}
       </div>
 
-      {/* Center Studio Pill */}
-      <div className="hidden md:flex items-center gap-2 rounded-full border border-[#dddb9d]/15 bg-[#12140a] px-3.5 py-1 text-xs text-[#c8c69d]">
-        <Sparkles className="h-3.5 w-3.5 text-[#7bc963]" />
-        <span>Arqen AI Studio Canvas</span>
+      <div className="hidden items-center gap-2 rounded-full border border-[#A4AAB5]/12 bg-[#171A20] px-4 py-1.5 md:flex">
+        <Sparkles className="h-3.5 w-3.5 text-[#D6AD69]" />
+
+        <span className="text-xs font-semibold text-[#A4AAB5]">
+          Arqin AI
+          <span className="ml-1 text-[#F0F1F3]">Studio Canvas</span>
+        </span>
       </div>
 
-      {/* Right Controls */}
-      <div className="flex items-center gap-2.5">
-        <span className="rounded-full border border-[#dddb9d]/30 bg-[#dddb9d]/10 px-3 py-1 font-mono text-[10px] font-bold uppercase text-[#dddb9d]">
+      <div className="flex items-center gap-2">
+        <span className="hidden rounded-full border border-[#D6AD69]/30 bg-[#D6AD69]/10 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-wide text-[#D6AD69] sm:inline-flex">
           {DIAGRAM_TYPE_LABELS[diagramType]}
         </span>
 
         {onExport && (
           <button
             type="button"
-            className="flex h-8 items-center gap-1.5 rounded-xl border border-[#dddb9d]/20 bg-[#12140a] px-3 text-xs font-bold text-[#f2f1da] hover:bg-[#dddb9d]/10 hover:text-white transition-colors"
-            title="Export Markdown Documentation"
             onClick={onExport}
+            className="inline-flex items-center gap-1.5 rounded-xl border border-[#4A5060] bg-[#171A20] px-3 py-2 text-xs font-bold text-[#A4AAB5] transition-all hover:border-[#D6AD69]/40 hover:bg-[#1D222A] hover:text-[#F0F1F3]"
           >
-            <Download className="h-3.5 w-3.5 text-[#7bc963]" />
-            <span>Export MD</span>
+            <Download className="h-3.5 w-3.5 text-[#D6AD69]" />
+            <span className="hidden sm:inline">Export MD</span>
           </button>
         )}
 
         {onFullscreen && (
           <button
             type="button"
-            className="flex h-8 w-8 items-center justify-center rounded-xl border border-[#dddb9d]/20 bg-[#12140a] text-[#c8c69d] hover:bg-[#dddb9d]/10 hover:text-[#f2f1da] transition-colors"
-            title="Fullscreen Diagram"
             onClick={onFullscreen}
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#4A5060] bg-[#171A20] text-[#A4AAB5] transition-all hover:border-[#D6AD69]/40 hover:bg-[#1D222A] hover:text-[#F0F1F3]"
+            aria-label="Fullscreen"
           >
-            <Maximize2 className="h-4 w-4" />
+            <Maximize2 className="h-3.5 w-3.5" />
           </button>
         )}
+
+        <div className="hidden lg:block">
+          <UserButton
+            appearance={{
+              variables: { colorPrimary: "#D6AD69" } as Record<string, string>,
+              elements: { avatarBox: "w-8 h-8" },
+            }}
+          />
+        </div>
       </div>
     </header>
   );

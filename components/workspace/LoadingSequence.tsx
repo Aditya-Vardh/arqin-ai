@@ -28,7 +28,7 @@ export default function LoadingSequence({ active = true }: Props) {
   return (
     <div className="loading-sequence" role="status" aria-live="polite" key={active ? "loading" : "idle"}>
       <div className="mb-3 flex items-center gap-2">
-        <Loader2 className="h-4 w-4 animate-spin text-cyan-400" aria-hidden />
+        <Loader2 className="h-4 w-4 animate-spin text-[#D6AD69]" aria-hidden />
         <p className="text-sm font-medium">{STEPS[stepIndex]}…</p>
       </div>
       <div className="loading-steps">

@@ -18,7 +18,7 @@ export const explanationSchema = z.object({
       name: z.string(),
       description: z.string(),
     }),
-  ),
+  ).max(10),
   dataFlow: z.string(),
   technologyChoices: z.string(),
   scalability: z.string(),
@@ -36,7 +36,7 @@ export const adaptiveInsightsSchema = z.object({
   reliability: z.number(),
   security: z.number(),
   adaptability: z.number(),
-  potentialIssues: z.array(z.string()),
+  potentialIssues: z.array(z.string()).max(3),
   suggestions: z.array(
     z.object({
       current: z.string(),
@@ -50,7 +50,7 @@ export const adaptiveInsightsSchema = z.object({
         "adaptability",
       ]),
     }),
-  ),
+  ).max(3),
 });
 
 export const architectureSchema = z.object({
@@ -62,22 +62,37 @@ export const architectureSchema = z.object({
   adaptiveInsights: adaptiveInsightsSchema,
 });
 
+export const technologyRecommendationSchema = z.object({
+  category: z.string(),
+  name: z.string(),
+  reason: z.string(),
+});
+
+export const alternativeSchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  pros: z.array(z.string()),
+  cons: z.array(z.string()),
+});
+
 export const researchSchema = z.object({
-  question: z.string(),
-  answer: z.string(),
-  recommendations: z.array(z.string()),
-  alternatives: z.array(
-    z.object({
-      name: z.string(),
-      description: z.string(),
-      pros: z.array(z.string()),
-      cons: z.array(z.string()),
-    }),
-  ),
-  tradeoffs: z.string(),
-  architectureImplications: z.string(),
-  relevantTechnologies: z.array(z.string()),
+  title: z.string(),
+  summary: z.string(),
+  recommendedArchitecture: z.string(),
+  architecturePattern: z.string(),
+  technologyRecommendations: z.array(technologyRecommendationSchema),
+  scalability: z.string(),
+  performance: z.string(),
+  latency: z.string(),
+  reliability: z.string(),
+  security: z.string(),
+  dataStrategy: z.string(),
+  cachingStrategy: z.string(),
+  communicationStrategy: z.string(),
+  tradeoffs: z.array(z.string()),
+  alternatives: z.array(alternativeSchema),
   risks: z.array(z.string()),
+  recommendations: z.array(z.string()),
 });
 
 export const umlSchema = z.object({
