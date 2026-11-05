@@ -108,7 +108,7 @@ export default function DashboardView() {
 
             <Link
               href="/workspace/generate?new=1"
-              className="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/40 bg-[var(--foreground)] px-6 py-3 text-xs font-bold text-[var(--background)] shadow-[0_0_20px_rgba(214,173,105,0.12)] transition-all hover:bg-[var(--accent-hover)]"
+              className="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/40 bg-[var(--foreground)] px-6 py-3 text-xs font-bold text-[var(--background)] shadow-[0_0_20px_rgba(var(--accent-rgb,214,173,105),0.12)] transition-all hover:bg-[var(--accent-hover)]"
             >
               <span>Launch Studio Canvas</span>
               <ArrowRight className="h-4 w-4" />

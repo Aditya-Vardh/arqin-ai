@@ -16,12 +16,12 @@ export default function WorkspaceLayout({ children }: { children: React.ReactNod
       </Suspense>
 
       <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
-        <header className="workspace-mobile-bar lg:hidden border-b border-[var(--border)] bg-[#0C0E12] px-4 py-3 flex items-center justify-between gap-3">
+        <header className="workspace-mobile-bar lg:hidden border-b border-[var(--border)] bg-[var(--background-2)] px-4 py-3 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <SidebarToggle onClick={() => setSidebarOpen(true)} />
             <div className="flex flex-col min-w-0">
-              <span className="text-sm font-bold tracking-tight text-[#F0F1F3] whitespace-nowrap">Arqin <span className="text-[#D6AD69]">AI</span></span>
-              <span className="text-[9px] uppercase tracking-widest text-[#D6AD69] font-mono whitespace-nowrap leading-tight">Architecture Engine</span>
+              <span className="text-sm font-bold tracking-tight text-[var(--text-primary)] whitespace-nowrap">Arqin <span className="text-[var(--accent)]">AI</span></span>
+              <span className="text-[9px] uppercase tracking-widest text-[var(--accent)] font-mono whitespace-nowrap leading-tight">Architecture Engine</span>
             </div>
           </div>
           <UserButton

@@ -58,22 +58,22 @@ export default function ArchitectureDemo() {
 
   return (
     <div
-      className="relative w-full max-w-full overflow-hidden rounded-2xl border border-[#303640] bg-[#0C0E12] shadow-[0_24px_60px_rgba(0,0,0,0.80)]"
+      className="relative w-full max-w-full overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--background-2)] shadow-[0_24px_60px_rgba(0,0,0,0.80)]"
       role="img"
       aria-label="Architecture preview — example only"
     >
       {/* Top accent line */}
-      <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-[#D6AD69]/60 to-transparent" />
+      <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-[var(--accent)]/60 to-transparent" />
 
       {/* Panel Header */}
-      <div className="flex items-center justify-between border-b border-[#303640] bg-[#101216]/80 px-4 py-2.5">
+      <div className="flex items-center justify-between border-b border-[var(--border)] bg-[var(--background)]/80 px-4 py-2.5">
         <div className="flex items-center gap-2.5">
           <div className="flex gap-1.5">
-            <span className="h-2.5 w-2.5 rounded-full bg-[#303640]" />
-            <span className="h-2.5 w-2.5 rounded-full bg-[#303640]" />
-            <span className="h-2.5 w-2.5 rounded-full bg-[#303640]" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[var(--border)]" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[var(--border)]" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[var(--border)]" />
           </div>
-          <span className="font-mono text-[10px] text-[#4A5060]">
+          <span className="font-mono text-[10px] text-[var(--text-faint)]">
             architecture-canvas · example
           </span>
         </div>
@@ -84,8 +84,8 @@ export default function ArchitectureDemo() {
             onClick={() => setTab("visual")}
             className={`flex items-center gap-1 rounded-md px-2.5 py-1 text-[10px] font-semibold transition-all ${
               tab === "visual"
-                ? "bg-[#1D222A] text-[#D6AD69] border border-[#D6AD69]/30"
-                : "text-[#4A5060] hover:text-[#A4AAB5]"
+                ? "bg-[var(--surface-elevated)] text-[var(--accent)] border border-[#D6AD69]/30"
+                : "text-[var(--text-faint)] hover:text-[var(--text-muted)]"
             }`}
           >
             <Layers className="h-3 w-3" />
@@ -96,24 +96,24 @@ export default function ArchitectureDemo() {
             onClick={() => setTab("code")}
             className={`flex items-center gap-1 rounded-md px-2.5 py-1 text-[10px] font-semibold transition-all ${
               tab === "code"
-                ? "bg-[#1D222A] text-[#D6AD69] border border-[#D6AD69]/30"
-                : "text-[#4A5060] hover:text-[#A4AAB5]"
+                ? "bg-[var(--surface-elevated)] text-[var(--accent)] border border-[#D6AD69]/30"
+                : "text-[var(--text-faint)] hover:text-[var(--text-muted)]"
             }`}
           >
             <Code2 className="h-3 w-3" />
             Mermaid
           </button>
 
-          <div className="ml-1 flex items-center gap-1.5 rounded-full border border-[#D6AD69]/20 bg-[#D6AD69]/6 px-2.5 py-0.5">
+          <div className="ml-1 flex items-center gap-1.5 rounded-full border border-[#D6AD69]/20 bg-[var(--accent)]/6 px-2.5 py-0.5">
             <span className="h-1.5 w-1.5 rounded-full bg-[#65A884] animate-pulse" />
-            <span className="text-[9px] font-semibold text-[#A4AAB5]">Validated</span>
+            <span className="text-[9px] font-semibold text-[var(--text-muted)]">Validated</span>
           </div>
         </div>
       </div>
 
       {/* Canvas */}
       {tab === "visual" ? (
-        <div className="relative bg-[#0C0E12] p-5">
+        <div className="relative bg-[var(--background-2)] p-5">
           {/* Subtle grid */}
           <div
             className="pointer-events-none absolute inset-0 opacity-30"
@@ -124,11 +124,11 @@ export default function ArchitectureDemo() {
           />
 
           {/* Feature annotations */}
-          <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 rounded-md border border-[#303640] bg-[#101216]/80 px-2.5 py-1 text-[9px] text-[#4A5060] backdrop-blur-sm">
-            <Zap className="h-2.5 w-2.5 text-[#D6AD69]" />
+          <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 rounded-md border border-[var(--border)] bg-[var(--background)]/80 px-2.5 py-1 text-[9px] text-[var(--text-faint)] backdrop-blur-sm">
+            <Zap className="h-2.5 w-2.5 text-[var(--accent)]" />
             Hover to explore
           </div>
-          <div className="absolute top-3 right-3 z-10 flex items-center gap-1.5 rounded-md border border-[#303640] bg-[#101216]/80 px-2.5 py-1 text-[9px] text-[#4A5060] backdrop-blur-sm">
+          <div className="absolute top-3 right-3 z-10 flex items-center gap-1.5 rounded-md border border-[var(--border)] bg-[var(--background)]/80 px-2.5 py-1 text-[9px] text-[var(--text-faint)] backdrop-blur-sm">
             <ShieldCheck className="h-2.5 w-2.5 text-[#65A884]" />
             Auto-validated
           </div>
@@ -140,7 +140,7 @@ export default function ArchitectureDemo() {
           >
             <defs>
               <marker id="arrowAmber" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-                <path d="M0,0 L0,6 L8,3 z" fill="#D6AD69" />
+                <path d="M0,0 L0,6 L8,3 z" fill="var(--accent)" />
               </marker>
             </defs>
 
@@ -163,7 +163,7 @@ export default function ArchitectureDemo() {
                     transition={{ duration: 0.4, delay: i * 0.06 }}
                   />
                   {active && (
-                    <circle r="2.5" fill="#D6AD69" opacity={0.8}>
+                    <circle r="2.5" fill="var(--accent)" opacity={0.8}>
                       <animateMotion
                         dur={`${1.2 + i * 0.1}s`}
                         repeatCount="indefinite"
@@ -210,7 +210,7 @@ export default function ArchitectureDemo() {
                   <circle cx={x + 14} cy={NH / 2} r="3.5" fill={node.accent} opacity={isHovered ? 1 : 0.5} />
 
                   {/* Label */}
-                  <text x={x + 28} y={NH / 2 - 5} fill="#F0F1F3" fontSize="11.5" fontWeight="600" fontFamily="Inter, sans-serif">
+                  <text x={x + 28} y={NH / 2 - 5} fill="var(--text-primary)" fontSize="11.5" fontWeight="600" fontFamily="Inter, sans-serif">
                     {node.label}
                   </text>
                   <text x={x + 28} y={NH / 2 + 9} fill="#4A5060" fontSize="9" fontFamily="var(--font-geist-mono, monospace)">
@@ -222,8 +222,8 @@ export default function ArchitectureDemo() {
           </svg>
 
           {/* Footer bar */}
-          <div className="relative z-10 mt-3 flex items-center justify-between rounded-lg border border-[#1D222A] bg-[#101216]/50 px-3 py-2 text-[9px] text-[#4A5060]">
-            <span className="flex items-center gap-1.5 text-[#A4AAB5]">
+          <div className="relative z-10 mt-3 flex items-center justify-between rounded-lg border border-[var(--surface-elevated)] bg-[var(--background)]/50 px-3 py-2 text-[9px] text-[var(--text-faint)]">
+            <span className="flex items-center gap-1.5 text-[var(--text-muted)]">
               <span className="h-1.5 w-1.5 rounded-full bg-[#65A884]" />
               {NODES.length} components · {NODES.length - 1} connections
             </span>
@@ -231,15 +231,15 @@ export default function ArchitectureDemo() {
           </div>
         </div>
       ) : (
-        <div className="relative min-h-[460px] overflow-x-auto bg-[#0C0E12] p-5 font-mono text-xs">
-          <div className="mb-3 flex items-center justify-between border-b border-[#1D222A] pb-2">
-            <span className="text-[9px] uppercase tracking-wider text-[#4A5060]">Generated Mermaid.js · Example</span>
+        <div className="relative min-h-[460px] overflow-x-auto bg-[var(--background-2)] p-5 font-mono text-xs">
+          <div className="mb-3 flex items-center justify-between border-b border-[var(--surface-elevated)] pb-2">
+            <span className="text-[9px] uppercase tracking-wider text-[var(--text-faint)]">Generated Mermaid.js · Example</span>
             <span className="flex items-center gap-1 text-[9px] text-[#65A884]">
               <CheckCircle2 className="h-3 w-3" />
               Valid syntax
             </span>
           </div>
-          <pre className="leading-relaxed text-[#A4AAB5]">{sampleMermaid}</pre>
+          <pre className="leading-relaxed text-[var(--text-muted)]">{sampleMermaid}</pre>
         </div>
       )}
     </div>

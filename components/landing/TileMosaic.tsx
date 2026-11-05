@@ -143,8 +143,8 @@ export default function TileMosaic() {
         back.style.cssText = `
           position:absolute;inset:0;
           backface-visibility:hidden;-webkit-backface-visibility:hidden;
-          background:rgba(214,173,105,0.20);
-          border:1px solid rgba(214,173,105,0.30);
+          background:rgba(var(--accent-rgb,214,173,105),0.20);
+          border:1px solid rgba(var(--accent-rgb,214,173,105),0.30);
           transform:rotateX(180deg);
         `;
 

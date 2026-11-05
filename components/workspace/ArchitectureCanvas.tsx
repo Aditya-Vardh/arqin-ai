@@ -458,7 +458,7 @@ export default function ArchitectureCanvas({
           "5px";
 
         node.style.filter =
-          "drop-shadow(0 0 10px rgba(214,173,105,0.4))";
+          "drop-shadow(0 0 10px rgba(var(--accent-rgb,214,173,105),0.4))";
       } else {
         node.style.outline =
           "none";
@@ -659,12 +659,12 @@ export default function ArchitectureCanvas({
   return (
     <div className="relative flex h-full w-full flex-col overflow-hidden bg-[var(--background)]">
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(214,173,105,0.04),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(var(--accent-rgb,214,173,105),0.04),transparent_50%)]" />
 
         <div className="absolute inset-0 opacity-70 [background-image:linear-gradient(rgba(48,54,64,0.55)_1px,transparent_1px),linear-gradient(90deg,rgba(48,54,64,0.55)_1px,transparent_1px)] [background-size:48px_48px]" />
       </div>
 
-      <div className="relative z-20 flex h-11 shrink-0 items-center justify-between border-b border-[#A4AAB5]/12 bg-[var(--background-2)]/96 px-3 backdrop-blur-xl">
+      <div className="relative z-20 flex h-11 shrink-0 items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--background-2)]/96 px-3 backdrop-blur-xl">
         <div className="flex items-center gap-1">
           <button
             type="button"
@@ -718,7 +718,7 @@ export default function ArchitectureCanvas({
             Fit
           </button>
 
-          <div className="mx-1 h-4 w-px bg-[#A4AAB5]/12" />
+          <div className="mx-1 h-4 w-px bg-[var(--border-subtle)]" />
 
           <button
             type="button"
@@ -758,7 +758,7 @@ export default function ArchitectureCanvas({
             <RotateCcw className="h-3.5 w-3.5" />
           </button>
 
-          <div className="mx-1 h-4 w-px bg-[#A4AAB5]/12" />
+          <div className="mx-1 h-4 w-px bg-[var(--border-subtle)]" />
 
           <button
             type="button"
@@ -806,17 +806,17 @@ export default function ArchitectureCanvas({
           fitToViewport()
         }
       >
-        <div className="pointer-events-none absolute left-4 top-4 z-30 rounded-lg border border-[#A4AAB5]/12 bg-[var(--background-2)]/88 px-2.5 py-1.5 backdrop-blur-xl">
-          <span className="font-[var(--font-geist-mono)] text-[8px] font-bold uppercase tracking-[0.16em] text-[#D6AD69]">
+        <div className="pointer-events-none absolute left-4 top-4 z-30 rounded-lg border border-[var(--border-subtle)] bg-[var(--background-2)]/88 px-2.5 py-1.5 backdrop-blur-xl">
+          <span className="font-[var(--font-geist-mono)] text-[8px] font-bold uppercase tracking-[0.16em] text-[var(--accent)]">
             Studio Canvas
           </span>
         </div>
 
         {selectedComponent && (
-          <div className="absolute left-4 top-12 z-30 flex max-w-[360px] items-center gap-2 rounded-lg border border-[#A4AAB5]/15 bg-[var(--background-2)]/95 px-3 py-1.5 backdrop-blur-xl">
-            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#D6AD69]" />
+          <div className="absolute left-4 top-12 z-30 flex max-w-[360px] items-center gap-2 rounded-lg border border-[var(--border-subtle)] bg-[var(--background-2)]/95 px-3 py-1.5 backdrop-blur-xl">
+            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--accent)]" />
 
-            <span className="font-[var(--font-geist-mono)] text-[9px] font-bold uppercase tracking-wider text-[#D6AD69]">
+            <span className="font-[var(--font-geist-mono)] text-[9px] font-bold uppercase tracking-wider text-[var(--accent)]">
               Selected
             </span>
 
@@ -854,7 +854,7 @@ export default function ArchitectureCanvas({
                 onClick={
                   handleCopy
                 }
-                className="flex items-center gap-2 rounded-lg bg-[#F0F1F3] px-3 py-2 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[#101216]"
+                className="flex items-center gap-2 rounded-lg bg-[var(--text-primary)] px-3 py-2 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[var(--on-accent)]"
               >
                 {copied ? (
                   <Check className="h-3.5 w-3.5" />
@@ -868,14 +868,14 @@ export default function ArchitectureCanvas({
               </button>
             </div>
 
-            <pre className="overflow-auto rounded-2xl border border-[#A4AAB5]/12 bg-[var(--background-2)] p-6 font-[var(--font-geist-mono)] text-[11px] leading-6 text-[var(--text-muted)]">
+            <pre className="overflow-auto rounded-2xl border border-[var(--border-subtle)] bg-[var(--background-2)] p-6 font-[var(--font-geist-mono)] text-[11px] leading-6 text-[var(--text-muted)]">
               {repairedChart}
             </pre>
           </div>
         )}
 
         {view === "diagram" && (
-          <div className="pointer-events-none absolute bottom-4 left-1/2 z-20 -translate-x-1/2 rounded-full border border-[#A4AAB5]/12 bg-[var(--background-2)]/90 px-3 py-1.5 font-[var(--font-geist-mono)] text-[8px] text-[var(--text-muted)]/60 backdrop-blur-xl">
+          <div className="pointer-events-none absolute bottom-4 left-1/2 z-20 -translate-x-1/2 rounded-full border border-[var(--border-subtle)] bg-[var(--background-2)]/90 px-3 py-1.5 font-[var(--font-geist-mono)] text-[8px] text-[var(--text-muted)]/60 backdrop-blur-xl">
             Drag to pan · Double-click to fit
           </div>
         )}
@@ -897,7 +897,7 @@ export default function ArchitectureCanvas({
                   onClick={
                     onRegenerate
                   }
-                  className="mt-5 rounded-lg bg-[#F0F1F3] px-4 py-2 font-[var(--font-space-grotesk)] text-xs font-bold text-[#101216]"
+                  className="mt-5 rounded-lg bg-[var(--text-primary)] px-4 py-2 font-[var(--font-space-grotesk)] text-xs font-bold text-[var(--on-accent)]"
                 >
                   Regenerate
                 </button>

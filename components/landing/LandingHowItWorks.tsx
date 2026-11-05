@@ -46,15 +46,15 @@ export default function LandingHowItWorks() {
   return (
     <section
       id="how-it-works"
-      className="min-h-[100dvh] bg-[#0E1116] px-6 py-28 md:px-12 lg:px-16"
+      className="min-h-[100dvh] bg-[var(--background)] px-6 py-28 md:px-12 lg:px-16"
     >
       <div className="mx-auto max-w-7xl">
-        <p className="font-sans text-xs font-semibold uppercase tracking-[0.18em] text-[#D6AD69]">
+        <p className="font-sans text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
           How it works
         </p>
 
         <h2
-          className="mt-4 font-display font-semibold tracking-[-0.03em] text-[#F2EFE8]"
+          className="mt-4 font-display font-semibold tracking-[-0.03em] text-[var(--text-primary)]"
           style={{ fontSize: "clamp(36px, 4vw, 56px)" }}
         >
           Three steps, no surprises.
@@ -72,18 +72,18 @@ export default function LandingHowItWorks() {
               }}
             >
               <p
-                className="font-display font-bold text-[#D6AD69]"
+                className="font-display font-bold text-[var(--accent)]"
                 style={{ fontSize: "56px", lineHeight: 1 }}
               >
                 {step.num}
               </p>
               <h3
-                className="mt-6 font-display font-semibold text-[#F2EFE8]"
+                className="mt-6 font-display font-semibold text-[var(--text-primary)]"
                 style={{ fontSize: "28px" }}
               >
                 {step.title}
               </h3>
-              <p className="mt-4 font-sans text-base leading-[1.65] text-[#8B949E]">
+              <p className="mt-4 font-sans text-base leading-[1.65] text-[var(--text-muted)]">
                 {step.desc}
               </p>
             </div>

@@ -63,10 +63,10 @@ function UmlContent() {
   return (
     <div className="mx-auto max-w-6xl p-6 lg:p-10 pt-8 sm:pt-12 pb-16 space-y-10">
       {/* Header */}
-      <div className="border-b border-[#D6AD69]/15 pb-6">
-        <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#D6AD69]/30 bg-[#D6AD69]/10 px-3.5 py-1 backdrop-blur-md">
-          <GitBranch className="h-3.5 w-3.5 text-[#D6AD69]" />
-          <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-[#D6AD69]">
+      <div className="border-b border-[var(--accent)]/15 pb-6">
+        <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-3.5 py-1 backdrop-blur-md">
+          <GitBranch className="h-3.5 w-3.5 text-[var(--accent)]" />
+          <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-[var(--accent)]">
             Standardized UML Synthesizer
           </span>
         </div>
@@ -89,20 +89,20 @@ function UmlContent() {
               onClick={() => { setType(t.id); setResult(null); }}
               className={`group relative overflow-hidden flex flex-col justify-between rounded-3xl border p-6 text-left transition-all duration-300 ${
                 active 
-                  ? "bg-gradient-to-b from-[#101216] to-[#101216] border-[#D6AD69] shadow-[0_0_35px_rgba(214, 173, 105,0.25)]" 
-                  : "bg-gradient-to-b from-[#101216]/90 to-[#101216] border-[#D6AD69]/15 hover:border-[#D6AD69]/35 hover:-translate-y-1"
+                  ? "bg-gradient-to-b from-[var(--background)] to-[var(--background)] border-[var(--accent)] shadow-[0_0_35px_rgba(var(--accent-rgb,214,173,105),0.25)]" 
+                  : "bg-gradient-to-b from-[var(--background)]/90 to-[var(--background)] border-[var(--accent)]/15 hover:border-[var(--accent)]/35 hover:-translate-y-1"
               }`}
             >
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(#D6AD69_1px,transparent_1px)] [background-size:20px_20px] opacity-[0.04]" />
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-[#D6AD69]/30 to-transparent" />
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-[var(--accent)]/30 to-transparent" />
               
               <div className="relative z-10">
                 <div className="mb-4 flex items-center justify-between">
-                  <div className={`flex h-11 w-11 items-center justify-center rounded-2xl border ${active ? "border-[#D6AD69] bg-[#D6AD69]/20 text-[#D6AD69]" : "border-[#D6AD69]/20 bg-[#D6AD69]/10 text-[var(--text-faint)]"} group-hover:scale-110 transition-transform`}>
+                  <div className={`flex h-11 w-11 items-center justify-center rounded-2xl border ${active ? "border-[var(--accent)] bg-[var(--accent)]/20 text-[var(--accent)]" : "border-[var(--accent)]/20 bg-[var(--accent)]/10 text-[var(--text-faint)]"} group-hover:scale-110 transition-transform`}>
                     <GitBranch className="h-5 w-5" />
                   </div>
                   {active && (
-                    <span className="flex items-center gap-1 font-mono text-[10px] font-bold text-[#D6AD69] uppercase bg-[#D6AD69]/10 border border-[#D6AD69]/30 px-2.5 py-0.5 rounded-full">
+                    <span className="flex items-center gap-1 font-mono text-[10px] font-bold text-[var(--accent)] uppercase bg-[var(--accent)]/10 border border-[var(--accent)]/30 px-2.5 py-0.5 rounded-full">
                       <CheckCircle2 className="h-3 w-3" /> Selected
                     </span>
                   )}
@@ -116,7 +116,7 @@ function UmlContent() {
                 </p>
               </div>
 
-              <div className="relative z-10 mt-6 pt-3 border-t border-[#D6AD69]/10 flex items-center justify-between text-xs font-bold text-[#D6AD69]">
+              <div className="relative z-10 mt-6 pt-3 border-t border-[var(--accent)]/10 flex items-center justify-between text-xs font-bold text-[var(--accent)]">
                 <span>Select Format</span>
                 <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
               </div>
@@ -126,12 +126,12 @@ function UmlContent() {
       </div>
 
       {/* Synthesis Control Box */}
-      <div className="relative overflow-hidden rounded-3xl border border-[#D6AD69]/20 bg-gradient-to-b from-[#101216] via-[#0C0E12] to-[#101216] p-8 shadow-2xl backdrop-blur-xl space-y-6">
+      <div className="relative overflow-hidden rounded-3xl border border-[var(--accent)]/20 bg-gradient-to-b from-[var(--background)] via-[var(--background-2)] to-[var(--background)] p-8 shadow-2xl backdrop-blur-xl space-y-6">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(#D6AD69_1px,transparent_1px)] [background-size:20px_20px] opacity-[0.05]" />
         
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#D6AD69]/20 border border-[#D6AD69]/30 text-[#D6AD69] shadow-[0_0_20px_rgba(214, 173, 105,0.3)]">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--accent)]/20 border border-[var(--accent)]/30 text-[var(--accent)] shadow-[0_0_20px_rgba(var(--accent-rgb,214,173,105),0.3)]">
               <Sparkles className="h-6 w-6" />
             </div>
             <div>
@@ -147,7 +147,7 @@ function UmlContent() {
               type="button"
               onClick={handleSynthesize}
               disabled={loading}
-              className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-[#D6AD69] via-[#D6AD69] to-[#A08050] px-6 py-3.5 text-xs font-bold text-[#101216] shadow-[0_0_30px_rgba(214, 173, 105,0.3)] transition-all hover:scale-[1.02] disabled:opacity-50"
+              className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-[var(--accent)] via-[var(--accent)] to-[#A08050] px-6 py-3.5 text-xs font-bold text-[var(--on-accent)] shadow-[0_0_30px_rgba(var(--accent-rgb,214,173,105),0.3)] transition-all hover:scale-[1.02] disabled:opacity-50"
             >
               {loading ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Wand2 className="h-4 w-4" />}
               <span>Synthesize {activeItem.label}</span>
@@ -156,9 +156,9 @@ function UmlContent() {
             <button
               type="button"
               onClick={openInStudio}
-              className="inline-flex items-center gap-2 rounded-2xl border border-[#D6AD69]/20 bg-[var(--background)] px-5 py-3.5 text-xs font-bold text-[var(--text-primary)] hover:border-[#D6AD69]/40 transition-colors"
+              className="inline-flex items-center gap-2 rounded-2xl border border-[var(--accent)]/20 bg-[var(--background)] px-5 py-3.5 text-xs font-bold text-[var(--text-primary)] hover:border-[var(--accent)]/40 transition-colors"
             >
-              <Layers className="h-4 w-4 text-[#D6AD69]" />
+              <Layers className="h-4 w-4 text-[var(--accent)]" />
               Open in Studio
             </button>
           </div>
@@ -171,7 +171,7 @@ function UmlContent() {
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             placeholder={`Customize prompt for ${activeItem.label} (e.g. User auth flow with JWT tokens, rate limiting and database lookup)...`}
-            className="w-full rounded-2xl border border-[#D6AD69]/20 bg-[var(--background-2)] px-5 py-3.5 text-xs font-medium text-[var(--text-primary)] placeholder-[#4A5060] outline-none focus:border-[#D6AD69]"
+            className="w-full rounded-2xl border border-[var(--accent)]/20 bg-[var(--background-2)] px-5 py-3.5 text-xs font-medium text-[var(--text-primary)] placeholder-[var(--text-faint)] outline-none focus:border-[var(--accent)]"
           />
         </div>
       </div>
@@ -185,13 +185,13 @@ function UmlContent() {
 
       {/* Live Canvas View */}
       {result && (
-        <div className="relative overflow-hidden rounded-3xl border border-[#D6AD69]/20 bg-[var(--background)] h-[600px] shadow-2xl">
-          <div className="flex items-center justify-between px-6 py-3 border-b border-[#D6AD69]/15 bg-[var(--background)]">
+        <div className="relative overflow-hidden rounded-3xl border border-[var(--accent)]/20 bg-[var(--background)] h-[600px] shadow-2xl">
+          <div className="flex items-center justify-between px-6 py-3 border-b border-[var(--accent)]/15 bg-[var(--background)]">
             <span className="text-xs font-bold text-[var(--text-primary)] flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-[#D6AD69]" />
+              <CheckCircle2 className="h-4 w-4 text-[var(--accent)]" />
               {result.title}  —  {DIAGRAM_TYPE_LABELS[result.diagramType]} Live Preview
             </span>
-            <span className="text-[10px] font-mono text-[#D6AD69] uppercase">Mermaid Engine Ready</span>
+            <span className="text-[10px] font-mono text-[var(--accent)] uppercase">Mermaid Engine Ready</span>
           </div>
 
           <div className="relative h-[calc(100%-45px)] overflow-hidden">

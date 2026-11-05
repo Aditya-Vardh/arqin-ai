@@ -29,7 +29,7 @@ export default function PageHeader({
     return (
       <>
         {title.slice(0, idx)}
-        <span className="text-[#D6AD69]">{titleHighlight}</span>
+        <span className="text-[var(--accent)]">{titleHighlight}</span>
         {title.slice(idx + titleHighlight.length)}
       </>
     );
@@ -39,9 +39,9 @@ export default function PageHeader({
     <div className="flex flex-col gap-4 border-b border-[var(--border)] pb-8 sm:flex-row sm:items-end sm:justify-between">
       <div className="min-w-0">
         {/* Eyebrow badge */}
-        <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#D6AD69]/30 bg-[#D6AD69]/10 px-3.5 py-1">
-          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#D6AD69]" aria-hidden="true" />
-          <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-[#D6AD69]">
+        <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-3.5 py-1">
+          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--accent)]" aria-hidden="true" />
+          <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-[var(--accent)]">
             {eyebrow}
           </span>
         </div>

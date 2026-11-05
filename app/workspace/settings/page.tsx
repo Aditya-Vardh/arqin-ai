@@ -71,7 +71,7 @@ export default function SettingsPage() {
             onClick={() => setSection(s)}
             className={`rounded-xl px-5 py-2.5 text-xs font-bold transition-all ${
               section === s
-                ? "bg-[var(--accent)] text-[var(--background)] shadow-[0_0_20px_rgba(214,173,105,0.3)]"
+                ? "bg-[var(--accent)] text-[var(--background)] shadow-[0_0_20px_rgba(var(--accent-rgb,214,173,105),0.3)]"
                 : "text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--accent)]/10"
             }`}
           >
@@ -100,7 +100,7 @@ export default function SettingsPage() {
                   onClick={() => setThemeMode(mode)}
                   className={`flex flex-col items-center justify-center gap-3 rounded-2xl border p-6 text-xs font-bold transition-all ${
                     theme === mode
-                      ? "border-[var(--accent)] bg-[var(--accent)]/10 text-[var(--accent)] shadow-[0_0_25px_rgba(214,173,105,0.2)]"
+                      ? "border-[var(--accent)] bg-[var(--accent)]/10 text-[var(--accent)] shadow-[0_0_25px_rgba(var(--accent-rgb,214,173,105),0.2)]"
                       : "border-[var(--border)] bg-[var(--background)] text-[var(--text-muted)] hover:border-[var(--accent)]/30 hover:text-[var(--text-primary)]"
                   }`}
                 >

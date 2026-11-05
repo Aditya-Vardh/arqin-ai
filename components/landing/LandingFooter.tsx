@@ -38,7 +38,7 @@ const FOOTER_LINKS = [
 export default function LandingFooter() {
   return (
     <footer
-      className="border-t bg-[#0E1116]"
+      className="border-t bg-[var(--background)]"
       style={{ borderColor: "rgba(242,239,232,0.08)" }}
     >
       <div className="mx-auto max-w-7xl px-6 md:px-12">
@@ -51,7 +51,7 @@ export default function LandingFooter() {
               className="inline-flex items-center gap-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D6AD69]"
             >
               <div className="flex h-9 w-9 items-center justify-center rounded-lg border"
-                style={{ borderColor: "rgba(214,173,105,0.30)", background: "#101216" }}>
+                style={{ borderColor: "rgba(var(--accent-rgb,214,173,105),0.30)", background: "#101216" }}>
                 <Image
                   src="/icon.svg"
                   alt="Arqin AI"
@@ -60,8 +60,8 @@ export default function LandingFooter() {
                 />
               </div>
               <div className="flex flex-col">
-                <span className="font-display text-[15px] font-bold leading-tight text-[#F2EFE8]">
-                  Arqin <span className="text-[#D6AD69]">AI</span>
+                <span className="font-display text-[15px] font-bold leading-tight text-[var(--text-primary)]">
+                  Arqin <span className="text-[var(--accent)]">AI</span>
                 </span>
                 <span
                   className="font-sans text-[10px] font-medium uppercase tracking-[0.12em]"
@@ -96,7 +96,7 @@ export default function LandingFooter() {
                         href={item.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="font-sans text-sm transition-colors hover:text-[#D6AD69] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#D6AD69]"
+                        className="font-sans text-sm transition-colors hover:text-[var(--accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#D6AD69]"
                         style={{ color: "#8B949E" }}
                       >
                         {item.label}
@@ -104,7 +104,7 @@ export default function LandingFooter() {
                     ) : (
                       <Link
                         href={item.href}
-                        className="font-sans text-sm transition-colors hover:text-[#D6AD69] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#D6AD69]"
+                        className="font-sans text-sm transition-colors hover:text-[var(--accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#D6AD69]"
                         style={{ color: "#8B949E" }}
                       >
                         {item.label}

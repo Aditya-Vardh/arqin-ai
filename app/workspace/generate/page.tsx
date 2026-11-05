@@ -659,9 +659,9 @@ function GenerateContent() {
         {!result ? (
           <div className="relative flex flex-1 items-center justify-center overflow-y-auto bg-[var(--background)] p-6">
             <div className="pointer-events-none absolute inset-0">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(214,173,105,0.07),transparent_38%)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(var(--accent-rgb,214,173,105),0.07),transparent_38%)]" />
 
-              <div className="absolute inset-0 bg-[linear-gradient(rgba(214,173,105,0.018)_1px,transparent_1px),linear-gradient(90deg,rgba(214,173,105,0.018)_1px,transparent_1px)] [background-size:48px_48px]" />
+              <div className="absolute inset-0 bg-[linear-gradient(rgba(var(--accent-rgb,214,173,105),0.018)_1px,transparent_1px),linear-gradient(90deg,rgba(var(--accent-rgb,214,173,105),0.018)_1px,transparent_1px)] [background-size:48px_48px]" />
             </div>
 
             <div className="relative z-10 w-full max-w-6xl space-y-6">
@@ -671,7 +671,7 @@ function GenerateContent() {
                   onClick={() =>
                     setShowJourney(true)
                   }
-                  className="inline-flex items-center gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-4 py-2.5 font-[var(--font-space-grotesk)] text-xs font-bold text-[#D6AD69] transition-all hover:bg-[var(--surface-elevated)]"
+                  className="inline-flex items-center gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-4 py-2.5 font-[var(--font-space-grotesk)] text-xs font-bold text-[var(--accent)] transition-all hover:bg-[var(--surface-elevated)]"
                 >
                   <Sparkles className="h-4 w-4" />
                   Launch Guided Journey
@@ -723,7 +723,7 @@ function GenerateContent() {
                   className="group flex min-w-0 items-center gap-2.5 text-left"
                 >
                   <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--surface)]">
-                    <Wand2 className="h-3.5 w-3.5 text-[#D6AD69]" />
+                    <Wand2 className="h-3.5 w-3.5 text-[var(--accent)]" />
                   </div>
 
                   <div className="min-w-0">
@@ -753,9 +753,9 @@ function GenerateContent() {
                         true,
                       )
                     }
-                    className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[var(--text-muted)] transition-all hover:border-[#D6AD69]/40 hover:bg-[var(--surface-elevated)] hover:text-[#D6AD69]"
+                    className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[var(--text-muted)] transition-all hover:border-[var(--accent)]/40 hover:bg-[var(--surface-elevated)] hover:text-[var(--accent)]"
                   >
-                    <Sparkles className="h-3.5 w-3.5 text-[#D6AD69]" />
+                    <Sparkles className="h-3.5 w-3.5 text-[var(--accent)]" />
                     Journey
                   </button>
 
@@ -764,9 +764,9 @@ function GenerateContent() {
                     onClick={
                       handleOptimize
                     }
-                    className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[var(--text-muted)] transition-all hover:border-[#D6AD69]/40 hover:bg-[var(--surface-elevated)] hover:text-[#D6AD69]"
+                    className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[var(--text-muted)] transition-all hover:border-[var(--accent)]/40 hover:bg-[var(--surface-elevated)] hover:text-[var(--accent)]"
                   >
-                    <Zap className="h-3.5 w-3.5 text-[#D6AD69]" />
+                    <Zap className="h-3.5 w-3.5 text-[var(--accent)]" />
                     Optimize
                   </button>
 
@@ -777,9 +777,9 @@ function GenerateContent() {
                         true,
                       )
                     }
-                    className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[var(--text-muted)] transition-all hover:border-[#D6AD69]/40 hover:bg-[var(--surface-elevated)] hover:text-[#D6AD69]"
+                    className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[var(--text-muted)] transition-all hover:border-[var(--accent)]/40 hover:bg-[var(--surface-elevated)] hover:text-[var(--accent)]"
                   >
-                    <Cpu className="h-3.5 w-3.5 text-[#D6AD69]" />
+                    <Cpu className="h-3.5 w-3.5 text-[var(--accent)]" />
                     Simulate
                   </button>
 
@@ -790,9 +790,9 @@ function GenerateContent() {
                         true,
                       )
                     }
-                    className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[var(--text-muted)] transition-all hover:border-[#D6AD69]/40 hover:bg-[var(--surface-elevated)] hover:text-[#D6AD69]"
+                    className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[var(--text-muted)] transition-all hover:border-[var(--accent)]/40 hover:bg-[var(--surface-elevated)] hover:text-[var(--accent)]"
                   >
-                    <Code2 className="h-3.5 w-3.5 text-[#D6AD69]" />
+                    <Code2 className="h-3.5 w-3.5 text-[var(--accent)]" />
                     Artifacts
                   </button>
 
@@ -802,7 +802,7 @@ function GenerateContent() {
                       generate()
                     }
                     disabled={loading}
-                    className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-[#D6AD69]/40 bg-[var(--surface-elevated)] px-3 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[#D6AD69] transition-all hover:border-[#D6AD69] hover:bg-[var(--surface-elevated)] disabled:opacity-50"
+                    className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-[var(--accent)]/40 bg-[var(--surface-elevated)] px-3 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[var(--accent)] transition-all hover:border-[var(--accent)] hover:bg-[var(--surface-elevated)] disabled:opacity-50"
                   >
                     <RefreshCw
                       className={
@@ -814,7 +814,7 @@ function GenerateContent() {
                     Regenerate
                   </button>
 
-                  <div className="mx-1 h-5 w-px bg-[#303640]" />
+                  <div className="mx-1 h-5 w-px bg-[var(--border)]" />
 
                   <button
                     type="button"
@@ -824,8 +824,8 @@ function GenerateContent() {
                       )
                     }
                     className={`inline-flex h-8 items-center gap-1.5 rounded-lg border px-3 font-[var(--font-space-grotesk)] text-[10px] font-bold transition-all ${showInspector
-                      ? "border-[var(--border)] bg-[var(--surface-elevated)] text-[#D6AD69]"
-                      : "border-[var(--border)] bg-[var(--surface)] text-[var(--text-faint)] hover:text-[#D6AD69]"
+                      ? "border-[var(--border)] bg-[var(--surface-elevated)] text-[var(--accent)]"
+                      : "border-[var(--border)] bg-[var(--surface)] text-[var(--text-faint)] hover:text-[var(--accent)]"
                       }`}
                   >
                     <PanelRight className="h-3.5 w-3.5" />
@@ -856,7 +856,7 @@ function GenerateContent() {
                         generate()
                       }
                       disabled={loading}
-                      className="h-10 shrink-0 rounded-xl bg-[#D6AD69] px-4 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[#101216] transition-all hover:bg-[#E0BC7A] disabled:cursor-not-allowed disabled:opacity-50"
+                      className="h-10 shrink-0 rounded-xl bg-[var(--accent)] px-4 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[var(--on-accent)] transition-all hover:bg-[var(--accent-hover)] disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       {loading
                         ? "Synthesizing..."
@@ -920,7 +920,7 @@ function GenerateContent() {
                           false,
                         )
                       }
-                      className="flex h-7 w-7 items-center justify-center rounded-lg text-[var(--text-faint)] transition-colors hover:bg-[var(--surface-elevated)] hover:text-[#D6AD69]"
+                      className="flex h-7 w-7 items-center justify-center rounded-lg text-[var(--text-faint)] transition-colors hover:bg-[var(--surface-elevated)] hover:text-[var(--accent)]"
                       aria-label="Close inspector"
                     >
                       <ChevronDown className="h-4 w-4 rotate-90" />
@@ -1025,7 +1025,7 @@ function GenerateContent() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-xl">
           <div className="w-full max-w-md space-y-4 rounded-3xl border border-[var(--border)] bg-[var(--background)] p-6 text-[var(--text-primary)] shadow-2xl">
             <div className="flex items-center gap-3">
-              <AlertTriangle className="h-6 w-6 shrink-0 text-[#D6AD69]" />
+              <AlertTriangle className="h-6 w-6 shrink-0 text-[var(--accent)]" />
 
               <h3 className="text-base font-bold">
                 {
@@ -1061,7 +1061,7 @@ function GenerateContent() {
                     pendingMutation.targetId,
                   )
                 }
-                className="rounded-xl bg-[#D6AD69] px-4 py-2 text-xs font-bold text-[#101216] transition-colors hover:bg-[#E0BC7A]"
+                className="rounded-xl bg-[var(--accent)] px-4 py-2 text-xs font-bold text-[var(--on-accent)] transition-colors hover:bg-[var(--accent-hover)]"
               >
                 Confirm & Apply
               </button>

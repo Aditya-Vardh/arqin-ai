@@ -159,7 +159,7 @@ export default function LineSidebar({ open, onClose }: Props) {
         } fixed inset-y-0 left-0 z-50 flex flex-col border-r border-[var(--border)] bg-[var(--background-2)]/[0.72] backdrop-blur-xl transition-all duration-300 lg:static`}
       >
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="absolute left-[-80px] top-[-80px] h-[220px] w-[220px] rounded-full bg-[#D6AD69]/[0.04] blur-[80px]" />
+          <div className="absolute left-[-80px] top-[-80px] h-[220px] w-[220px] rounded-full bg-[var(--accent)]/[0.04] blur-[80px]" />
           <div className="absolute inset-0 bg-[radial-gradient(rgba(48,54,64,0.55)_1px,transparent_1px)] bg-[size:28px_28px]" />
         </div>
 
@@ -169,7 +169,7 @@ export default function LineSidebar({ open, onClose }: Props) {
             className="flex min-w-0 items-center gap-3"
             onClick={onClose}
           >
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[#D6AD69]/30 bg-[var(--surface)] p-[1px] shadow-[0_0_18px_rgba(0,0,0,0.15)]">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[var(--accent)]/30 bg-[var(--surface)] p-[1px] shadow-[0_0_18px_rgba(0,0,0,0.15)]">
               <div className="flex h-full w-full items-center justify-center rounded-[11px] bg-[var(--background)]">
                 <Image
                   src="/icon.svg"

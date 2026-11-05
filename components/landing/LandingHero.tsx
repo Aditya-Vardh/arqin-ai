@@ -15,7 +15,7 @@ export default function LandingHero() {
     <>
       {/* ─── Hero section — fixed height, mosaic behind text ─── */}
       <section
-        className="relative overflow-hidden bg-[#0E1116]"
+        className="relative overflow-hidden bg-[var(--background)]"
         style={{ minHeight: "min(100dvh, 800px)", height: "100dvh" }}
       >
         {/*
@@ -57,24 +57,24 @@ export default function LandingHero() {
           <div className="max-w-[640px]">
             {/* Eyebrow */}
             <div
-              className="mb-5 inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#D6AD69]"
+              className="mb-5 inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--accent)]"
               style={{
-                background: "rgba(214,173,105,0.10)",
-                border: "1px solid rgba(214,173,105,0.25)",
+                background: "rgba(var(--accent-rgb,214,173,105),0.10)",
+                border: "1px solid rgba(var(--accent-rgb,214,173,105),0.25)",
               }}
             >
-              <span className="h-1.5 w-1.5 rounded-full bg-[#D6AD69] animate-pulse" aria-hidden="true" />
+              <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent)] animate-pulse" aria-hidden="true" />
               Architectural Intelligence Platform
             </div>
 
             {/* Headline */}
             <h1
-              className="font-display font-semibold leading-[1.05] tracking-[-0.02em] text-[#F2EFE8]"
+              className="font-display font-semibold leading-[1.05] tracking-[-0.02em] text-[var(--text-primary)]"
               style={{ fontSize: "clamp(40px, 5.5vw, 78px)" }}
             >
               Describe it,
               <br />
-              <span className="text-[#D6AD69]">Architecture it.</span>
+              <span className="text-[var(--accent)]">Architecture it.</span>
             </h1>
 
             {/* Description */}
@@ -91,7 +91,7 @@ export default function LandingHero() {
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link
                 href={primaryHref}
-                className="inline-flex items-center gap-2 rounded-md bg-[#D6AD69] px-6 py-3 font-sans text-[15px] font-semibold text-[#0E1116] transition-all hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D6AD69]"
+                className="inline-flex items-center gap-2 rounded-md bg-[var(--accent)] px-6 py-3 font-sans text-[15px] font-semibold text-[var(--background)] transition-all hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D6AD69]"
               >
                 {isSignedIn ? "Open Workspace" : "Start a project"}
                 <ArrowRight className="h-4 w-4" aria-hidden />
@@ -99,7 +99,7 @@ export default function LandingHero() {
 
               <Link
                 href={secondaryHref}
-                className="inline-flex items-center gap-2 rounded-md border border-[#F2EFE8]/20 px-6 py-3 font-sans text-[15px] font-medium text-[#F2EFE8] transition-colors hover:border-[#D6AD69]/50 hover:text-[#D6AD69] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D6AD69]"
+                className="inline-flex items-center gap-2 rounded-md border border-[var(--text-primary)]/20 px-6 py-3 font-sans text-[15px] font-medium text-[var(--text-primary)] transition-colors hover:border-[#D6AD69]/50 hover:text-[var(--accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#D6AD69]"
               >
                 See capabilities
               </Link>
@@ -124,12 +124,12 @@ export default function LandingHero() {
             ].map(({ num, label }) => (
               <div key={label} className="flex flex-col">
                 <span
-                  className="font-display font-bold leading-none tracking-[-0.03em] text-[#F2EFE8]"
+                  className="font-display font-bold leading-none tracking-[-0.03em] text-[var(--text-primary)]"
                   style={{ fontSize: "clamp(18px, 2vw, 26px)" }}
                 >
                   {num}
                 </span>
-                <span className="mt-1 font-sans text-[12px] text-[#8B949E]">
+                <span className="mt-1 font-sans text-[12px] text-[var(--text-muted)]">
                   {label}
                 </span>
               </div>

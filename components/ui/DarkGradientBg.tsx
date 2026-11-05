@@ -17,7 +17,7 @@ export function DarkGradientBg({
 }: DarkGradientBgProps) {
   return (
     <div
-      className={`relative overflow-hidden rounded-3xl border border-[#D6AD69]/15 bg-gradient-to-b from-[#101216]/90 via-[#0C0E12]/95 to-[#101216] p-6 sm:p-8 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(214,173,105,0.1)] transition-all duration-300 ${className}`}
+      className={`relative overflow-hidden rounded-3xl border border-[#D6AD69]/15 bg-gradient-to-b from-[var(--background)]/90 via-[var(--background-2)]/95 to-[var(--background)] p-6 sm:p-8 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(var(--accent-rgb,214,173,105),0.1)] transition-all duration-300 ${className}`}
     >
       {/* Subtle Dot Grid Pattern */}
       <div
@@ -34,7 +34,7 @@ export function DarkGradientBg({
       )}
 
       {/* Subtle Top Accent Border Highlight */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-[#D6AD69]/30 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-[var(--accent)]/30 to-transparent" />
 
       <div className="relative z-10">{children}</div>
     </div>

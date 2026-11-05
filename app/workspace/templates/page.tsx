@@ -207,13 +207,13 @@ export default function TemplatesPage() {
   return (
     <div className="mx-auto max-w-7xl space-y-10 px-6 pb-16 pt-8 sm:pt-12 lg:p-10">
       {/* Page Header */}
-      <div className="border-b border-[#D6AD69]/15 pb-8">
-        <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#D6AD69]/30 bg-[#D6AD69]/10 px-3.5 py-1 backdrop-blur-md">
+      <div className="border-b border-[var(--accent)]/15 pb-8">
+        <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-3.5 py-1 backdrop-blur-md">
           <span className="relative flex h-2 w-2">
-            <span className="pulse-dot-ping absolute inline-flex h-full w-full rounded-full bg-[#D6AD69]" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-[#D6AD69]" />
+            <span className="pulse-dot-ping absolute inline-flex h-full w-full rounded-full bg-[var(--accent)]" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--accent)]" />
           </span>
-          <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-[#D6AD69]">
+          <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-[var(--accent)]">
             Starter Architecture Library
           </span>
         </div>
@@ -231,7 +231,7 @@ export default function TemplatesPage() {
       {/* Category Filters */}
       <div className="overflow-x-auto pb-3">
         <div
-          className="flex min-w-max items-center gap-2 rounded-full border border-[#D6AD69]/20 bg-[#151515] p-2"
+          className="flex min-w-max items-center gap-2 rounded-full border border-[var(--accent)]/20 bg-[#151515] p-2"
           role="group"
           aria-label="Filter templates by category"
         >
@@ -250,13 +250,13 @@ export default function TemplatesPage() {
                   transition-all duration-200
                   focus-visible:outline-none
                   focus-visible:ring-2
-                  focus-visible:ring-[#D6AD69]
+                  focus-visible:ring-[var(--accent)]
                   focus-visible:ring-offset-2
                   focus-visible:ring-offset-[#151515]
                   ${
                     selected
-                      ? "border-[#D6AD69] bg-[#D6AD69] text-[#171717] shadow-[0_0_15px_rgba(214,173,105,0.15)]"
-                      : "border-[#454545] bg-[#202020] text-[#D1D5DB] hover:border-[#D6AD69]/60 hover:bg-[#29251F] hover:text-white"
+                      ? "border-[var(--accent)] bg-[var(--accent)] text-[#171717] shadow-[0_0_15px_rgba(var(--accent-rgb,214,173,105),0.15)]"
+                      : "border-[#454545] bg-[#202020] text-[#D1D5DB] hover:border-[var(--accent)]/60 hover:bg-[#29251F] hover:text-white"
                   }
                 `}
               >
@@ -286,7 +286,7 @@ export default function TemplatesPage() {
         />
       ) : (
         <div className="rounded-2xl border border-white/10 bg-[#151515] px-6 py-16 text-center">
-          <LayoutTemplate className="mx-auto mb-4 h-9 w-9 text-[#D6AD69]" />
+          <LayoutTemplate className="mx-auto mb-4 h-9 w-9 text-[var(--accent)]" />
           <h2 className="text-lg font-semibold text-[var(--text-primary)]">
             No templates found
           </h2>
@@ -296,7 +296,7 @@ export default function TemplatesPage() {
           <button
             type="button"
             onClick={() => setActive("All")}
-            className="mt-5 rounded-full bg-[#D6AD69] px-5 py-2 text-sm font-semibold text-[#171717] transition hover:bg-[#E5C184]"
+            className="mt-5 rounded-full bg-[var(--accent)] px-5 py-2 text-sm font-semibold text-[#171717] transition hover:bg-[#E5C184]"
           >
             View all templates
           </button>

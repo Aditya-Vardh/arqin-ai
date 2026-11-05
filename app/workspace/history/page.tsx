@@ -48,11 +48,11 @@ export default function HistoryPage() {
   return (
     <div className="relative min-h-full overflow-hidden bg-[var(--background)]">
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-[8%] top-[-180px] h-[480px] w-[480px] rounded-full bg-[#D6AD69]/[0.025] blur-[130px]" />
+        <div className="absolute left-[8%] top-[-180px] h-[480px] w-[480px] rounded-full bg-[var(--accent)]/[0.025] blur-[130px]" />
 
-        <div className="absolute right-[8%] top-[20%] h-[350px] w-[350px] rounded-full bg-[#D6AD69]/[0.018] blur-[120px]" />
+        <div className="absolute right-[8%] top-[20%] h-[350px] w-[350px] rounded-full bg-[var(--accent)]/[0.018] blur-[120px]" />
 
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(214, 173, 105,0.012)_1px,transparent_1px),linear-gradient(90deg,rgba(214, 173, 105,0.012)_1px,transparent_1px)] [background-size:48px_48px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(var(--accent-rgb,214,173,105),0.012)_1px,transparent_1px),linear-gradient(90deg,rgba(var(--accent-rgb,214,173,105),0.012)_1px,transparent_1px)] [background-size:48px_48px]" />
       </div>
 
       <div className="relative mx-auto max-w-6xl space-y-8 p-6 pb-16 pt-8 sm:p-10 sm:pt-12">
@@ -72,7 +72,7 @@ export default function HistoryPage() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search versions, prompts, or diagram types..."
-              className="w-full rounded-2xl border border-[var(--border)] bg-[var(--surface)] py-3.5 pl-11 pr-4 font-[var(--font-inter)] text-xs text-[var(--text-primary)] outline-none transition-all placeholder:text-[var(--text-faint)] focus:border-[#D6AD69]/40 focus:ring-1 focus:ring-[#D6AD69]/10"
+              className="w-full rounded-2xl border border-[var(--border)] bg-[var(--surface)] py-3.5 pl-11 pr-4 font-[var(--font-inter)] text-xs text-[var(--text-primary)] outline-none transition-all placeholder:text-[var(--text-faint)] focus:border-[var(--accent)]/40 focus:ring-1 focus:ring-[var(--accent)]/10"
             />
           </div>
 
@@ -83,7 +83,7 @@ export default function HistoryPage() {
                 type="button"
                 onClick={() => setFilter(value)}
                 className={`rounded-xl px-4 py-2 font-[var(--font-geist-mono)] text-[9px] font-bold uppercase tracking-wider transition-all ${filter === value
-                    ? "bg-[#D6AD69]/10 text-[#D6AD69]"
+                    ? "bg-[var(--accent)]/10 text-[var(--accent)]"
                     : "text-[var(--text-faint)] hover:text-[var(--text-muted)]"
                   }`}
               >
@@ -106,7 +106,7 @@ export default function HistoryPage() {
           </div>
 
           <div className="hidden items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 sm:flex">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#D6AD69] shadow-[0_0_8px_rgba(214, 173, 105,0.65)]" />
+            <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent)] shadow-[0_0_8px_rgba(var(--accent-rgb,214,173,105),0.65)]" />
 
             <span className="font-[var(--font-geist-mono)] text-[9px] font-bold uppercase tracking-wider text-[var(--text-faint)]">
               Version Tracking Active
@@ -115,12 +115,12 @@ export default function HistoryPage() {
         </div>
 
         <div className="relative">
-          <div className="absolute bottom-4 left-[18px] top-4 hidden w-px bg-gradient-to-b from-[#D6AD69]/30 via-[#303640] to-transparent sm:block" />
+          <div className="absolute bottom-4 left-[18px] top-4 hidden w-px bg-gradient-to-b from-[var(--accent)]/30 via-[var(--border)] to-transparent sm:block" />
 
           <div className="space-y-4">
             {filtered.length === 0 ? (
               <div className="rounded-[26px] border border-dashed border-[var(--border)] bg-[var(--background)]/80 p-12 text-center">
-                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-[#D6AD69]/15 bg-[#D6AD69]/[0.04] text-[#D6AD69]">
+                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-[var(--accent)]/15 bg-[var(--accent)]/[0.04] text-[var(--accent)]">
                   <History className="h-5 w-5" />
                 </div>
 
@@ -150,16 +150,16 @@ export default function HistoryPage() {
                     key={entry.id}
                     className="group relative sm:pl-12"
                   >
-                    <div className="absolute left-[11px] top-8 hidden h-4 w-4 items-center justify-center rounded-full border border-[#D6AD69]/30 bg-[var(--background)] sm:flex">
+                    <div className="absolute left-[11px] top-8 hidden h-4 w-4 items-center justify-center rounded-full border border-[var(--accent)]/30 bg-[var(--background)] sm:flex">
                       <span
                         className={`h-1.5 w-1.5 rounded-full ${isSuccess
-                            ? "bg-[#D6AD69] shadow-[0_0_8px_rgba(214, 173, 105,0.7)]"
+                            ? "bg-[var(--accent)] shadow-[0_0_8px_rgba(var(--accent-rgb,214,173,105),0.7)]"
                             : "bg-rose-400 shadow-[0_0_8px_rgba(251,113,133,0.4)]"
                           }`}
                       />
                     </div>
 
-                    <div className="relative overflow-hidden rounded-[24px] border border-[var(--border)] bg-gradient-to-b from-[#171A20] via-[#0C0E12] to-[#101216] p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)]/30 hover:shadow-lg active:scale-[0.98] sm:p-6">
+                    <div className="relative overflow-hidden rounded-[24px] border border-[var(--border)] bg-gradient-to-b from-[var(--surface)] via-[var(--background-2)] to-[var(--background)] p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)]/30 hover:shadow-lg active:scale-[0.98] sm:p-6">
                       <div className="pointer-events-none absolute inset-0 opacity-[0.025]">
                         <div className="absolute inset-0 bg-[radial-gradient(#D6AD69_1px,transparent_1px)] [background-size:22px_22px]" />
                       </div>
@@ -168,7 +168,7 @@ export default function HistoryPage() {
                         <div className="flex min-w-0 items-start gap-4">
                           <div
                             className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border font-[var(--font-geist-mono)] text-[10px] font-bold ${isSuccess
-                                ? "border-[#D6AD69]/20 bg-[#D6AD69]/[0.06] text-[#D6AD69]"
+                                ? "border-[var(--accent)]/20 bg-[var(--accent)]/[0.06] text-[var(--accent)]"
                                 : "border-rose-400/20 bg-rose-400/[0.05] text-rose-300"
                               }`}
                           >
@@ -181,7 +181,7 @@ export default function HistoryPage() {
                                 {entry.projectTitle}
                               </span>
 
-                              <span className="rounded-full border border-[#D6AD69]/20 bg-[#D6AD69]/[0.04] px-2.5 py-0.5 font-[var(--font-geist-mono)] text-[9px] font-bold uppercase tracking-wide text-[#D6AD69]">
+                              <span className="rounded-full border border-[var(--accent)]/20 bg-[var(--accent)]/[0.04] px-2.5 py-0.5 font-[var(--font-geist-mono)] text-[9px] font-bold uppercase tracking-wide text-[var(--accent)]">
                                 {DIAGRAM_TYPE_LABELS[entry.diagramType]}
                               </span>
                             </div>
@@ -191,7 +191,7 @@ export default function HistoryPage() {
                             </p>
 
                             <div className="flex items-center gap-2">
-                              <span className="h-1 w-1 rounded-full bg-[#4A5060]" />
+                              <span className="h-1 w-1 rounded-full bg-[var(--text-faint)]" />
 
                               <p className="font-[var(--font-geist-mono)] text-[9px] text-[var(--text-faint)]">
                                 {new Date(entry.createdAt).toLocaleString()}
@@ -207,7 +207,7 @@ export default function HistoryPage() {
                               onClick={() =>
                                 store?.setActiveProjectId(entry.projectId)
                               }
-                              className="inline-flex items-center gap-2 rounded-xl border border-[#D6AD69]/20 bg-[#D6AD69]/[0.05] px-4 py-2.5 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[#D6AD69] transition-all hover:bg-[var(--accent)]/10 hover:border-[var(--accent)]/40 hover:border-[#D6AD69]/45 hover:bg-[#D6AD69] hover:text-[#101216]"
+                              className="inline-flex items-center gap-2 rounded-xl border border-[var(--accent)]/20 bg-[var(--accent)]/[0.05] px-4 py-2.5 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[var(--accent)] transition-all hover:bg-[var(--accent)]/10 hover:border-[var(--accent)]/40 hover:border-[var(--accent)]/45 hover:bg-[var(--accent)] hover:text-[var(--on-accent)]"
                             >
                               <Play className="h-3.5 w-3.5 fill-current" />
                               Open Version

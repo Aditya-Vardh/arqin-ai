@@ -23,9 +23,9 @@ export default function WorkspaceHeader({
   onFullscreen,
 }: Props) {
   return (
-    <header className="z-20 flex h-14 shrink-0 items-center justify-between border-b border-[#A4AAB5]/10 bg-[var(--background-2)]/95 px-4 backdrop-blur-2xl sm:px-6">
+    <header className="z-20 flex h-14 shrink-0 items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--background-2)]/95 px-4 backdrop-blur-2xl sm:px-6">
       <div className="flex min-w-0 items-center gap-3">
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-[#D6AD69]/30 bg-[var(--surface-elevated)] text-[#D6AD69] shadow-[0_0_18px_rgba(214,173,105,0.12)]">
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-[var(--accent)]/30 bg-[var(--surface-elevated)] text-[var(--accent)] shadow-[0_0_18px_rgba(var(--accent-rgb,214,173,105),0.12)]">
           <Layers className="h-4 w-4" />
         </div>
 
@@ -33,20 +33,20 @@ export default function WorkspaceHeader({
           type="text"
           value={title}
           onChange={(e) => onTitleChange(e.target.value)}
-          className="min-w-0 max-w-[220px] rounded-xl border border-transparent bg-transparent px-2.5 py-1 text-sm font-bold tracking-tight text-[var(--text-primary)] outline-none transition-all hover:border-[#4A5060] focus:border-[#D6AD69]/50 focus:bg-[var(--surface)] sm:max-w-[280px]"
+          className="min-w-0 max-w-[220px] rounded-xl border border-transparent bg-transparent px-2.5 py-1 text-sm font-bold tracking-tight text-[var(--text-primary)] outline-none transition-all hover:border-[var(--text-faint)] focus:border-[var(--accent)]/50 focus:bg-[var(--surface)] sm:max-w-[280px]"
           aria-label="Project name"
         />
 
         {saved && (
-          <span className="hidden items-center gap-1 rounded-full border border-[#D6AD69]/30 bg-[#D6AD69]/10 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wide text-[#D6AD69] sm:flex">
+          <span className="hidden items-center gap-1 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wide text-[var(--accent)] sm:flex">
             <Check className="h-3 w-3" />
             Auto-Saved
           </span>
         )}
       </div>
 
-      <div className="hidden items-center gap-2 rounded-full border border-[#A4AAB5]/12 bg-[var(--surface)] px-4 py-1.5 md:flex">
-        <Sparkles className="h-3.5 w-3.5 text-[#D6AD69]" />
+      <div className="hidden items-center gap-2 rounded-full border border-[var(--border-subtle)] bg-[var(--surface)] px-4 py-1.5 md:flex">
+        <Sparkles className="h-3.5 w-3.5 text-[var(--accent)]" />
 
         <span className="text-xs font-semibold text-[var(--text-muted)]">
           Arqin AI
@@ -55,7 +55,7 @@ export default function WorkspaceHeader({
       </div>
 
       <div className="flex items-center gap-2">
-        <span className="hidden rounded-full border border-[#D6AD69]/30 bg-[#D6AD69]/10 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-wide text-[#D6AD69] sm:inline-flex">
+        <span className="hidden rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-wide text-[var(--accent)] sm:inline-flex">
           {DIAGRAM_TYPE_LABELS[diagramType]}
         </span>
 
@@ -63,9 +63,9 @@ export default function WorkspaceHeader({
           <button
             type="button"
             onClick={onExport}
-            className="inline-flex items-center gap-1.5 rounded-xl border border-[#4A5060] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--text-muted)] transition-all hover:border-[#D6AD69]/40 hover:bg-[var(--surface-elevated)] hover:text-[var(--text-primary)]"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--text-faint)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--text-muted)] transition-all hover:border-[var(--accent)]/40 hover:bg-[var(--surface-elevated)] hover:text-[var(--text-primary)]"
           >
-            <Download className="h-3.5 w-3.5 text-[#D6AD69]" />
+            <Download className="h-3.5 w-3.5 text-[var(--accent)]" />
             <span className="hidden sm:inline">Export MD</span>
           </button>
         )}
@@ -74,7 +74,7 @@ export default function WorkspaceHeader({
           <button
             type="button"
             onClick={onFullscreen}
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#4A5060] bg-[var(--surface)] text-[var(--text-muted)] transition-all hover:border-[#D6AD69]/40 hover:bg-[var(--surface-elevated)] hover:text-[var(--text-primary)]"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--text-faint)] bg-[var(--surface)] text-[var(--text-muted)] transition-all hover:border-[var(--accent)]/40 hover:bg-[var(--surface-elevated)] hover:text-[var(--text-primary)]"
             aria-label="Fullscreen"
           >
             <Maximize2 className="h-3.5 w-3.5" />

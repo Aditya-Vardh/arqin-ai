@@ -132,24 +132,24 @@ export default function ProjectsPage() {
   return (
     <div className="relative min-h-full overflow-hidden bg-[var(--background)]">
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-[10%] top-[-180px] h-[500px] w-[500px] rounded-full bg-[#D6AD69]/[0.025] blur-[130px]" />
+        <div className="absolute left-[10%] top-[-180px] h-[500px] w-[500px] rounded-full bg-[var(--accent)]/[0.025] blur-[130px]" />
 
-        <div className="absolute right-[5%] top-[10%] h-[350px] w-[350px] rounded-full bg-[#D6AD69]/[0.018] blur-[120px]" />
+        <div className="absolute right-[5%] top-[10%] h-[350px] w-[350px] rounded-full bg-[var(--accent)]/[0.018] blur-[120px]" />
 
-        <div className="absolute left-[10%] top-[-180px] h-[500px] w-[500px] rounded-full bg-[#D6AD69]/[0.025] blur-[130px]" />
+        <div className="absolute left-[10%] top-[-180px] h-[500px] w-[500px] rounded-full bg-[var(--accent)]/[0.025] blur-[130px]" />
 
-        <div className="absolute right-[5%] top-[10%] h-[350px] w-[350px] rounded-full bg-[#D6AD69]/[0.018] blur-[120px]" />
+        <div className="absolute right-[5%] top-[10%] h-[350px] w-[350px] rounded-full bg-[var(--accent)]/[0.018] blur-[120px]" />
 
         <div className="absolute inset-0 bg-[linear-gradient(rgba(48,54,64,0.5)_1px,transparent_1px),linear-gradient(90deg,rgba(48,54,64,0.5)_1px,transparent_1px)] [background-size:48px_48px]" />
       </div>
 
       <div className="relative mx-auto max-w-7xl space-y-10 p-6 pb-16 pt-8 sm:p-10 sm:pt-12">
-        <div className="flex flex-col gap-7 border-b border-[#A4AAB5]/12 pb-8 lg:flex-row lg:items-end lg:justify-between">
+        <div className="flex flex-col gap-7 border-b border-[var(--border-subtle)] pb-8 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#D6AD69]/30 bg-[#D6AD69]/10 px-3.5 py-1 backdrop-blur-md">
-              <FolderOpen className="h-3.5 w-3.5 text-[#D6AD69]" />
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-3.5 py-1 backdrop-blur-md">
+              <FolderOpen className="h-3.5 w-3.5 text-[var(--accent)]" />
 
-              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-[#D6AD69]">
+              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--accent)]">
                 Project Repository &amp; Specs
               </span>
             </div>
@@ -157,7 +157,7 @@ export default function ProjectsPage() {
             <h1 className="max-w-3xl text-4xl font-bold tracking-[-0.04em] text-[var(--text-primary)] sm:text-5xl lg:text-[56px] lg:leading-[1.02]">
               Software Architecture
               <br />
-              <span className="text-[#D6AD69]">Projects</span>
+              <span className="text-[var(--accent)]">Projects</span>
             </h1>
 
             <p className="mt-4 max-w-2xl text-sm leading-7 text-[var(--text-muted)] sm:text-base">
@@ -168,9 +168,9 @@ export default function ProjectsPage() {
 
           <Link
             href="/workspace/generate?new=1"
-            className="group inline-flex shrink-0 items-center justify-center gap-2.5 rounded-2xl border border-[#D6AD69]/30 bg-[#F0F1F3] px-5 py-3.5 text-xs font-bold text-[#101216] shadow-[0_0_28px_rgba(0,0,0,0.15)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E0BC7A]"
+            className="group inline-flex shrink-0 items-center justify-center gap-2.5 rounded-2xl border border-[var(--accent)]/30 bg-[var(--text-primary)] px-5 py-3.5 text-xs font-bold text-[var(--on-accent)] shadow-[0_0_28px_rgba(0,0,0,0.15)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[var(--accent-hover)]"
           >
-            <Plus className="h-4 w-4 text-[#D6AD69]" />
+            <Plus className="h-4 w-4 text-[var(--accent)]" />
             Create New Project
           </Link>
         </div>
@@ -187,18 +187,18 @@ export default function ProjectsPage() {
             </p>
           </div>
 
-          <div className="hidden items-center gap-2 rounded-full border border-[#A4AAB5]/12 bg-[var(--surface)] px-3 py-1.5 sm:flex">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#D6AD69]" />
+          <div className="hidden items-center gap-2 rounded-full border border-[var(--border-subtle)] bg-[var(--surface)] px-3 py-1.5 sm:flex">
+            <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
 
-            <span className="font-mono text-[9px] font-bold uppercase tracking-wider text-[#D6AD69]">
+            <span className="font-mono text-[9px] font-bold uppercase tracking-wider text-[var(--accent)]">
               Local Repository
             </span>
           </div>
         </div>
 
         {projects.length === 0 ? (
-          <div className="flex min-h-[420px] flex-col items-center justify-center rounded-[28px] border border-dashed border-[#4A5060] bg-[var(--surface)]/80 p-10 text-center">
-            <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl border border-[#D6AD69]/30 bg-[#D6AD69]/10 text-[#D6AD69]">
+          <div className="flex min-h-[420px] flex-col items-center justify-center rounded-[28px] border border-dashed border-[var(--text-faint)] bg-[var(--surface)]/80 p-10 text-center">
+            <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl border border-[var(--accent)]/30 bg-[var(--accent)]/10 text-[var(--accent)]">
               <FolderOpen className="h-7 w-7" />
             </div>
 
@@ -213,9 +213,9 @@ export default function ProjectsPage() {
 
             <Link
               href="/workspace/generate?new=1"
-              className="mt-7 inline-flex items-center gap-2 rounded-xl bg-[#F0F1F3] px-5 py-3 text-xs font-bold text-[#101216] transition-all hover:bg-[#E0BC7A]"
+              className="mt-7 inline-flex items-center gap-2 rounded-xl bg-[var(--text-primary)] px-5 py-3 text-xs font-bold text-[var(--on-accent)] transition-all hover:bg-[var(--accent-hover)]"
             >
-              <Plus className="h-4 w-4 text-[#D6AD69]" />
+              <Plus className="h-4 w-4 text-[var(--accent)]" />
               Launch Studio Canvas
             </Link>
           </div>
@@ -229,7 +229,7 @@ export default function ProjectsPage() {
               return (
                 <div
                   key={project.id}
-                  className="group relative flex min-h-[310px] flex-col justify-between overflow-hidden rounded-[24px] border border-[#A4AAB5]/12 bg-[var(--surface)] p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)]/30 hover:shadow-lg active:scale-[0.98]"
+                  className="group relative flex min-h-[310px] flex-col justify-between overflow-hidden rounded-[24px] border border-[var(--border-subtle)] bg-[var(--surface)] p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)]/30 hover:shadow-lg active:scale-[0.98]"
                 >
                   <div className="pointer-events-none absolute inset-0 opacity-20">
                     <div className="absolute inset-0 bg-[radial-gradient(rgba(48,54,64,0.6)_1px,transparent_1px)] [background-size:22px_22px]" />
@@ -237,7 +237,7 @@ export default function ProjectsPage() {
 
                   <div className="relative z-10">
                     <div className="mb-5 flex items-center justify-between gap-3">
-                      <span className="rounded-full border border-[#D6AD69]/30 bg-[#D6AD69]/10 px-2.5 py-1 font-mono text-[9px] font-bold uppercase tracking-wide text-[#D6AD69]">
+                      <span className="rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-2.5 py-1 font-mono text-[9px] font-bold uppercase tracking-wide text-[var(--accent)]">
                         {DIAGRAM_TYPE_LABELS[project.diagramType]}
                       </span>
 
@@ -254,14 +254,14 @@ export default function ProjectsPage() {
                         <input
                           value={editTitle}
                           onChange={(e) => setEditTitle(e.target.value)}
-                          className="min-w-0 flex-1 rounded-xl border border-[#D6AD69]/40 bg-[var(--background)] px-3 py-2 text-xs text-[var(--text-primary)] outline-none focus:border-[#D6AD69]"
+                          className="min-w-0 flex-1 rounded-xl border border-[var(--accent)]/40 bg-[var(--background)] px-3 py-2 text-xs text-[var(--text-primary)] outline-none focus:border-[var(--accent)]"
                           autoFocus
                         />
 
                         <button
                           type="button"
                           onClick={() => saveRename(project.id)}
-                          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#D6AD69] text-[#101216]"
+                          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[var(--accent)] text-[var(--on-accent)]"
                         >
                           <Check className="h-4 w-4" />
                         </button>
@@ -280,7 +280,7 @@ export default function ProjectsPage() {
                         onClick={() => store?.setActiveProjectId(project.id)}
                         className="block"
                       >
-                        <h3 className="truncate font-[var(--font-space-grotesk)] text-lg font-bold tracking-tight text-[var(--text-primary)] transition-colors group-hover:text-[#D6AD69]">
+                        <h3 className="truncate font-[var(--font-space-grotesk)] text-lg font-bold tracking-tight text-[var(--text-primary)] transition-colors group-hover:text-[var(--accent)]">
                           {project.title}
                         </h3>
 
@@ -292,10 +292,10 @@ export default function ProjectsPage() {
                     )}
 
                     {health && (
-                      <div className="mt-5 flex w-fit items-center gap-2 rounded-xl border border-[#D6AD69]/15 bg-[#D6AD69]/[0.05] px-3 py-1.5">
-                        <Sparkles className="h-3.5 w-3.5 text-[#D6AD69]" />
+                      <div className="mt-5 flex w-fit items-center gap-2 rounded-xl border border-[var(--accent)]/15 bg-[var(--accent)]/[0.05] px-3 py-1.5">
+                        <Sparkles className="h-3.5 w-3.5 text-[var(--accent)]" />
 
-                        <span className="font-[var(--font-geist-mono)] text-[10px] font-bold text-[#D6AD69]">
+                        <span className="font-[var(--font-geist-mono)] text-[10px] font-bold text-[var(--accent)]">
                           Health {health.health}/100
                         </span>
 
@@ -313,7 +313,7 @@ export default function ProjectsPage() {
                       <Link
                         href={`/workspace/generate?project=${project.id}`}
                         onClick={() => store?.setActiveProjectId(project.id)}
-                        className="flex items-center gap-1 font-[var(--font-space-grotesk)] text-[11px] font-bold text-[#D6AD69] transition-colors hover:text-[#E0BC7A]"
+                        className="flex items-center gap-1 font-[var(--font-space-grotesk)] text-[11px] font-bold text-[var(--accent)] transition-colors hover:text-[var(--accent-hover)]"
                       >
                         Open Canvas
                         <span className="transition-transform group-hover:translate-x-0.5">
@@ -325,7 +325,7 @@ export default function ProjectsPage() {
                         <button
                           type="button"
                           onClick={() => setPreviewProject(project)}
-                          className="inline-flex items-center gap-1 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2 py-1 font-[var(--font-inter)] text-[10px] font-semibold text-[var(--text-muted)] transition-all hover:border-[#D6AD69]/30 hover:text-[#D6AD69]"
+                          className="inline-flex items-center gap-1 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2 py-1 font-[var(--font-inter)] text-[10px] font-semibold text-[var(--text-muted)] transition-all hover:border-[var(--accent)]/30 hover:text-[var(--accent)]"
                         >
                           <Eye className="h-3 w-3" />
                           Quick View
@@ -342,7 +342,7 @@ export default function ProjectsPage() {
                             menuOpen === project.id ? null : project.id,
                           );
                         }}
-                        className="flex h-8 w-8 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-faint)] transition-all hover:border-[#D6AD69]/25 hover:text-[var(--text-primary)]"
+                        className="flex h-8 w-8 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-faint)] transition-all hover:border-[var(--accent)]/25 hover:text-[var(--text-primary)]"
                         aria-label="Project actions"
                       >
                         <MoreHorizontal className="h-4 w-4" />
@@ -355,7 +355,7 @@ export default function ProjectsPage() {
                             onClick={() => startRename(project)}
                             className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 font-[var(--font-inter)] text-[var(--text-muted)] transition-colors hover:bg-[var(--surface-elevated)] hover:text-[var(--text-primary)]"
                           >
-                            <Edit3 className="h-3.5 w-3.5 text-[#D6AD69]" />
+                            <Edit3 className="h-3.5 w-3.5 text-[var(--accent)]" />
                             Rename
                           </button>
 
@@ -364,7 +364,7 @@ export default function ProjectsPage() {
                             onClick={() => handleDuplicate(project.id)}
                             className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 font-[var(--font-inter)] text-[var(--text-muted)] transition-colors hover:bg-[var(--surface-elevated)] hover:text-[var(--text-primary)]"
                           >
-                            <Copy className="h-3.5 w-3.5 text-[#D6AD69]" />
+                            <Copy className="h-3.5 w-3.5 text-[var(--accent)]" />
                             Duplicate
                           </button>
 
@@ -374,7 +374,7 @@ export default function ProjectsPage() {
                               onClick={() => handleExport(project)}
                               className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 font-[var(--font-inter)] text-[var(--text-muted)] transition-colors hover:bg-[var(--surface-elevated)] hover:text-[var(--text-primary)]"
                             >
-                              <Download className="h-3.5 w-3.5 text-[#D6AD69]" />
+                              <Download className="h-3.5 w-3.5 text-[var(--accent)]" />
                               Export MD
                             </button>
                           )}
@@ -405,7 +405,7 @@ export default function ProjectsPage() {
           <div className="relative flex h-[85vh] w-full max-w-6xl flex-col overflow-hidden rounded-[28px] border border-[var(--border)] bg-[var(--background)] shadow-[0_30px_100px_rgba(0,0,0,0.8)]">
             <div className="flex items-center justify-between border-b border-[var(--border)] bg-[var(--surface)]/95 px-5 py-4 backdrop-blur-xl sm:px-6">
               <div className="flex min-w-0 items-center gap-3">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[#D6AD69]/20 bg-[#D6AD69]/[0.05] text-[#D6AD69]">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[var(--accent)]/20 bg-[var(--accent)]/[0.05] text-[var(--accent)]">
                   <Layers className="h-4 w-4" />
                 </div>
 
@@ -414,7 +414,7 @@ export default function ProjectsPage() {
                     {previewProject.title}
                   </h2>
 
-                  <p className="font-[var(--font-geist-mono)] text-[9px] uppercase tracking-wider text-[#D6AD69]">
+                  <p className="font-[var(--font-geist-mono)] text-[9px] uppercase tracking-wider text-[var(--accent)]">
                     {DIAGRAM_TYPE_LABELS[previewProject.diagramType]} Spec
                   </p>
                 </div>
@@ -427,7 +427,7 @@ export default function ProjectsPage() {
                     store?.setActiveProjectId(previewProject.id);
                     setPreviewProject(null);
                   }}
-                  className="hidden items-center gap-1.5 rounded-xl bg-[#D6AD69] px-4 py-2.5 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[#101216] transition-all hover:bg-[#E0BC7A] sm:inline-flex"
+                  className="hidden items-center gap-1.5 rounded-xl bg-[var(--accent)] px-4 py-2.5 font-[var(--font-space-grotesk)] text-[10px] font-bold text-[var(--on-accent)] transition-all hover:bg-[var(--accent-hover)] sm:inline-flex"
                 >
                   <Sparkles className="h-3.5 w-3.5" />
                   Edit in Studio
@@ -436,7 +436,7 @@ export default function ProjectsPage() {
                 <button
                   type="button"
                   onClick={() => setPreviewProject(null)}
-                  className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-faint)] transition-all hover:border-[#D6AD69]/25 hover:text-[var(--text-primary)]"
+                  className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-faint)] transition-all hover:border-[var(--accent)]/25 hover:text-[var(--text-primary)]"
                   aria-label="Close modal"
                 >
                   <X className="h-5 w-5" />

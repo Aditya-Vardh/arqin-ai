@@ -41,7 +41,7 @@ export default function LandingHeader() {
         >
           <div
             className="flex h-8 w-8 items-center justify-center rounded-lg"
-            style={{ border: "1px solid rgba(214,173,105,0.30)", background: "#171A20" }}
+            style={{ border: "1px solid rgba(var(--accent-rgb,214,173,105),0.30)", background: "#171A20" }}
           >
             <Image src="/icon.svg" alt="Arqin AI" width={18} height={18} />
           </div>

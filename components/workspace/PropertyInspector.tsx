@@ -133,7 +133,7 @@ function ScoreRing({ score }: { score: number }) {
           cy="56"
           r={radius}
           fill="none"
-          stroke="#D6AD69"
+          stroke="var(--accent)"
           strokeWidth="7"
           strokeLinecap="round"
           strokeDasharray={circumference}
@@ -168,14 +168,14 @@ function Metric({
         <span className="text-[10px] text-[var(--text-muted)]">
           {label}
         </span>
-        <span className="font-mono text-[10px] font-bold text-[#D6AD69]">
+        <span className="font-mono text-[10px] font-bold text-[var(--accent)]">
           {safeValue}%
         </span>
       </div>
 
       <div className="h-1 overflow-hidden rounded-full bg-[var(--background)]">
         <div
-          className="h-full rounded-full bg-[#D6AD69] transition-[width] duration-700 ease-out"
+          className="h-full rounded-full bg-[var(--accent)] transition-[width] duration-700 ease-out"
           style={{ width: `${safeValue}%` }}
         />
       </div>
@@ -200,12 +200,12 @@ function FindingCard({
     <button
       type="button"
       onClick={onClick}
-      className="group w-full rounded-2xl border border-[#A4AAB5]/12 bg-[var(--surface)] p-4 text-left transition-all duration-200 hover:border-[#D6AD69]/40 hover:bg-[var(--surface-elevated)]"
+      className="group w-full rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface)] p-4 text-left transition-all duration-200 hover:border-[var(--accent)]/40 hover:bg-[var(--surface-elevated)]"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex min-w-0 items-start gap-2.5">
-          <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-[#D6AD69]/30 bg-[var(--surface-elevated)]">
-            <CircleAlert className="h-3.5 w-3.5 text-[#D6AD69]" />
+          <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-[var(--accent)]/30 bg-[var(--surface-elevated)]">
+            <CircleAlert className="h-3.5 w-3.5 text-[var(--accent)]" />
           </span>
           <span className="text-[11px] font-bold leading-snug text-[var(--text-primary)]">
             {title}
@@ -220,7 +220,7 @@ function FindingCard({
               ? "border-amber-500/20 bg-amber-500/10 text-amber-400"
               : severity === "LOW"
               ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-400"
-              : "border-[#D6AD69]/30 bg-[#D6AD69]/10 text-[#D6AD69]"
+              : "border-[var(--accent)]/30 bg-[var(--accent)]/10 text-[var(--accent)]"
           }`}>
             {severity}
           </span>
@@ -231,8 +231,8 @@ function FindingCard({
         {description}
       </p>
 
-      <div className="mt-3 flex items-start gap-2 border-t border-[#A4AAB5]/10 pt-3">
-        <Sparkles className="mt-0.5 h-3 w-3 shrink-0 text-[#D6AD69]" />
+      <div className="mt-3 flex items-start gap-2 border-t border-[var(--border-subtle)] pt-3">
+        <Sparkles className="mt-0.5 h-3 w-3 shrink-0 text-[var(--accent)]" />
         <span className="text-[9px] leading-relaxed text-[var(--text-muted)]">
           {recommendation}
         </span>
@@ -266,11 +266,11 @@ export default function PropertyInspector({
         className={`flex h-full w-full flex-col bg-[var(--background)] ${className}`}
       >
         <div className="flex h-full flex-col items-center justify-center px-7 text-center">
-          <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-[#A4AAB5]/12 bg-[var(--surface)]">
-            <Boxes className="h-6 w-6 text-[#D6AD69]" />
+          <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface)]">
+            <Boxes className="h-6 w-6 text-[var(--accent)]" />
           </div>
 
-          <p className="font-[var(--font-space-grotesk)] text-[9px] font-bold uppercase tracking-[0.18em] text-[#D6AD69]">
+          <p className="font-[var(--font-space-grotesk)] text-[9px] font-bold uppercase tracking-[0.18em] text-[var(--accent)]">
             Arqin Intelligence
           </p>
 
@@ -317,16 +317,16 @@ export default function PropertyInspector({
     <aside
       className={`flex h-full w-full min-w-0 flex-col overflow-hidden bg-[var(--background)] text-[var(--text-primary)] ${className}`}
     >
-      <div className="shrink-0 border-b border-[#A4AAB5]/12 bg-[var(--background)]">
+      <div className="shrink-0 border-b border-[var(--border-subtle)] bg-[var(--background)]">
         <div className="flex min-h-[82px] items-center justify-between gap-3 px-4">
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[#A4AAB5]/12 bg-[var(--surface)]">
-                <Network className="h-3.5 w-3.5 text-[#D6AD69]" />
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[var(--border-subtle)] bg-[var(--surface)]">
+                <Network className="h-3.5 w-3.5 text-[var(--accent)]" />
               </span>
 
               <div className="min-w-0">
-                <p className="font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.2em] text-[#D6AD69]">
+                <p className="font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.2em] text-[var(--accent)]">
                   Intelligence
                 </p>
 
@@ -346,9 +346,9 @@ export default function PropertyInspector({
             onClick={() =>
               setMobileOpen(!mobileOpen)
             }
-            className="flex h-8 shrink-0 items-center gap-2 rounded-xl border border-[#A4AAB5]/15 bg-[var(--surface)] px-2.5 font-[var(--font-space-grotesk)] text-[9px] font-bold text-[var(--text-primary)] transition-colors hover:border-[#D6AD69]"
+            className="flex h-8 shrink-0 items-center gap-2 rounded-xl border border-[var(--border-subtle)] bg-[var(--surface)] px-2.5 font-[var(--font-space-grotesk)] text-[9px] font-bold text-[var(--text-primary)] transition-colors hover:border-[var(--accent)]"
           >
-            <activeTab.icon className="h-3.5 w-3.5 text-[#D6AD69]" />
+            <activeTab.icon className="h-3.5 w-3.5 text-[var(--accent)]" />
             <span className="hidden sm:inline">
               {activeTab.short}
             </span>
@@ -364,7 +364,7 @@ export default function PropertyInspector({
 
       <div className="flex min-h-0 flex-1 overflow-hidden">
         <nav
-          className={`flex w-[48px] shrink-0 flex-col items-center gap-1 border-r border-[#A4AAB5]/12 bg-[var(--background-2)] py-2 ${mobileOpen
+          className={`flex w-[48px] shrink-0 flex-col items-center gap-1 border-r border-[var(--border-subtle)] bg-[var(--background-2)] py-2 ${mobileOpen
             ? "absolute left-0 right-0 z-50 w-full flex-row overflow-x-auto border-b"
             : ""
             }`}
@@ -380,14 +380,14 @@ export default function PropertyInspector({
               title={item.label}
               aria-label={item.label}
               className={`group relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl transition-all ${tab === item.id
-                ? "border border-[#D6AD69]/40 bg-[var(--surface-elevated)] text-[var(--text-primary)]"
+                ? "border border-[var(--accent)]/40 bg-[var(--surface-elevated)] text-[var(--text-primary)]"
                 : "text-[var(--text-muted)]/50 hover:bg-[var(--surface)] hover:text-[var(--text-primary)]"
                 }`}
             >
               <item.icon className="h-3.5 w-3.5" />
 
               {tab === item.id && (
-                <span className="absolute left-0 top-2 h-5 w-0.5 rounded-r-full bg-[#D6AD69]" />
+                <span className="absolute left-0 top-2 h-5 w-0.5 rounded-r-full bg-[var(--accent)]" />
               )}
             </button>
           ))}
@@ -396,10 +396,10 @@ export default function PropertyInspector({
         <div className="min-w-0 flex-1 overflow-y-auto">
           <div className="space-y-4 p-4">
             {component && (
-              <div className="rounded-2xl border border-[#D6AD69]/30 bg-gradient-to-br from-[#171A20] to-[#0C0E12] p-4 border-l-2 border-l-[var(--accent)] pl-3">
+              <div className="rounded-2xl border border-[var(--accent)]/30 bg-gradient-to-br from-[var(--surface)] to-[var(--background-2)] p-4 border-l-2 border-l-[var(--accent)] pl-3">
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.16em] text-[#D6AD69]">
+                    <p className="font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.16em] text-[var(--accent)]">
                       Selected Component
                     </p>
 
@@ -408,7 +408,7 @@ export default function PropertyInspector({
                     </p>
                   </div>
 
-                  <CircleCheck className="h-4 w-4 shrink-0 text-[#D6AD69]" />
+                  <CircleCheck className="h-4 w-4 shrink-0 text-[var(--accent)]" />
                 </div>
 
                 <p className="mt-2 font-[var(--font-inter)] text-[9px] leading-relaxed text-[var(--text-muted)]">
@@ -433,7 +433,7 @@ export default function PropertyInspector({
                       );
                       setTab("failure");
                     }}
-                    className="flex-1 rounded-lg border border-[#A4AAB5]/15 bg-[var(--surface-elevated)] px-2 py-2 font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.08em] text-[var(--text-primary)] transition-colors hover:border-[#D6AD69]/50"
+                    className="flex-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-elevated)] px-2 py-2 font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.08em] text-[var(--text-primary)] transition-colors hover:border-[var(--accent)]/50"
                   >
                     Failure Path
                   </button>
@@ -446,7 +446,7 @@ export default function PropertyInspector({
                         component.name,
                       )
                     }
-                    className="flex-1 rounded-lg border border-[#D6AD69]/30 bg-[var(--surface)] px-2 py-2 font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.08em] text-[#D6AD69] transition-colors hover:border-[#D6AD69]"
+                    className="flex-1 rounded-lg border border-[var(--accent)]/30 bg-[var(--surface)] px-2 py-2 font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.08em] text-[var(--accent)] transition-colors hover:border-[var(--accent)]"
                   >
                     + Cache
                   </button>
@@ -456,12 +456,12 @@ export default function PropertyInspector({
 
             {tab === "overview" && (
               <div className="space-y-4">
-                <div className="rounded-2xl border border-[#A4AAB5]/15 bg-gradient-to-br from-[#171A20] via-[#0C0E12] to-[#101216] p-4">
+                <div className="rounded-2xl border border-[var(--border-subtle)] bg-gradient-to-br from-[var(--surface)] via-[var(--background-2)] to-[var(--background)] p-4">
                   <div className="flex items-center gap-4">
                     <ScoreRing score={score} />
 
                     <div className="min-w-0">
-                      <p className="font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.18em] text-[#D6AD69]">
+                      <p className="font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.18em] text-[var(--accent)]">
                         Unified Architecture
                       </p>
 
@@ -479,7 +479,7 @@ export default function PropertyInspector({
                     </div>
                   </div>
 
-                  <div className="mt-5 grid grid-cols-2 gap-x-4 gap-y-3 border-t border-[#A4AAB5]/12 pt-4">
+                  <div className="mt-5 grid grid-cols-2 gap-x-4 gap-y-3 border-t border-[var(--border-subtle)] pt-4">
                     <Metric
                       label="Scalability"
                       value={
@@ -511,10 +511,10 @@ export default function PropertyInspector({
                   </div>
                 </div>
 
-                <div className="rounded-2xl border border-[#A4AAB5]/12 bg-[var(--background-2)] p-4">
+                <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--background-2)] p-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.16em] text-[#D6AD69]">
+                      <p className="font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.16em] text-[var(--accent)]">
                         Findings Inventory
                       </p>
                       <p className="mt-1 font-[var(--font-space-grotesk)] text-lg font-bold text-[var(--text-primary)]">
@@ -522,8 +522,8 @@ export default function PropertyInspector({
                       </p>
                     </div>
 
-                    <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#A4AAB5]/15 bg-[var(--surface-elevated)]">
-                      <CircleAlert className="h-4 w-4 text-[#D6AD69]" />
+                    <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-elevated)]">
+                      <CircleAlert className="h-4 w-4 text-[var(--accent)]" />
                     </div>
                   </div>
 
@@ -538,9 +538,9 @@ export default function PropertyInspector({
                     type="button"
                     onClick={onOptimize}
                     disabled={loading}
-                    className="rounded-xl border border-[#A4AAB5]/15 bg-[var(--surface)] px-3 py-2.5 text-left transition-colors hover:border-[#D6AD69] hover:bg-[var(--surface-elevated)] disabled:opacity-50"
+                    className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface)] px-3 py-2.5 text-left transition-colors hover:border-[var(--accent)] hover:bg-[var(--surface-elevated)] disabled:opacity-50"
                   >
-                    <Zap className="h-3.5 w-3.5 text-[#D6AD69]" />
+                    <Zap className="h-3.5 w-3.5 text-[var(--accent)]" />
                     <span className="mt-1.5 block font-[var(--font-space-grotesk)] text-[9px] font-bold text-[var(--text-primary)]">
                       Optimize
                     </span>
@@ -549,9 +549,9 @@ export default function PropertyInspector({
                   <button
                     type="button"
                     onClick={onSimulate}
-                    className="rounded-xl border border-[#A4AAB5]/15 bg-[var(--surface)] px-3 py-2.5 text-left transition-colors hover:border-[#D6AD69] hover:bg-[var(--surface-elevated)]"
+                    className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface)] px-3 py-2.5 text-left transition-colors hover:border-[var(--accent)] hover:bg-[var(--surface-elevated)]"
                   >
-                    <Activity className="h-3.5 w-3.5 text-[#D6AD69]" />
+                    <Activity className="h-3.5 w-3.5 text-[var(--accent)]" />
                     <span className="mt-1.5 block font-[var(--font-space-grotesk)] text-[9px] font-bold text-[var(--text-primary)]">
                       Simulate
                     </span>
@@ -648,7 +648,7 @@ export default function PropertyInspector({
                 />
 
                 <div>
-                  <label className="mb-2 block font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.14em] text-[#D6AD69]">
+                  <label className="mb-2 block font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.14em] text-[var(--accent)]">
                     Failure Target
                   </label>
 
@@ -673,7 +673,7 @@ export default function PropertyInspector({
                         ...failure.directlyAffectedNodeIds,
                       ]);
                     }}
-                    className="w-full rounded-xl border border-[#A4AAB5]/15 bg-[var(--surface)] px-3 py-2.5 font-[var(--font-inter)] text-[10px] text-[var(--text-primary)] outline-none focus:border-[#D6AD69]"
+                    className="w-full rounded-xl border border-[var(--border-subtle)] bg-[var(--surface)] px-3 py-2.5 font-[var(--font-inter)] text-[10px] text-[var(--text-primary)] outline-none focus:border-[var(--accent)]"
                   >
                     {graph.nodes.map((node) => (
                       <option
@@ -687,9 +687,9 @@ export default function PropertyInspector({
                 </div>
 
                 {failurePathResult && (
-                  <div className="rounded-2xl border border-[#A4AAB5]/15 bg-[var(--surface)] p-4">
+                  <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface)] p-4">
                     <div className="flex items-center gap-2">
-                      <Server className="h-4 w-4 text-[#D6AD69]" />
+                      <Server className="h-4 w-4 text-[var(--accent)]" />
                       <span className="font-[var(--font-space-grotesk)] text-[10px] font-bold text-[var(--text-primary)]">
                         {failurePathResult.sourceNodeName}
                       </span>
@@ -697,8 +697,8 @@ export default function PropertyInspector({
 
                     {failurePathResult.cascadingChain
                       .length > 0 ? (
-                      <div className="mt-3 rounded-xl border border-[#A4AAB5]/12 bg-[var(--background)] p-3">
-                        <p className="font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.14em] text-[#D6AD69]">
+                      <div className="mt-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--background)] p-3">
+                        <p className="font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.14em] text-[var(--accent)]">
                           Cascading Path
                         </p>
                         <p className="mt-2 font-[var(--font-inter)] text-[9px] leading-relaxed text-[var(--text-muted)]">
@@ -717,8 +717,8 @@ export default function PropertyInspector({
                       {failurePathResult.explanation}
                     </p>
 
-                    <div className="mt-3 border-t border-[#A4AAB5]/12 pt-3">
-                      <p className="font-[var(--font-inter)] text-[9px] leading-relaxed text-[#D6AD69]">
+                    <div className="mt-3 border-t border-[var(--border-subtle)] pt-3">
+                      <p className="font-[var(--font-inter)] text-[9px] leading-relaxed text-[var(--accent)]">
                         {failurePathResult.resilienceRecommendation}
                       </p>
                     </div>
@@ -774,14 +774,14 @@ export default function PropertyInspector({
                   (pattern) => (
                     <div
                       key={pattern.id}
-                      className="rounded-2xl border border-[#A4AAB5]/12 bg-[var(--background-2)] p-4"
+                      className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--background-2)] p-4"
                     >
                       <div className="flex items-start justify-between gap-3">
                         <span className="font-[var(--font-space-grotesk)] text-[11px] font-bold text-[var(--text-primary)]">
                           {pattern.name}
                         </span>
 
-                        <span className="rounded-full border border-[#D6AD69]/30 bg-[var(--surface-elevated)] px-2 py-1 font-[var(--font-inter)] text-[8px] font-bold text-[#D6AD69]">
+                        <span className="rounded-full border border-[var(--accent)]/30 bg-[var(--surface-elevated)] px-2 py-1 font-[var(--font-inter)] text-[8px] font-bold text-[var(--accent)]">
                           {pattern.confidence}
                         </span>
                       </div>
@@ -793,7 +793,7 @@ export default function PropertyInspector({
                               key={index}
                               className="font-[var(--font-inter)] text-[9px] leading-relaxed text-[var(--text-muted)]"
                             >
-                              <span className="mr-1 text-[#D6AD69]">
+                              <span className="mr-1 text-[var(--accent)]">
                                 •
                               </span>
                               {evidence}
@@ -818,7 +818,7 @@ export default function PropertyInspector({
                   (cost, index) => (
                     <div
                       key={index}
-                      className="rounded-2xl border border-[#A4AAB5]/12 bg-[var(--background-2)] p-4"
+                      className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--background-2)] p-4"
                     >
                       <div className="flex items-center justify-between gap-3">
                         <span className="font-[var(--font-inter)] text-[9px] text-[var(--text-muted)]/70">
@@ -834,8 +834,8 @@ export default function PropertyInspector({
                         {cost.tradeoffExplanation}
                       </p>
 
-                      <div className="mt-4 border-t border-[#A4AAB5]/12 pt-3">
-                        <p className="font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.14em] text-[#D6AD69]">
+                      <div className="mt-4 border-t border-[var(--border-subtle)] pt-3">
+                        <p className="font-[var(--font-space-grotesk)] text-[8px] font-bold uppercase tracking-[0.14em] text-[var(--accent)]">
                           Primary Drivers
                         </p>
 
@@ -874,11 +874,11 @@ export default function PropertyInspector({
                   (recommendation) => (
                     <div
                       key={recommendation.id}
-                      className="rounded-2xl border border-[#D6AD69]/30 bg-gradient-to-br from-[#171A20] to-[#0C0E12] p-4"
+                      className="rounded-2xl border border-[var(--accent)]/30 bg-gradient-to-br from-[var(--surface)] to-[var(--background-2)] p-4"
                     >
                       <div className="flex items-start gap-3">
-                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[#D6AD69]/40 bg-[var(--surface-elevated)]">
-                          <Sparkles className="h-3.5 w-3.5 text-[#D6AD69]" />
+                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[var(--accent)]/40 bg-[var(--surface-elevated)]">
+                          <Sparkles className="h-3.5 w-3.5 text-[var(--accent)]" />
                         </span>
 
                         <p className="font-[var(--font-space-grotesk)] text-[11px] font-bold leading-snug text-[var(--text-primary)]">
@@ -895,7 +895,7 @@ export default function PropertyInspector({
                         </p>
 
                         <p>
-                          <span className="font-semibold text-[#D6AD69]">
+                          <span className="font-semibold text-[var(--accent)]">
                             Decision:
                           </span>{" "}
                           {recommendation.decision.decision}
@@ -924,7 +924,7 @@ export default function PropertyInspector({
                             recommendation.targetNodeId,
                           )
                         }
-                        className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-[#F0F1F3] py-2.5 text-[9px] font-bold uppercase tracking-[0.08em] text-[#101216] transition-all hover:bg-[#E0BC7A]"
+                        className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--text-primary)] py-2.5 text-[9px] font-bold uppercase tracking-[0.08em] text-[var(--on-accent)] transition-all hover:bg-[var(--accent-hover)]"
                       >
                         Apply Recommendation
                         <ArrowUpRight className="h-3 w-3" />
@@ -953,10 +953,10 @@ function SectionHeading({
   suffix?: string;
 }) {
   return (
-    <div className="flex items-center justify-between rounded-2xl border border-[#A4AAB5]/12 bg-[var(--surface)] px-3.5 py-3">
+    <div className="flex items-center justify-between rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface)] px-3.5 py-3">
       <div className="flex min-w-0 items-center gap-2.5">
-        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[#A4AAB5]/12 bg-[var(--surface-elevated)]">
-          <Icon className="h-3.5 w-3.5 text-[#D6AD69]" />
+        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-elevated)]">
+          <Icon className="h-3.5 w-3.5 text-[var(--accent)]" />
         </span>
 
         <span className="truncate text-[10px] font-bold text-[var(--text-primary)]">
@@ -965,7 +965,7 @@ function SectionHeading({
       </div>
 
       {typeof value === "number" && (
-        <span className="font-mono text-[10px] font-bold text-[#D6AD69]">
+        <span className="font-mono text-[10px] font-bold text-[var(--accent)]">
           {value}
           {suffix}
         </span>

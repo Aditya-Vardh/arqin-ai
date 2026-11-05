@@ -10,6 +10,11 @@
   /* ─── Arqin AI Design Tokens ─── */
   /* Application palette: graphite dark, warm-white text, amber accent */
 
+  /* Text on accent background (always dark regardless of theme) */
+  --on-accent: #0E1116;
+  /* RGB triplet for rgba() usage */
+  --accent-rgb: 214, 173, 105;
+
   /* Core palette */
   --color-bg: #101216;
   --color-text: #F0F1F3;
@@ -110,6 +115,10 @@
 [data-theme="light"] {
   /* ─── Arqin AI — Genuine Light Theme ─── */
   /* Warm off-white surfaces, dark graphite typography, restrained amber accents */
+
+  /* Text on accent background */
+  --on-accent: #0E1116;
+  --accent-rgb: 184, 146, 42;
 
   /* Core palette */
   --color-bg: #F7F5F0;

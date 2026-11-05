@@ -44,13 +44,13 @@ export default function ArchitectureSimulator({ graph, onClose, onHighlightBottl
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-xl animate-fade-in">
-      <div className="flex h-[85vh] w-[90vw] max-w-5xl flex-col overflow-hidden rounded-3xl border border-[#D6AD69]/20 bg-[var(--background)] text-[var(--text-primary)] shadow-[0_0_80px_rgba(0,0,0,0.9)]">
+      <div className="flex h-[85vh] w-[90vw] max-w-5xl flex-col overflow-hidden rounded-3xl border border-[var(--accent)]/20 bg-[var(--background)] text-[var(--text-primary)] shadow-[0_0_80px_rgba(0,0,0,0.9)]">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-[#D6AD69]/15 bg-[var(--background)] px-6 py-4">
+        <div className="flex items-center justify-between border-b border-[var(--accent)]/15 bg-[var(--background)] px-6 py-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#D6AD69] via-[#D6AD69] to-[#A08050] p-[1px]">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--accent)] via-[var(--accent)] to-[#A08050] p-[1px]">
               <div className="flex h-full w-full items-center justify-center rounded-[11px] bg-[var(--background)]">
-                <Cpu className="h-5 w-5 text-[#D6AD69]" />
+                <Cpu className="h-5 w-5 text-[var(--accent)]" />
               </div>
             </div>
             <div>
@@ -62,7 +62,7 @@ export default function ArchitectureSimulator({ graph, onClose, onHighlightBottl
           <button
             type="button"
             onClick={onClose}
-            className="rounded-xl border border-[#D6AD69]/15 bg-[var(--background)] p-2 text-[var(--text-faint)] hover:text-[var(--text-primary)] transition-colors"
+            className="rounded-xl border border-[var(--accent)]/15 bg-[var(--background)] p-2 text-[var(--text-faint)] hover:text-[var(--text-primary)] transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
@@ -72,16 +72,16 @@ export default function ArchitectureSimulator({ graph, onClose, onHighlightBottl
         <div className="grid flex-1 grid-cols-1 md:grid-cols-3 min-h-0 overflow-hidden divide-y md:divide-y-0 md:divide-x divide-[#D6AD69]/15">
           {/* Left Panel: Variable Sliders */}
           <div className="p-6 bg-[var(--background)] space-y-6 overflow-y-auto">
-            <div className="flex items-center gap-2 border-b border-[#D6AD69]/10 pb-3">
-              <Sliders className="h-4 w-4 text-[#D6AD69]" />
-              <span className="font-mono text-xs font-bold uppercase tracking-wider text-[#D6AD69]">Simulation Controls</span>
+            <div className="flex items-center gap-2 border-b border-[var(--accent)]/10 pb-3">
+              <Sliders className="h-4 w-4 text-[var(--accent)]" />
+              <span className="font-mono text-xs font-bold uppercase tracking-wider text-[var(--accent)]">Simulation Controls</span>
             </div>
 
             {/* Slider 1: Users */}
             <div className="space-y-2">
               <div className="flex justify-between text-xs font-bold">
                 <span className="text-[var(--text-muted)]">Concurrent Users</span>
-                <span className="font-mono text-[#D6AD69]">{users.toLocaleString()}</span>
+                <span className="font-mono text-[var(--accent)]">{users.toLocaleString()}</span>
               </div>
               <input
                 type="range"
@@ -103,7 +103,7 @@ export default function ArchitectureSimulator({ graph, onClose, onHighlightBottl
             <div className="space-y-2">
               <div className="flex justify-between text-xs font-bold">
                 <span className="text-[var(--text-muted)]">Peak Traffic (RPS)</span>
-                <span className="font-mono text-[#D6AD69]">{requestRate.toLocaleString()} RPS</span>
+                <span className="font-mono text-[var(--accent)]">{requestRate.toLocaleString()} RPS</span>
               </div>
               <input
                 type="range"
@@ -132,8 +132,8 @@ export default function ArchitectureSimulator({ graph, onClose, onHighlightBottl
                     onClick={() => setAvailability(a)}
                     className={`rounded-xl border py-2 text-xs font-bold transition-all ${
                       availability === a
-                        ? "border-[#D6AD69] bg-[#D6AD69]/10 text-[#D6AD69]"
-                        : "border-[#D6AD69]/15 bg-[var(--background)] text-[var(--text-faint)]"
+                        ? "border-[var(--accent)] bg-[var(--accent)]/10 text-[var(--accent)]"
+                        : "border-[var(--accent)]/15 bg-[var(--background)] text-[var(--text-faint)]"
                     }`}
                   >
                     {a}
@@ -153,8 +153,8 @@ export default function ArchitectureSimulator({ graph, onClose, onHighlightBottl
                     onClick={() => setRegions(r)}
                     className={`rounded-xl border py-2 text-xs font-bold transition-all ${
                       regions === r
-                        ? "border-[#D6AD69] bg-[#D6AD69]/10 text-[#D6AD69]"
-                        : "border-[#D6AD69]/15 bg-[var(--background)] text-[var(--text-faint)]"
+                        ? "border-[var(--accent)] bg-[var(--accent)]/10 text-[var(--accent)]"
+                        : "border-[var(--accent)]/15 bg-[var(--background)] text-[var(--text-faint)]"
                     }`}
                   >
                     {r} {r === 1 ? "Region" : "Regions"}
@@ -166,7 +166,7 @@ export default function ArchitectureSimulator({ graph, onClose, onHighlightBottl
             <button
               type="button"
               onClick={runSimulation}
-              className="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#D6AD69] via-[#D6AD69] to-[#A08050] px-4 py-3 text-xs font-bold text-[#101216] shadow-[0_0_25px_rgba(214, 173, 105,0.3)] hover:scale-[1.02] transition-all"
+              className="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[var(--accent)] via-[var(--accent)] to-[#A08050] px-4 py-3 text-xs font-bold text-[var(--on-accent)] shadow-[0_0_25px_rgba(var(--accent-rgb,214,173,105),0.3)] hover:scale-[1.02] transition-all"
             >
               <Play className="h-4 w-4 fill-current" />
               <span>Run Stress Simulation</span>
@@ -178,11 +178,11 @@ export default function ArchitectureSimulator({ graph, onClose, onHighlightBottl
             {result && (
               <>
                 {/* Status Card */}
-                <div className={`rounded-2xl border p-5 ${result.isViable ? "border-[#D6AD69]/30 bg-[#D6AD69]/10" : "border-amber-500/30 bg-amber-500/10"}`}>
+                <div className={`rounded-2xl border p-5 ${result.isViable ? "border-[var(--accent)]/30 bg-[var(--accent)]/10" : "border-amber-500/30 bg-amber-500/10"}`}>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       {result.isViable ? (
-                        <CheckCircle2 className="h-6 w-6 text-[#D6AD69]" />
+                        <CheckCircle2 className="h-6 w-6 text-[var(--accent)]" />
                       ) : (
                         <AlertTriangle className="h-6 w-6 text-amber-400" />
                       )}
@@ -196,7 +196,7 @@ export default function ArchitectureSimulator({ graph, onClose, onHighlightBottl
                     <span className="font-mono text-xs font-bold text-[var(--text-muted)]">Est. Latency: +{result.latencyIncreaseMs}ms</span>
                   </div>
 
-                  <p className="mt-4 text-xs leading-relaxed text-[var(--text-muted)] border-t border-[#D6AD69]/10 pt-3">
+                  <p className="mt-4 text-xs leading-relaxed text-[var(--text-muted)] border-t border-[var(--accent)]/10 pt-3">
                     {result.analysis}
                   </p>
                 </div>
@@ -222,14 +222,14 @@ export default function ArchitectureSimulator({ graph, onClose, onHighlightBottl
                 {/* Recommended Scale Additions */}
                 {result.recommendedAdditions.length > 0 && (
                   <div className="space-y-3">
-                    <div className="flex items-center gap-2 font-mono text-xs font-bold text-[#D6AD69]">
+                    <div className="flex items-center gap-2 font-mono text-xs font-bold text-[var(--accent)]">
                       <Zap className="h-4 w-4" />
                       <span>Recommended Infrastructure Upgrades</span>
                     </div>
 
                     <ul className="space-y-2">
                       {result.recommendedAdditions.map((ra, idx) => (
-                        <li key={idx} className="flex items-center justify-between rounded-xl border border-[#D6AD69]/15 bg-[var(--background)] p-3 text-xs text-[var(--text-primary)]">
+                        <li key={idx} className="flex items-center justify-between rounded-xl border border-[var(--accent)]/15 bg-[var(--background)] p-3 text-xs text-[var(--text-primary)]">
                           <span>{ra}</span>
                           <button
                             type="button"
@@ -239,7 +239,7 @@ export default function ArchitectureSimulator({ graph, onClose, onHighlightBottl
                                 onClose();
                               }
                             }}
-                            className="rounded-lg bg-[#D6AD69]/20 px-2.5 py-1 font-mono text-[10px] font-bold text-[#D6AD69] hover:bg-[#D6AD69] hover:text-[#101216] transition-all"
+                            className="rounded-lg bg-[var(--accent)]/20 px-2.5 py-1 font-mono text-[10px] font-bold text-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--on-accent)] transition-all"
                           >
                             Highlight on Canvas
                           </button>
