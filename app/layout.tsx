@@ -6,6 +6,7 @@ import {
   Inter,
   Space_Grotesk,
 } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
 import "./globals.css";
 
@@ -121,6 +122,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           <ThemeProvider>{children}</ThemeProvider>
         </ClerkProvider>
+        <Analytics />
       </body>
     </html>
   );
