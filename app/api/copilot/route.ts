@@ -1,8 +1,14 @@
 import { generateText } from "ai";
-import { model } from "@/lib/ai/models";
+import { createGroq } from "@ai-sdk/groq";
 import { checkApiKey } from "@/lib/rate-limit";
 import { isModificationRequest } from "@/lib/ai/intentClassifier";
 import type { ArchitectureResult } from "@/lib/storage/types";
+
+// Use the same reliable model as generate/research
+function getCopilotModel() {
+  const groq = createGroq({ apiKey: process.env.GROQ_API_KEY! });
+  return groq("qwen/qwen3.8-27b");
+}
 
 const COPILOT_CHAT_SYSTEM = `You are an architecture analyst. Answer questions about the provided architecture. Do NOT output architecture modifications or structured data. Respond with clear, concise natural language only.`;
 
@@ -63,8 +69,9 @@ export async function POST(req: Request) {
     }
 
     try {
+      const copilotModel = getCopilotModel();
       const { text } = await generateText({
-        model,
+        model: copilotModel,
         system: COPILOT_CHAT_SYSTEM,
         prompt: context
           ? `Architecture context:\n${context}\n\nUser question: ${message}`
