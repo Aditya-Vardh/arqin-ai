@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
-  Plus, Search, LayoutTemplate, FolderOpen, History, ArrowRight,
-  Sparkles, Activity, GitBranch, Clock,
+  Plus, Search, LayoutTemplate, FolderOpen, History,
+  ArrowRight, Sparkles, Activity, GitBranch, Clock,
 } from "lucide-react";
 import { useStore } from "@/hooks/UserStoreContext";
 import type { Project, HistoryEntry } from "@/lib/storage/types";
@@ -17,6 +17,18 @@ function getGreeting() {
   if (h < 12) return "Good morning";
   if (h < 17) return "Good afternoon";
   return "Good evening";
+}
+
+// Tiny CSS-only stagger wrapper — adds delay via inline style
+function Stagger({ i, children }: { i: number; children: React.ReactNode }) {
+  return (
+    <div
+      className="animate-page-enter"
+      style={{ animationDelay: `${i * 60}ms`, animationFillMode: "both" }}
+    >
+      {children}
+    </div>
+  );
 }
 
 export default function DashboardView() {
@@ -38,299 +50,399 @@ export default function DashboardView() {
 
   return (
     <div
-      className="relative mx-auto max-w-7xl px-6 pb-16 pt-8 sm:px-10 sm:pt-12 lg:px-12 space-y-8"
-      style={{ minHeight: "100%" }}
+      className="relative min-h-full w-full"
+      style={{ background: "#101216" }}
     >
-      {/* Ambient glow — matches landing page color grading */}
-      <div className="pointer-events-none fixed inset-0 -z-10" aria-hidden>
-        <div style={{ position:"absolute", top:"-10%", left:"15%", width:"600px", height:"500px", background:"radial-gradient(ellipse, rgba(214,173,105,0.055) 0%, transparent 65%)", filter:"blur(40px)" }} />
-        <div style={{ position:"absolute", top:"30%", right:"10%", width:"400px", height:"400px", background:"radial-gradient(ellipse, rgba(214,173,105,0.03) 0%, transparent 60%)", filter:"blur(50px)" }} />
+      {/* Ambient amber glow — premium feel */}
+      <div
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+        aria-hidden
+        style={{ zIndex: 0 }}
+      >
+        <div style={{
+          position: "absolute", top: "-15%", left: "20%",
+          width: "500px", height: "400px",
+          background: "radial-gradient(ellipse, rgba(214,173,105,0.06) 0%, transparent 65%)",
+          filter: "blur(60px)",
+        }} />
+        <div style={{
+          position: "absolute", bottom: "10%", right: "15%",
+          width: "360px", height: "300px",
+          background: "radial-gradient(ellipse, rgba(214,173,105,0.03) 0%, transparent 60%)",
+          filter: "blur(50px)",
+        }} />
       </div>
 
-      {/* ── Header ───────────────────────────────────────────────────────── */}
-      <div className="flex flex-col gap-4 border-b border-[var(--border)] pb-6 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/25 bg-[var(--accent)]/8 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-widest text-[var(--accent)]">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--accent)]" />
-            Architecture Studio
-          </div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-[var(--text-primary)] sm:text-4xl">
-            {getGreeting()}, Architect
-          </h1>
-          <p className="mt-2 max-w-xl text-sm leading-relaxed text-[var(--text-muted)]">
-            Design, analyze, and synthesize production software architecture with AI.
-          </p>
-        </div>
+      <div className="relative z-10 mx-auto max-w-7xl space-y-6 px-6 pb-16 pt-8 sm:px-10 sm:pt-10 lg:px-12">
 
-        <Link
-          href="/workspace/generate?journey=1"
-          className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-2.5 text-xs font-semibold text-[var(--text-muted)] transition-all hover:border-[var(--accent)]/40 hover:text-[var(--text-primary)]"
-        >
-          <Sparkles className="h-3.5 w-3.5 text-[var(--accent)]" />
-          Guided Journey
-        </Link>
-      </div>
-
-      {/* ── Primary block — New Architecture + Latest ─────────────────── */}
-      <div className="grid gap-5 lg:grid-cols-12">
-
-        {/* Create new — 8 cols */}
-        <div className="relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-7 shadow-sm lg:col-span-8 flex flex-col justify-between">
-          {/* Subtle glow orbs */}
-          <div className="pointer-events-none absolute right-0 top-0 h-56 w-56 rounded-full bg-[var(--accent)]/8 blur-3xl" />
-          <div className="pointer-events-none absolute bottom-0 left-0 h-40 w-40 rounded-full bg-[var(--border)]/20 blur-2xl" />
-
-          <div className="relative z-10">
-            <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--accent)]/25 bg-[var(--surface-elevated)]">
-              <Plus className="h-5 w-5 text-[var(--accent)]" />
-            </div>
-            <h2 className="text-xl font-bold tracking-tight text-[var(--text-primary)] sm:text-2xl">
-              Create New Architecture
-            </h2>
-            <p className="mt-2 max-w-lg text-sm leading-relaxed text-[var(--text-muted)]">
-              Describe your platform in natural language. Arqin AI decomposes requirements into nodes, APIs, databases, and Mermaid diagram specs automatically.
-            </p>
-          </div>
-
-          <div className="relative z-10 mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-[var(--border)] pt-5">
-            <div className="flex items-center gap-4 font-mono text-[10px] text-[var(--text-faint)]">
-              <span className="flex items-center gap-1.5">
-                <GitBranch className="h-3.5 w-3.5 text-[var(--accent)]" />
-                Microservices
-              </span>
-              <span className="flex items-center gap-1.5">
-                <Activity className="h-3.5 w-3.5 text-[var(--accent)]" />
-                Event-Driven
-              </span>
-            </div>
-
-            <Link
-              href="/workspace/generate?new=1"
-              className="inline-flex items-center gap-2 rounded-xl bg-[var(--accent)] px-5 py-2.5 text-xs font-bold text-[var(--on-accent)] shadow-[0_0_18px_rgba(214,173,105,0.15)] transition-all hover:bg-[var(--accent-hover)] active:scale-[0.97]"
-            >
-              Launch Studio Canvas
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
-        </div>
-
-        {/* Latest project — 4 cols */}
-        <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-elevated)] p-6 lg:col-span-4 flex flex-col justify-between">
-          <div>
-            <div className="mb-3 flex items-center justify-between">
-              <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[var(--accent)]">
-                Latest Session
-              </span>
-              <span className="h-2 w-2 rounded-full bg-[var(--accent)]" />
-            </div>
-
-            <h3 className="text-base font-bold text-[var(--text-primary)] leading-snug">
-              {latest ? latest.title : "No Architecture Yet"}
-            </h3>
-
-            <p className="mt-2 text-xs leading-relaxed text-[var(--text-muted)] line-clamp-3">
-              {latest?.description || "Open the studio or pick a template to start."}
-            </p>
-
-            {health && (
-              <div className="mt-4 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3">
-                <div className="flex items-center justify-between text-[11px]">
-                  <span className="text-[var(--text-muted)]">Health Score</span>
-                  <span className="font-mono font-bold text-[var(--text-primary)]">{health.health}/100</span>
-                </div>
-                <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-[var(--background)]">
-                  <div
-                    className="h-full rounded-full bg-[var(--accent)] transition-[width] duration-700"
-                    style={{ width: `${health.health}%` }}
-                  />
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div className="mt-5 border-t border-[var(--border)] pt-4">
-            <Link
-              href={latest ? `/workspace/generate?project=${latest.id}` : "/workspace/generate"}
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--text-muted)] transition-colors hover:text-[var(--accent)]"
-            >
-              {latest ? "Resume Architecture" : "Open Studio"}
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      {/* ── Supporting grid ───────────────────────────────────────────── */}
-      <div className="grid gap-5 lg:grid-cols-2">
-
-        {/* Recent Projects */}
-        <section className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6">
-          <div className="mb-5 flex items-center justify-between">
-            <h3 className="flex items-center gap-2 text-base font-bold text-[var(--text-primary)]">
-              <FolderOpen className="h-4.5 w-4.5 text-[var(--accent)]" />
-              Projects
-            </h3>
-            <Link href="/workspace/projects" className="text-xs font-bold text-[var(--accent)] hover:text-[var(--text-primary)] transition-colors">
-              View all →
-            </Link>
-          </div>
-
-          {projects.length === 0 ? (
-            <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-[var(--border)] p-8 text-center">
-              <svg width="40" height="40" viewBox="0 0 40 40" fill="none" className="opacity-30 text-[var(--text-muted)]">
-                <rect x="5" y="8" width="30" height="24" rx="3" stroke="currentColor" strokeWidth="1.5"/>
-                <rect x="10" y="13" width="8" height="8" rx="1.5" stroke="currentColor" strokeWidth="1.5"/>
-                <rect x="21" y="13" width="9" height="3" rx="1" stroke="currentColor" strokeWidth="1.5"/>
-                <rect x="21" y="18" width="6" height="3" rx="1" stroke="currentColor" strokeWidth="1.5"/>
-                <line x1="10" y1="25" x2="30" y2="25" stroke="currentColor" strokeWidth="1.5"/>
-              </svg>
-              <p className="text-sm font-medium text-[var(--text-primary)]">No projects yet</p>
-              <p className="text-xs text-[var(--text-muted)]">Generate your first architecture to start.</p>
-              <Link
-                href="/workspace/generate?new=1"
-                className="mt-1 inline-flex items-center gap-1.5 rounded-lg border border-[var(--accent)]/20 bg-[var(--accent)]/8 px-3 py-1.5 text-xs font-semibold text-[var(--accent)] hover:bg-[var(--accent)]/15 transition-colors"
-              >
-                <Plus className="h-3 w-3" /> Create Architecture
-              </Link>
-            </div>
-          ) : (
-            <div className="grid gap-3 sm:grid-cols-2">
-              {projects.map(p => {
-                const h = p.result ? deriveAdaptiveInsights(p.result) : null;
-                return (
-                  <Link
-                    key={p.id}
-                    href={`/workspace/generate?project=${p.id}`}
-                    className="group flex flex-col justify-between rounded-xl border border-[var(--border)] bg-[var(--surface-elevated)] p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)]/30 hover:shadow-md active:scale-[0.98]"
-                  >
-                    <div className="mb-2 flex items-center justify-between">
-                      <span className="rounded-full border border-[var(--accent)]/25 bg-[var(--accent)]/10 px-2 py-0.5 font-mono text-[9px] font-bold uppercase text-[var(--accent)]">
-                        {DIAGRAM_TYPE_LABELS[p.diagramType]}
-                      </span>
-                      {h && (
-                        <span className="font-mono text-[9px] text-[var(--text-faint)]">
-                          {h.health}/100
-                        </span>
-                      )}
-                    </div>
-                    <p className="truncate text-xs font-bold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors">
-                      {p.title}
-                    </p>
-                    <p className="mt-1 font-mono text-[9px] text-[var(--text-faint)]">
-                      {new Date(p.updatedAt).toLocaleDateString()}
-                    </p>
-                  </Link>
-                );
-              })}
-            </div>
-          )}
-        </section>
-
-        {/* Recent History */}
-        <section className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6">
-          <div className="mb-5 flex items-center justify-between">
-            <h3 className="flex items-center gap-2 text-base font-bold text-[var(--text-primary)]">
-              <History className="h-4.5 w-4.5 text-[var(--accent)]" />
-              Recent Activity
-            </h3>
-            <Link href="/workspace/history" className="text-xs font-bold text-[var(--accent)] hover:text-[var(--text-primary)] transition-colors">
-              View all →
-            </Link>
-          </div>
-
-          {history.length === 0 ? (
-            <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-[var(--border)] p-8 text-center">
-              <Clock className="h-8 w-8 opacity-25 text-[var(--text-muted)]" />
-              <p className="text-sm font-medium text-[var(--text-primary)]">No activity yet</p>
-              <p className="text-xs text-[var(--text-muted)]">Your generation history will appear here.</p>
-            </div>
-          ) : (
-            <div className="space-y-2">
-              {history.map(e => (
-                <Link
-                  key={e.id}
-                  href={`/workspace/generate?project=${e.projectId}`}
-                  className="group flex items-center gap-3 rounded-xl border border-[var(--border)] bg-[var(--surface-elevated)] p-3 transition-all duration-200 hover:border-[var(--accent)]/30 hover:bg-[var(--surface)] active:scale-[0.98]"
-                >
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-[var(--accent)]/20 bg-[var(--accent)]/8">
-                    <Sparkles className="h-3.5 w-3.5 text-[var(--accent)]" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-xs font-bold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors">
-                      {e.projectTitle}
-                    </p>
-                    <p className="truncate font-mono text-[9px] text-[var(--text-faint)]">
-                      {e.prompt.length > 50 ? e.prompt.slice(0, 47) + "…" : e.prompt}
-                    </p>
-                  </div>
-                  <span className="shrink-0 font-mono text-[9px] text-[var(--text-faint)]">
-                    {new Date(e.createdAt).toLocaleDateString()}
-                  </span>
-                </Link>
-              ))}
-            </div>
-          )}
-        </section>
-      </div>
-
-      {/* ── AI Research shortcut ─────────────────────────────────────── */}
-      <section className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-start gap-4">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[var(--accent)]/25 bg-[var(--surface-elevated)]">
-              <Search className="h-5 w-5 text-[var(--accent)]" />
-            </div>
+        {/* ── Page header ─────────────────────────────────────────────── */}
+        <Stagger i={0}>
+          <div className="flex flex-col gap-3 border-b pb-6 sm:flex-row sm:items-end sm:justify-between"
+            style={{ borderColor: "rgba(48,54,64,0.85)" }}>
             <div>
-              <h3 className="text-base font-bold text-[var(--text-primary)]">Architecture Intelligence Research</h3>
-              <p className="mt-1 max-w-lg text-xs leading-relaxed text-[var(--text-muted)]">
-                Synthesize structural reports, evaluate pattern trade-offs, technology stacks, security strategies, and performance limits with Senior Architect AI.
+              {/* Eyebrow pill */}
+              <div
+                className="mb-3 inline-flex items-center gap-2 rounded-full border px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-widest"
+                style={{ borderColor: "rgba(214,173,105,0.25)", background: "rgba(214,173,105,0.08)", color: "#D6AD69" }}
+              >
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full" style={{ background: "#D6AD69" }} />
+                Architecture Studio
+              </div>
+              <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl" style={{ color: "#F0F1F3", letterSpacing: "-0.03em" }}>
+                {getGreeting()}, Architect
+              </h1>
+              <p className="mt-1.5 max-w-lg text-sm leading-relaxed" style={{ color: "#B8C0CC" }}>
+                Design, analyze, and synthesize production software architecture with AI.
               </p>
             </div>
-          </div>
-          <Link
-            href="/workspace/research"
-            className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--surface-elevated)] px-4 py-2.5 text-xs font-bold text-[var(--text-muted)] transition-all hover:border-[var(--accent)]/40 hover:text-[var(--text-primary)]"
-          >
-            Open Research
-            <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
-        </div>
-      </section>
 
-      {/* ── Starter Templates ─────────────────────────────────────────── */}
-      <section className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6">
-        <div className="mb-5 flex items-center justify-between">
-          <h3 className="flex items-center gap-2 text-base font-bold text-[var(--text-primary)]">
-            <LayoutTemplate className="h-4.5 w-4.5 text-[var(--accent)]" />
-            Starter Blueprints
-          </h3>
-          <Link href="/workspace/templates" className="text-xs font-bold text-[var(--accent)] hover:text-[var(--text-primary)] transition-colors">
-            Explore all →
-          </Link>
-        </div>
-        <div className="grid gap-4 sm:grid-cols-3">
-          {TEMPLATES.slice(0, 3).map(t => (
             <Link
-              key={t.id}
-              href={`/workspace/generate?template=${t.id}`}
-              className="group flex flex-col justify-between rounded-xl border border-[var(--border)] bg-[var(--surface-elevated)] p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)]/30 hover:shadow-md active:scale-[0.98]"
+              href="/workspace/generate?journey=1"
+              className="inline-flex shrink-0 items-center gap-2 rounded-xl border px-4 py-2.5 text-xs font-semibold transition-all hover:border-[#D6AD69]/40 hover:text-[#F0F1F3]"
+              style={{ borderColor: "rgba(48,54,64,0.85)", background: "#171A20", color: "#B8C0CC" }}
             >
-              <div>
-                <h4 className="text-sm font-bold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors">
-                  {t.name}
-                </h4>
-                <p className="mt-2 text-xs leading-relaxed text-[var(--text-muted)] line-clamp-2">
-                  {t.description}
+              <Sparkles className="h-3.5 w-3.5" style={{ color: "#D6AD69" }} />
+              Guided Journey
+            </Link>
+          </div>
+        </Stagger>
+
+        {/* ── Primary row — Create Architecture (8) + Latest Session (4) ─ */}
+        <Stagger i={1}>
+          <div className="grid gap-5 lg:grid-cols-12">
+
+            {/* Create new — 8 cols */}
+            <div
+              className="relative overflow-hidden rounded-2xl border lg:col-span-8 flex flex-col justify-between p-7"
+              style={{ background: "#171A20", borderColor: "rgba(48,54,64,0.85)" }}
+            >
+              {/* Glow orb */}
+              <div className="pointer-events-none absolute right-0 top-0 h-48 w-48 rounded-full opacity-40"
+                style={{ background: "radial-gradient(circle, rgba(214,173,105,0.18), transparent 70%)" }} />
+
+              <div className="relative z-10">
+                <div
+                  className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl border"
+                  style={{ borderColor: "rgba(214,173,105,0.25)", background: "#1D222A" }}
+                >
+                  <Plus className="h-5 w-5" style={{ color: "#D6AD69" }} />
+                </div>
+                <h2 className="text-xl font-bold tracking-tight sm:text-2xl" style={{ color: "#F0F1F3", letterSpacing: "-0.02em" }}>
+                  Create New Architecture
+                </h2>
+                <p className="mt-2 max-w-lg text-sm leading-relaxed" style={{ color: "#B8C0CC" }}>
+                  Describe your platform in natural language. Arqin AI decomposes requirements into nodes, APIs, databases, and Mermaid diagram specs automatically.
                 </p>
               </div>
-              <div className="mt-4 flex items-center justify-between border-t border-[var(--border)] pt-3 text-[11px] font-bold text-[var(--accent)]">
-                <span>Use Blueprint</span>
-                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+
+              <div
+                className="relative z-10 mt-6 flex flex-wrap items-center justify-between gap-4 border-t pt-5"
+                style={{ borderColor: "rgba(48,54,64,0.85)" }}
+              >
+                <div className="flex items-center gap-4 font-mono text-[10px]" style={{ color: "#6A7280" }}>
+                  <span className="flex items-center gap-1.5">
+                    <GitBranch className="h-3.5 w-3.5" style={{ color: "#D6AD69" }} />
+                    Microservices
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <Activity className="h-3.5 w-3.5" style={{ color: "#D6AD69" }} />
+                    Event-Driven
+                  </span>
+                </div>
+
+                <Link
+                  href="/workspace/generate?new=1"
+                  className="inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold transition-all hover:brightness-110 active:scale-[0.97]"
+                  style={{
+                    background: "#D6AD69",
+                    color: "#0E1116",
+                    boxShadow: "0 0 20px rgba(214,173,105,0.20)",
+                  }}
+                >
+                  Launch Studio Canvas
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
               </div>
-            </Link>
-          ))}
-        </div>
-      </section>
+            </div>
+
+            {/* Latest session — 4 cols */}
+            <div
+              className="rounded-2xl border lg:col-span-4 flex flex-col justify-between p-6"
+              style={{ background: "#1D222A", borderColor: "rgba(48,54,64,0.85)" }}
+            >
+              <div>
+                <div className="mb-3 flex items-center justify-between">
+                  <span className="font-mono text-[10px] font-bold uppercase tracking-wider" style={{ color: "#D6AD69" }}>
+                    Latest Session
+                  </span>
+                  <span className="h-2 w-2 rounded-full" style={{ background: "#D6AD69" }} />
+                </div>
+
+                <h3 className="text-base font-bold leading-snug" style={{ color: "#F0F1F3" }}>
+                  {latest ? latest.title : "No Architecture Yet"}
+                </h3>
+                <p className="mt-2 text-xs leading-relaxed line-clamp-3" style={{ color: "#B8C0CC" }}>
+                  {latest?.description || "Open the studio or pick a template to start."}
+                </p>
+
+                {health && (
+                  <div
+                    className="mt-4 rounded-xl border p-3"
+                    style={{ borderColor: "rgba(48,54,64,0.85)", background: "#171A20" }}
+                  >
+                    <div className="flex items-center justify-between text-[11px]">
+                      <span style={{ color: "#B8C0CC" }}>Health Score</span>
+                      <span className="font-mono font-bold" style={{ color: "#F0F1F3" }}>{health.health}/100</span>
+                    </div>
+                    <div className="mt-2 h-1.5 overflow-hidden rounded-full" style={{ background: "#101216" }}>
+                      <div
+                        className="h-full rounded-full transition-[width] duration-700"
+                        style={{ width: `${health.health}%`, background: "#D6AD69" }}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="mt-5 border-t pt-4" style={{ borderColor: "rgba(48,54,64,0.85)" }}>
+                <Link
+                  href={latest ? `/workspace/generate?project=${latest.id}` : "/workspace/generate"}
+                  className="inline-flex items-center gap-1.5 text-xs font-bold transition-colors hover:text-[#D6AD69]"
+                  style={{ color: "#B8C0CC" }}
+                >
+                  {latest ? "Resume Architecture" : "Open Studio"}
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </Stagger>
+
+        {/* ── 2-column grid: Projects + Recent Activity ────────────────── */}
+        <Stagger i={2}>
+          <div className="grid gap-5 lg:grid-cols-2">
+
+            {/* Projects */}
+            <section
+              className="rounded-2xl border p-6"
+              style={{ background: "#171A20", borderColor: "rgba(48,54,64,0.85)" }}
+            >
+              <div className="mb-5 flex items-center justify-between">
+                <h3 className="flex items-center gap-2 text-sm font-bold" style={{ color: "#F0F1F3" }}>
+                  <FolderOpen className="h-4 w-4" style={{ color: "#D6AD69" }} />
+                  Projects
+                </h3>
+                <Link href="/workspace/projects" className="text-xs font-bold transition-colors hover:text-[#F0F1F3]" style={{ color: "#D6AD69" }}>
+                  View all →
+                </Link>
+              </div>
+
+              {projects.length === 0 ? (
+                <div
+                  className="flex flex-col items-center gap-3 rounded-xl border border-dashed p-8 text-center"
+                  style={{ borderColor: "rgba(48,54,64,0.85)" }}
+                >
+                  <svg width="36" height="36" viewBox="0 0 40 40" fill="none" style={{ opacity: 0.25, color: "#B8C0CC" }}>
+                    <rect x="5" y="8" width="30" height="24" rx="3" stroke="currentColor" strokeWidth="1.5"/>
+                    <rect x="10" y="13" width="8" height="8" rx="1.5" stroke="currentColor" strokeWidth="1.5"/>
+                    <rect x="21" y="13" width="9" height="3" rx="1" stroke="currentColor" strokeWidth="1.5"/>
+                    <rect x="21" y="18" width="6" height="3" rx="1" stroke="currentColor" strokeWidth="1.5"/>
+                    <line x1="10" y1="25" x2="30" y2="25" stroke="currentColor" strokeWidth="1.5"/>
+                  </svg>
+                  <p className="text-sm font-medium" style={{ color: "#F0F1F3" }}>No projects yet</p>
+                  <p className="text-xs" style={{ color: "#B8C0CC" }}>Generate your first architecture to start.</p>
+                  <Link
+                    href="/workspace/generate?new=1"
+                    className="mt-1 inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-semibold transition-colors"
+                    style={{ borderColor: "rgba(214,173,105,0.20)", background: "rgba(214,173,105,0.08)", color: "#D6AD69" }}
+                  >
+                    <Plus className="h-3 w-3" /> Create Architecture
+                  </Link>
+                </div>
+              ) : (
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {projects.map((p, idx) => {
+                    const h = p.result ? deriveAdaptiveInsights(p.result) : null;
+                    return (
+                      <Link
+                        key={p.id}
+                        href={`/workspace/generate?project=${p.id}`}
+                        className="group flex flex-col justify-between rounded-xl border p-4 transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.98]"
+                        style={{
+                          background: "#1D222A",
+                          borderColor: "rgba(48,54,64,0.85)",
+                          animationDelay: `${idx * 40}ms`,
+                        }}
+                        onMouseEnter={e => (e.currentTarget.style.borderColor = "rgba(214,173,105,0.30)")}
+                        onMouseLeave={e => (e.currentTarget.style.borderColor = "rgba(48,54,64,0.85)")}
+                      >
+                        <div className="mb-2 flex items-center justify-between">
+                          <span
+                            className="rounded-full border px-2 py-0.5 font-mono text-[9px] font-bold uppercase"
+                            style={{ borderColor: "rgba(214,173,105,0.25)", background: "rgba(214,173,105,0.10)", color: "#D6AD69" }}
+                          >
+                            {DIAGRAM_TYPE_LABELS[p.diagramType]}
+                          </span>
+                          {h && <span className="font-mono text-[9px]" style={{ color: "#6A7280" }}>{h.health}/100</span>}
+                        </div>
+                        <p className="truncate text-xs font-bold transition-colors group-hover:text-[#D6AD69]" style={{ color: "#F0F1F3" }}>
+                          {p.title}
+                        </p>
+                        <p className="mt-1 font-mono text-[9px]" style={{ color: "#6A7280" }}>
+                          {new Date(p.updatedAt).toLocaleDateString()}
+                        </p>
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
+            </section>
+
+            {/* Recent Activity */}
+            <section
+              className="rounded-2xl border p-6"
+              style={{ background: "#171A20", borderColor: "rgba(48,54,64,0.85)" }}
+            >
+              <div className="mb-5 flex items-center justify-between">
+                <h3 className="flex items-center gap-2 text-sm font-bold" style={{ color: "#F0F1F3" }}>
+                  <History className="h-4 w-4" style={{ color: "#D6AD69" }} />
+                  Recent Activity
+                </h3>
+                <Link href="/workspace/history" className="text-xs font-bold transition-colors hover:text-[#F0F1F3]" style={{ color: "#D6AD69" }}>
+                  View all →
+                </Link>
+              </div>
+
+              {history.length === 0 ? (
+                <div
+                  className="flex flex-col items-center gap-3 rounded-xl border border-dashed p-8 text-center"
+                  style={{ borderColor: "rgba(48,54,64,0.85)" }}
+                >
+                  <Clock className="h-7 w-7" style={{ opacity: 0.25, color: "#B8C0CC" }} />
+                  <p className="text-sm font-medium" style={{ color: "#F0F1F3" }}>No activity yet</p>
+                  <p className="text-xs" style={{ color: "#B8C0CC" }}>Your generation history will appear here.</p>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {history.map(e => (
+                    <Link
+                      key={e.id}
+                      href={`/workspace/generate?project=${e.projectId}`}
+                      className="group flex items-center gap-3 rounded-xl border p-3 transition-all duration-200 active:scale-[0.98]"
+                      style={{ background: "#1D222A", borderColor: "rgba(48,54,64,0.85)" }}
+                      onMouseEnter={e2 => {
+                        e2.currentTarget.style.borderColor = "rgba(214,173,105,0.30)";
+                        e2.currentTarget.style.background = "#171A20";
+                      }}
+                      onMouseLeave={e2 => {
+                        e2.currentTarget.style.borderColor = "rgba(48,54,64,0.85)";
+                        e2.currentTarget.style.background = "#1D222A";
+                      }}
+                    >
+                      <div
+                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border"
+                        style={{ borderColor: "rgba(214,173,105,0.20)", background: "rgba(214,173,105,0.08)" }}
+                      >
+                        <Sparkles className="h-3.5 w-3.5" style={{ color: "#D6AD69" }} />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-xs font-bold transition-colors group-hover:text-[#D6AD69]" style={{ color: "#F0F1F3" }}>
+                          {e.projectTitle}
+                        </p>
+                        <p className="truncate font-mono text-[9px]" style={{ color: "#6A7280" }}>
+                          {e.prompt.length > 55 ? e.prompt.slice(0, 52) + "…" : e.prompt}
+                        </p>
+                      </div>
+                      <span className="shrink-0 font-mono text-[9px]" style={{ color: "#6A7280" }}>
+                        {new Date(e.createdAt).toLocaleDateString()}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </section>
+          </div>
+        </Stagger>
+
+        {/* ── AI Research + Templates row ──────────────────────────────── */}
+        <Stagger i={3}>
+          <div className="grid gap-5 lg:grid-cols-2">
+
+            {/* AI Research shortcut */}
+            <section
+              className="rounded-2xl border p-6"
+              style={{ background: "#171A20", borderColor: "rgba(48,54,64,0.85)" }}
+            >
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-start gap-4">
+                  <div
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border"
+                    style={{ borderColor: "rgba(214,173,105,0.25)", background: "#1D222A" }}
+                  >
+                    <Search className="h-5 w-5" style={{ color: "#D6AD69" }} />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold" style={{ color: "#F0F1F3" }}>AI Architecture Research</h3>
+                    <p className="mt-1 text-xs leading-relaxed" style={{ color: "#B8C0CC" }}>
+                      Synthesize structural reports and evaluate pattern trade-offs with AI.
+                    </p>
+                  </div>
+                </div>
+                <Link
+                  href="/workspace/research"
+                  className="inline-flex shrink-0 items-center gap-2 rounded-xl border px-4 py-2.5 text-xs font-bold transition-all hover:border-[#D6AD69]/40 hover:text-[#F0F1F3]"
+                  style={{ borderColor: "rgba(48,54,64,0.85)", background: "#1D222A", color: "#B8C0CC" }}
+                >
+                  Open Research <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+            </section>
+
+            {/* Quick templates */}
+            <section
+              className="rounded-2xl border p-6"
+              style={{ background: "#171A20", borderColor: "rgba(48,54,64,0.85)" }}
+            >
+              <div className="mb-4 flex items-center justify-between">
+                <h3 className="flex items-center gap-2 text-sm font-bold" style={{ color: "#F0F1F3" }}>
+                  <LayoutTemplate className="h-4 w-4" style={{ color: "#D6AD69" }} />
+                  Starter Blueprints
+                </h3>
+                <Link href="/workspace/templates" className="text-xs font-bold transition-colors hover:text-[#F0F1F3]" style={{ color: "#D6AD69" }}>
+                  Explore all →
+                </Link>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-3">
+                {TEMPLATES.slice(0, 3).map(t => (
+                  <Link
+                    key={t.id}
+                    href={`/workspace/generate?template=${t.id}`}
+                    className="group flex flex-col justify-between rounded-xl border p-4 transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.98]"
+                    style={{ background: "#1D222A", borderColor: "rgba(48,54,64,0.85)" }}
+                    onMouseEnter={e => (e.currentTarget.style.borderColor = "rgba(214,173,105,0.30)")}
+                    onMouseLeave={e => (e.currentTarget.style.borderColor = "rgba(48,54,64,0.85)")}
+                  >
+                    <h4 className="text-xs font-bold transition-colors group-hover:text-[#D6AD69]" style={{ color: "#F0F1F3" }}>
+                      {t.name}
+                    </h4>
+                    <p className="mt-1.5 text-[10px] leading-relaxed line-clamp-2" style={{ color: "#6A7280" }}>
+                      {t.description}
+                    </p>
+                    <div
+                      className="mt-3 flex items-center justify-between border-t pt-2.5 text-[10px] font-bold"
+                      style={{ borderColor: "rgba(48,54,64,0.85)", color: "#D6AD69" }}
+                    >
+                      <span>Use Blueprint</span>
+                      <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          </div>
+        </Stagger>
+
+      </div>
     </div>
   );
 }
