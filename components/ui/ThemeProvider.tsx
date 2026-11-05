@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useMemo } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "@clerk/nextjs";
 import { createUserStore } from "@/lib/storage/store";
 import { DEFAULT_SETTINGS } from "@/lib/storage/types";
@@ -14,37 +14,44 @@ type ThemeContextValue = {
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
-function resolveTheme(theme: ThemeMode): "dark" | "light" {
-  if (theme === "system") {
-    if (typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: light)").matches) {
-      return "light";
-    }
-    return "dark";
+function resolveTheme(t: ThemeMode): "dark" | "light" {
+  if (t === "system") {
+    return typeof window !== "undefined" &&
+      window.matchMedia("(prefers-color-scheme: light)").matches
+      ? "light"
+      : "dark";
   }
-  return theme;
+  return t;
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  // ThemeProvider lives in the root layout (outside UserStoreProvider), so
-  // we obtain the Clerk userId directly.
   const { userId, isLoaded } = useAuth();
 
-  // Derive theme and resolved values synchronously from the current user's
-  // settings. useMemo re-runs when userId changes (account switch).
-  const { theme, resolved } = useMemo(() => {
-    const savedTheme: ThemeMode =
-      isLoaded && userId
-        ? createUserStore(userId).getSettings().theme
-        : DEFAULT_SETTINGS.theme;
-    return { theme: savedTheme, resolved: resolveTheme(savedTheme) };
+  // Initialise from the anti-flash script's already-applied value so there
+  // is zero flicker on hydration.
+  const [theme, setThemeState] = useState<ThemeMode>(() => {
+    if (typeof window === "undefined") return DEFAULT_SETTINGS.theme;
+    const attr = document.documentElement.getAttribute("data-theme");
+    return (attr === "light" || attr === "dark") ? attr : DEFAULT_SETTINGS.theme;
+  });
+
+  // Once Clerk finishes loading, read the user's persisted preference.
+  useEffect(() => {
+    if (!isLoaded) return;
+    const saved = userId
+      ? createUserStore(userId).getSettings().theme
+      : DEFAULT_SETTINGS.theme;
+    setThemeState(saved);
   }, [isLoaded, userId]);
 
-  // Apply the resolved theme to the document as a DOM side effect.
+  const resolved = resolveTheme(theme);
+
+  // Apply to DOM whenever resolved changes.
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", resolved);
   }, [resolved]);
 
-  // Track system preference changes when theme is "system".
+  // Track system preference when theme === "system".
   useEffect(() => {
     if (theme !== "system") return;
     const mq = window.matchMedia("(prefers-color-scheme: light)");
@@ -59,14 +66,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   }, [theme]);
 
   function setTheme(next: ThemeMode) {
-    // Persist the new theme to the user's scoped settings.
+    // Persist.
     if (userId) {
       const store = createUserStore(userId);
-      const settings = store.getSettings();
-      store.saveSettings({ ...settings, theme: next });
+      store.saveSettings({ ...store.getSettings(), theme: next });
     }
-    // Apply to DOM immediately (without waiting for a re-render cycle).
-    document.documentElement.setAttribute("data-theme", resolveTheme(next));
+    // Update React state → triggers re-render and DOM update via effect.
+    setThemeState(next);
   }
 
   return (

@@ -8,24 +8,24 @@ import LandingTrust from "@/components/landing/LandingTrust";
 import LandingCTA from "@/components/landing/LandingCTA";
 import LandingFooter from "@/components/landing/LandingFooter";
 
+// Landing page is ALWAYS dark — independent of the user's theme preference.
+// All sections use hardcoded dark values; the data-theme="dark" attr ensures
+// any CSS var fallbacks resolve correctly even if the root html has light theme.
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col" style={{ background: "#0E1116", color: "#F2EFE8" }}>
+    <div
+      data-theme="dark"
+      className="flex min-h-screen flex-col"
+      style={{ background: "#0E1116", color: "#F2EFE8" }}
+    >
       <LandingHeader />
       <main className="flex-1">
-        {/* Section 1 — Hero with tile mosaic */}
         <LandingHero />
-        {/* Section 2 — How it works (3-step process) */}
         <LandingHowItWorks />
-        {/* Section 3 — Capabilities (diagram type cards) */}
         <LandingBento />
-        {/* Section 4 — Feature breakdown (8 feature cards, distinct from Bento) */}
         <LandingFeatures />
-        {/* Section 5 — Use cases marquee (distinct scrolling pill list) */}
         <LandingUseCases />
-        {/* Section 6 — About / Studio */}
         <LandingTrust />
-        {/* Section 7 — CTA / Contact */}
         <LandingCTA />
       </main>
       <LandingFooter />
